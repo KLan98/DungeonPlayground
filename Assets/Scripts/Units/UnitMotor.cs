@@ -10,24 +10,21 @@ public class UnitMotor : MonoBehaviour
     [SerializeField] private Transform originalPosition;
     [SerializeField] private Transform targetPosition;
     private Rigidbody2D rg2d;
-    private BoxCollider2D collider2D;
-    private Vector3 baseVelocity;
+    private BoxCollider2D col2D;
 
     public Transform OriginalPosition
     {
         get { return originalPosition; }
-        set { originalPosition = value; }
     }
 
     public Transform TargetPosition
     {
         get { return targetPosition; } 
-        set { targetPosition = value; } 
     }
 
-    public Vector3 BaseVelocity
+    public Vector2 BaseVelocity
     {
-        get { return baseVelocity; }
+        get { return rg2d.velocity; }
     }
 
     public Rigidbody2D AttachedRigidbody2D
@@ -40,10 +37,15 @@ public class UnitMotor : MonoBehaviour
         get { return transform; }
     }
 
+    public Vector2 MoveDirection
+    {
+        get { return TargetPosition.position - OriginalPosition.position; }
+    }
+
     private void Start()
     {
         rg2d = GetComponent<Rigidbody2D>();
-        collider2D = GetComponent<BoxCollider2D>();
+        col2D = GetComponent<BoxCollider2D>();
     }
 
     public void SetPositionAndRotation(Vector3 position, Quaternion rotation)
@@ -53,6 +55,16 @@ public class UnitMotor : MonoBehaviour
 
     public void SetPosition(Vector3 position)
     {
+    }
+
+    public void SetTargetPosition(Vector3 targetPosition)
+    {
+
+    }
+
+    public void SetOriginalPosition(Vector3 originalPosition)
+    {
+
     }
 
     public void MoveUnit(Vector3 toPosition)

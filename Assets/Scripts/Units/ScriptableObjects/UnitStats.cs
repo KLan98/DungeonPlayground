@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Stat", menuName = "Units/UnitStats")]
 public class UnitStats : ScriptableObject
 {
+    // affect damage
     [SerializeField] private int strength;
     public int Strength
     {
@@ -18,6 +19,7 @@ public class UnitStats : ScriptableObject
         }
     }
 
+    // affect hp & defense
     [SerializeField] private int endurance;
     public int Endurance
     {
@@ -31,6 +33,7 @@ public class UnitStats : ScriptableObject
         }
     }
 
+    // affect movement speed
     [SerializeField] private int agility;
     public int Agility
     {
@@ -44,6 +47,7 @@ public class UnitStats : ScriptableObject
         }
     }
     
+    // affect resources gathered
     [SerializeField] private int luck;
     public int Luck
     {
