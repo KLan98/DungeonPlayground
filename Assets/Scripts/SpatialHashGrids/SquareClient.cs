@@ -6,6 +6,9 @@ public class SquareClient : MonoBehaviour
 {
     [SerializeField] private Demo demo;
     [SerializeField] private BoxCollider2D collider2D;
+    private Client client;
+    public HashSet<Client> myNearbyClients = new HashSet<Client>();
+
     private Vector2 position
     {
         get
@@ -22,15 +25,17 @@ public class SquareClient : MonoBehaviour
         }
     }
 
+    private Vector2 area = new Vector2(5, 5);
+
     // Start is called before the first frame update
     void Start()
     {
-        Client client = demo.grid.NewClient(position, dimensions);
+        client = demo.grid.NewClient(position, dimensions);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(demo.grid.GetCellIndex(position));
+        myNearbyClients = demo.grid.FindNear(position, area);
     }
 }
