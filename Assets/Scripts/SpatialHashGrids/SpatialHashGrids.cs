@@ -5,7 +5,6 @@ using System.Drawing;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
 
 public class SpatialHashGrids 
 {
@@ -28,11 +27,12 @@ public class SpatialHashGrids
         cells = new Dictionary<string, HashSet<Client>> ();
     }
 
-    public Client NewClient(Vector2 position, Vector2 dimensions)
+    public Client NewClient(Vector2 position, Vector2 dimensions, string name)
     {
         // object initializer
         Client client = new Client()
         {
+            Name = name,
             Position = position,
             Dimensions = dimensions,
             Indices = null
@@ -88,7 +88,7 @@ public class SpatialHashGrids
             {
                 string k = Key(x, y);
                 
-                // if cells has key then add the every client found to clients hashset 
+                // if cells-dict has this key then add the every client associated with it to clients hashset 
                 if (this.cells.ContainsKey(k))
                 {
                     foreach(Client client in cells[k])
@@ -103,7 +103,7 @@ public class SpatialHashGrids
     }
 
     // compute the x y index of a cell
-    private Vector2Int GetCellIndex(Vector2 position)
+    public Vector2Int GetCellIndex(Vector2 position)
     {
         // (position - min bound) / (max bound - min bound)
         var x = math.saturate((position.x - this.bounds[0][0]) / (this.bounds[1][0] - this.bounds[0][0]));
@@ -112,8 +112,10 @@ public class SpatialHashGrids
         var y = math.saturate((position.y - this.bounds[0][1]) / (this.bounds[1][1] - this.bounds[0][1]));
 
         // base-0 so need to -1 
-        int xIndex = (int)math.floor(x * (this.dimensions[0] - 1));
-        int yIndex = (int)math.floor(y * (this.dimensions[1] - 1));
+        // 249.2505 → 249(down)
+        // 249.5 → 250(up)
+        int xIndex = (int)Math.Round(x * (this.dimensions[0] - 1), 0, MidpointRounding.AwayFromZero);
+        int yIndex = (int)Math.Round(y * (this.dimensions[1] - 1), 0, MidpointRounding.AwayFromZero);
 
         return new Vector2Int(xIndex, yIndex);
     }
@@ -131,7 +133,7 @@ public class SpatialHashGrids
     }
 
     // delete client from grid
-    public void Delete(Client client)
+    private void Delete(Client client)
     {
         // current indices of client
         Vector2Int[] currentIndices = client.Indices;
@@ -143,7 +145,10 @@ public class SpatialHashGrids
             {
                 string k = Key(x, y);
 
-                cells[k].Remove(client); 
+                if (this.cells.ContainsKey(k))
+                {
+                    cells.Remove(k);
+                }
             }
         }
     }
