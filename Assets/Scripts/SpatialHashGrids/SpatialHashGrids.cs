@@ -79,19 +79,19 @@ public class SpatialHashGrids
     {
         Vector2Int i1 = GetCellIndex(new Vector2(pos.x - area.x / 2, pos.y - area.y / 2)); // bottom left of cells in the grid that contain the client
         Vector2Int i2 = GetCellIndex(new Vector2(pos.x + area.x / 2, pos.y + area.y / 2)); // top right of cells in the grid that contain the client
-
+        
         HashSet<Client> myNearbyClients = new HashSet<Client>();
 
         for(int x = i1.x; x <= i2.x; x++)
         {
-            for(int y = i1.y; y <= i2.y; y++)
+            for (int y = i1.y; y <= i2.y; y++)
             {
                 string k = Key(x, y);
-                
+
                 // if cells-dict has this key then add the every client associated with it to clients hashset 
-                if (this.cells.ContainsKey(k))
+                if (cells.ContainsKey(k))
                 {
-                    foreach(Client client in cells[k])
+                    foreach (Client client in cells[k])
                     {
                         myNearbyClients.Add(client);
                     }
@@ -135,22 +135,22 @@ public class SpatialHashGrids
     // delete client from grid
     private void Delete(Client client)
     {
-        // current indices of client
-        Vector2Int[] currentIndices = client.Indices;
+        Vector2Int i1 = client.Indices[0];
+        Vector2Int i2 = client.Indices[1];
 
         // construct key for the cell-map
-        for (int x = currentIndices[0][0]; x <= currentIndices[1][0]; x++)
+        for (int x = i1.x; x <= i2.x; x++)
         {
-            for (int y = currentIndices[0][1]; y <= currentIndices[1][1]; y++)
+            for (int y = i1.y; y <= i2.y; y++)
             {
                 string k = Key(x, y);
 
-                if (this.cells.ContainsKey(k))
+                // if this grid contains k then remove associated HashSet
+                if (cells.ContainsKey(k))
                 {
-                    cells.Remove(k);
+                    cells[k].Remove(client);
                 }
             }
         }
     }
-
 }

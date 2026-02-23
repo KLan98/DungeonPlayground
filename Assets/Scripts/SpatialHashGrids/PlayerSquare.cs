@@ -65,6 +65,9 @@ public class PlayerSquare : MonoBehaviour
         myNearbyClients = demo.grid.FindNear(position, area);
         clients.Clear();
         clients.AddRange(myNearbyClients);
+
+        demo.grid.UpdateGrid(client);
+        Debug.Log($"this {client.Name} is currently located from index {client.Indices[0]} to {client.Indices[1]}");
     }
 
     private void FixedUpdate()
@@ -93,11 +96,7 @@ public class PlayerSquare : MonoBehaviour
 
         rb.velocity = moveInput.normalized * speed;
 
-        // update grid with the latest info of this client
-        if (rb.velocity.magnitude > 0)
-        {
-            demo.grid.UpdateGrid(client);
-        }
+        client.Position = position;
     }
 
     private void OnDrawGizmos()

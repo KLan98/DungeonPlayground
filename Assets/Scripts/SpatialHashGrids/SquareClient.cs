@@ -46,7 +46,7 @@ public class SquareClient : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        myNearbyClients = demo.grid.FindNear(Position, area);
+        //myNearbyClients = demo.grid.FindNear(Position, area);
         //demo.grid.UpdateGrid(client);
     }
 
