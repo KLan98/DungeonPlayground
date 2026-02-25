@@ -17,6 +17,7 @@ public class PlayerSquare : MonoBehaviour
     private Vector2 moveInput = Vector2.zero;
 
     [SerializeField] private List<Client> clients = new List<Client>();
+    private SpriteRenderer spriteRenderer;
 
     private Vector2 position
     {
@@ -30,7 +31,7 @@ public class PlayerSquare : MonoBehaviour
     {
         get
         {
-            return collider2D.size;
+            return spriteRenderer.size;
         }
     }
 
@@ -42,6 +43,7 @@ public class PlayerSquare : MonoBehaviour
         inputActions.Enable();
 
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     private string Name
@@ -57,17 +59,36 @@ public class PlayerSquare : MonoBehaviour
     {
         client = demo.grid.NewClient(position, dimensions, Name);
         Debug.Log($"this {gameObject} is located from index {client.Indices[0]} to {client.Indices[1]}");
+        InvokeRepeating(nameof(FindNearbyClients), 0.1f, 0.3f);
+        InvokeRepeating(nameof(UpdateGrid), 0.15f, 0.4f);
+        InvokeRepeating(nameof(UpdateClientsList), 0.2f, 0.5f);
     }
 
     // Update is called once per frame
     void Update()
     {
+        // debugging methods
+        //clients.Clear();
+        //clients.AddRange(myNearbyClients);
+
+        //Debug.Log($"this {client.Name} is currently located from index {client.Indices[0]} to {client.Indices[1]}");
+    }
+
+    private void FindNearbyClients()
+    {
         myNearbyClients = demo.grid.FindNear(position, area);
+    }
+
+
+    private void UpdateGrid()
+    {
+        demo.grid.UpdateGrid(client);
+    }
+
+    private void UpdateClientsList()
+    {
         clients.Clear();
         clients.AddRange(myNearbyClients);
-
-        demo.grid.UpdateGrid(client);
-        Debug.Log($"this {client.Name} is currently located from index {client.Indices[0]} to {client.Indices[1]}");
     }
 
     private void FixedUpdate()

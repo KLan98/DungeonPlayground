@@ -9,6 +9,7 @@ public class SquareClient : MonoBehaviour
     [SerializeField] private Demo demo;
     private Client client;
     private HashSet<Client> myNearbyClients = new HashSet<Client>();
+    private SpriteRenderer spriteRenderer;
 
     private Vector2 Position
     {
@@ -22,7 +23,7 @@ public class SquareClient : MonoBehaviour
     {
         get
         {
-            return transform.localScale;
+            return spriteRenderer.size;
         }
     }
 
@@ -36,11 +37,17 @@ public class SquareClient : MonoBehaviour
 
     private Vector2 area = new Vector2(5, 5);
 
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         client = demo.grid.NewClient(Position, Dimensions, Name);
         Debug.Log($"this {gameObject} is located from index {client.Indices[0]} to {client.Indices[1]}");
+        Debug.Log($"{this} dimension is {Dimensions}");
     }
 
     // Update is called once per frame

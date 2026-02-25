@@ -133,7 +133,7 @@ public class SpatialHashGrids
     }
 
     // delete client from grid
-    private void Delete(Client client)
+    public void Delete(Client client)
     {
         Vector2Int i1 = client.Indices[0];
         Vector2Int i2 = client.Indices[1];

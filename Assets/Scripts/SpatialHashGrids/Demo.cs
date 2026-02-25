@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class Demo : MonoBehaviour
 {
     readonly private Vector2[] bounds = new Vector2[] { new Vector2(-1000, -1000), new Vector2(1000, 1000) };
-    readonly private Vector2 dimension = new Vector2(500, 500); // 500 x 500 grid 
+    readonly private Vector2 dimension = new Vector2(1000, 1000); // 500 x 500 grid 
 
     public SpatialHashGrids grid;
 
@@ -29,7 +29,7 @@ public class Demo : MonoBehaviour
         const int minX = -1000;
         const int maxX = 1000;
 
-        int totalPoints = 500;
+        int totalPoints = 1000;
 
         int diff = (maxX - minX) / totalPoints;
 
