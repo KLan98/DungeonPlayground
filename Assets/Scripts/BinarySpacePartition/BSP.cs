@@ -16,7 +16,7 @@ public class BSP
         Queue<BoundsInt> roomsQueue = new Queue<BoundsInt>(); // queue of rooms to be splitted
         List<BoundsInt> roomsList = new List<BoundsInt>(); // list of rooms after splitting
 
-        // enqueu the queue
+        // enqueue the queue
         roomsQueue.Enqueue(spaceToSplit);
         
         // while there are still rooms to split
@@ -47,7 +47,7 @@ public class BSP
 
                     else
                     {
-                        // room cannot be splitted, add to room list
+                        // room cannot be splitted
                     }
                 }
 
@@ -66,7 +66,7 @@ public class BSP
 
                     else
                     {
-                        // room cannot be splitted, add to room list
+                        // room cannot be splitted
                     }
                 }
 
