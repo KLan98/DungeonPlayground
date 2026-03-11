@@ -241,7 +241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   map: {fileID: 1481978916}
-  tileBase: {fileID: 11400000, guid: c3bb0a0ed5619a84ba6d1d07b543795c, type: 2}
+  tileBase: {fileID: 11400000, guid: 4731268d45b734cdfba41ba6cdf5720b, type: 2}
 --- !u!4 &164231390
 Transform:
   m_ObjectHideFlags: 0
@@ -302,11 +302,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemapVisualizer: {fileID: 164231389}
-  startPosition: {x: 0, y: 0, z: 0}
-  size: {x: 40, y: 40, z: 0}
-  minWidth: 20
-  minHeight: 20
-  offset: 10
+  size: {x: 50, y: 50, z: 0}
+  minWidth: 10
+  minHeight: 10
+  offset: 3
+  mainCamera: {fileID: 52125422}
 --- !u!1 &1481978915
 GameObject:
   m_ObjectHideFlags: 0

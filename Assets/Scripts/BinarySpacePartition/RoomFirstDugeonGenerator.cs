@@ -7,18 +7,32 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
 {
     [SerializeField] private TilemapVisualizer tilemapVisualizer;
 
-    [SerializeField] private Vector3Int startPosition, size;
+    [SerializeField] private Vector3Int size;
 
     [SerializeField] private int minWidth, minHeight, offset;
+    [SerializeField] private Camera mainCamera;
 
     private void Start()
     {
         CreateRooms();
     }
 
+    // automatically set the bottom left of the screen as startPosition
+    private Vector3 ViewSpaceCoverter()
+    {
+        if (mainCamera != null)
+        {
+            Vector3 startPoint = mainCamera.ViewportToWorldPoint(Vector3.zero);
+            return startPoint;
+        }
+
+        return Vector3.zero;
+    }
+
     private void CreateRooms()
     {
-        var roomList = BSP.BinarySpacePartitioning(new BoundsInt(startPosition, size), minWidth, minHeight);
+        Vector3Int startPoint = Vector3Int.CeilToInt(ViewSpaceCoverter());
+        var roomList = BSP.BinarySpacePartitioning(new BoundsInt(startPoint, size), minWidth, minHeight);
 
         // hashset for floor without the walls
         HashSet<Vector2Int> floorTilesPosition = new HashSet<Vector2Int>();
