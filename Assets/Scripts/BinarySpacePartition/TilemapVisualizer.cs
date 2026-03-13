@@ -6,8 +6,8 @@ using UnityEngine.Tilemaps;
 
 public class TilemapVisualizer : MonoBehaviour
 {
-    [SerializeField] Tilemap map; //  
-    [SerializeField] TileBase tileBase;
+    [SerializeField] private Tilemap map; 
+    [SerializeField] private TileBase tileBase;
 
     public void DrawFloorTiles(IEnumerable<Vector2Int> floorPositions)
     {
@@ -26,5 +26,10 @@ public class TilemapVisualizer : MonoBehaviour
     {
         var cellPostion = map.WorldToCell((Vector3Int)position);
         map.SetTile(cellPostion, tile);
+    }
+
+    public void RemoveFloorTiles(BoundsInt room)
+    {
+        map.DeleteCells(room.position, room.size);
     }
 }

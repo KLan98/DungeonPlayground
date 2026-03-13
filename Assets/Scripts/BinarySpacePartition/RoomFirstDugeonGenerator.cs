@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class RoomFirstDugeonGenerator : MonoBehaviour
@@ -9,12 +10,18 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
 
     [SerializeField] private Vector3Int size;
 
+    // offset defines how far away from each other should the rooms be 
     [SerializeField] private int minWidth, minHeight, offset;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private List<BoundsInt> roomList = new List<BoundsInt>();
 
-    private void Start()
+    private Vector3Int startPoint;
+    private BoundsInt room;
+
+    private void Awake()
     {
-        CreateRooms();
+        startPoint = Vector3Int.CeilToInt(ViewSpaceCoverter());
+        room = new BoundsInt(startPoint, size);
     }
 
     // automatically set the bottom left of the screen as startPosition
@@ -29,10 +36,14 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         return Vector3.zero;
     }
 
-    private void CreateRooms()
+    public void DestroyRooms()
     {
-        Vector3Int startPoint = Vector3Int.CeilToInt(ViewSpaceCoverter());
-        var roomList = BSP.BinarySpacePartitioning(new BoundsInt(startPoint, size), minWidth, minHeight);
+        tilemapVisualizer.RemoveFloorTiles(room);
+    }
+
+    public void CreateRooms()
+    {
+        roomList = BSP.BinarySpacePartitioning(room, minWidth, minHeight);
 
         // hashset for floor without the walls
         HashSet<Vector2Int> floorTilesPosition = new HashSet<Vector2Int>();
@@ -52,7 +63,7 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
             {
                 for (int row = offset; row < room.size.y - offset; row++)
                 {
-                    Vector2Int nextTilePosition = (Vector2Int)room.min + new Vector2Int(row, col);
+                    Vector2Int nextTilePosition = (Vector2Int)room.min + new Vector2Int(col, row);
                     floorTilesPosition.Add(nextTilePosition);
                 }
             }

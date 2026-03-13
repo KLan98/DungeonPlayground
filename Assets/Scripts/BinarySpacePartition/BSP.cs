@@ -42,6 +42,7 @@ public class BSP
                         splitSucceeded = SplitVertically(room, minWidth, roomsQueue);
                     }
 
+                    // If previous split not successful then try to do this
                     if (!splitSucceeded && room.size.y >= minHeight * 2)
                     {
                         splitSucceeded = SplitHorizontally(room, minHeight, roomsQueue);
@@ -55,13 +56,14 @@ public class BSP
                         splitSucceeded = SplitHorizontally(room, minHeight, roomsQueue);
                     }
 
+                    // If previous split not successful then try to do this
                     if (!splitSucceeded && room.size.x >= minWidth * 2)
                     {
                         splitSucceeded = SplitVertically(room, minWidth, roomsQueue);
                     }
                 }
 
-                // Only add to the final list if it could NOT be split further (leaf node)
+                // Only add room to the final list if it could NOT be split further (leaf node)
                 if (!splitSucceeded)
                 {
                     roomsList.Add(room);
@@ -135,16 +137,12 @@ public class BSP
 
         int splitWidth = UnityEngine.Random.Range(minSplitPoint, maxSplitPoint);
 
-        BoundsInt room1 = new BoundsInt(
-            room.position,
-            new Vector3Int(splitWidth, room.size.y, room.size.z));
+        BoundsInt room1 = new BoundsInt(room.position, new Vector3Int(splitWidth, room.size.y, room.size.z));
 
-        BoundsInt room2 = new BoundsInt(
-            new Vector3Int(room.position.x + splitWidth, room.position.y, room.position.z),
-            new Vector3Int(width - splitWidth, room.size.y, room.size.z));
+        BoundsInt room2 = new BoundsInt(new Vector3Int(room.position.x + splitWidth, room.position.y, room.position.z), new Vector3Int(width - splitWidth, room.size.y, room.size.z));
 
         roomsQueue.Enqueue(room1);
         roomsQueue.Enqueue(room2);
         return true;
     }
-}
+} 
