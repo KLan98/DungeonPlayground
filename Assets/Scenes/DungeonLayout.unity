@@ -303,12 +303,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilemapVisualizer: {fileID: 164231389}
-  size: {x: 50, y: 50, z: 0}
-  minWidth: 10
-  minHeight: 10
-  offset: 3
   mainCamera: {fileID: 52125422}
-  roomList: []
+  size: {x: 100, y: 80, z: 0}
+  minWidth: 15
+  minHeight: 12
+  minOffset: 2
+  maxOffset: 4
+  roomsList: []
+  corridorSize: {x: 0, y: 0, z: 0}
+  corridorMinWidth: 0
+  corridorMinHeight: 0
+  corridorsList: []
 --- !u!114 &919945531
 MonoBehaviour:
   m_ObjectHideFlags: 0

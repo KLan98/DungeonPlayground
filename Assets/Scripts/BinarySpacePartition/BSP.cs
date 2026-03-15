@@ -99,13 +99,9 @@ public class BSP
 
         int splitHeight = UnityEngine.Random.Range(minSplitPoint, maxSplitPoint);
 
-        BoundsInt room1 = new BoundsInt(
-            room.position,
-            new Vector3Int(room.size.x, splitHeight, room.size.z));
+        BoundsInt room1 = new BoundsInt(room.position, new Vector3Int(room.size.x, splitHeight, 0));
 
-        BoundsInt room2 = new BoundsInt(
-            new Vector3Int(room.position.x, room.position.y + splitHeight, room.position.z),
-            new Vector3Int(room.size.x, height - splitHeight, room.size.z));
+        BoundsInt room2 = new BoundsInt(new Vector3Int(room.position.x, room.position.y + splitHeight, 0), new Vector3Int(room.size.x, height - splitHeight, 0));
 
         roomsQueue.Enqueue(room1);
         roomsQueue.Enqueue(room2);
@@ -137,12 +133,12 @@ public class BSP
 
         int splitWidth = UnityEngine.Random.Range(minSplitPoint, maxSplitPoint);
 
-        BoundsInt room1 = new BoundsInt(room.position, new Vector3Int(splitWidth, room.size.y, room.size.z));
+        BoundsInt room1 = new BoundsInt(room.position, new Vector3Int(splitWidth, room.size.y, 0));
 
-        BoundsInt room2 = new BoundsInt(new Vector3Int(room.position.x + splitWidth, room.position.y, room.position.z), new Vector3Int(width - splitWidth, room.size.y, room.size.z));
+        BoundsInt room2 = new BoundsInt(new Vector3Int(room.position.x + splitWidth, room.position.y, 0), new Vector3Int(width - splitWidth, room.size.y, 0));
 
         roomsQueue.Enqueue(room1);
         roomsQueue.Enqueue(room2);
         return true;
     }
-} 
+}
