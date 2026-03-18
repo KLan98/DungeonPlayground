@@ -45,8 +45,9 @@ First dungeon | Second dungeon
 ## Collision detection 
 Implemented spatial hash grid to optimize collision detection. Core idea:
 - Divide the world into uniform grid cells.
-- Compute a hash key from each object's position to determine which cell it belongs to.
-- Store objects in a hash table (dictionary) indexed by that cell key.
+- Compute a key from each object's position to determine which cell it belongs to.
+- A cell can contain many objects, when querying for the object in this cell a list of objects is returned.
+- Object that spans multiple cells have multiple keys.
 - When querying neighbors, check only the object’s cell and nearby cells.
 
 Benchmark:
