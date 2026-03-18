@@ -30,4 +30,10 @@ public class Client
         get { return indices;}
         set { indices = value; }
     }
+    [SerializeField] private int queryID;
+    public int QueryID
+    {
+        get{ return queryID;}
+        set{ queryID = value;}
+    }
 }

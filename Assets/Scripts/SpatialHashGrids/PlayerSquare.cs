@@ -11,7 +11,7 @@ public class PlayerSquare : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
 
     private Client client;
-    private HashSet<Client> myNearbyClients = new HashSet<Client>();
+    private List<Client> myNearbyClients = new List<Client>();
 
     public float speed = 5f;
     private Vector2 moveInput = Vector2.zero;
@@ -44,6 +44,7 @@ public class PlayerSquare : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        Debug.Log(dimensions);
     }
 
     private string Name
@@ -57,32 +58,21 @@ public class PlayerSquare : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        client = demo.grid.NewClient(position, dimensions, Name);
+        client = demo.optimizedGrid.NewClient(position, dimensions, Name);
         Debug.Log($"this {gameObject} is located from index {client.Indices[0]} to {client.Indices[1]}");
         InvokeRepeating(nameof(FindNearbyClients), 0.1f, 0.3f);
         InvokeRepeating(nameof(UpdateGrid), 0.15f, 0.4f);
         InvokeRepeating(nameof(UpdateClientsList), 0.2f, 0.5f);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // debugging methods
-        //clients.Clear();
-        //clients.AddRange(myNearbyClients);
-
-        //Debug.Log($"this {client.Name} is currently located from index {client.Indices[0]} to {client.Indices[1]}");
-    }
-
     private void FindNearbyClients()
     {
-        myNearbyClients = demo.grid.FindNear(position, area);
+        myNearbyClients = demo.optimizedGrid.FindNear(position, area);
     }
-
 
     private void UpdateGrid()
     {
-        demo.grid.UpdateGrid(client);
+        demo.optimizedGrid.UpdateGrid(client);
     }
 
     private void UpdateClientsList()

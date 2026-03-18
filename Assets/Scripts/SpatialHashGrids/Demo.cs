@@ -9,19 +9,12 @@ public class Demo : MonoBehaviour
     readonly private Vector2 dimension = new Vector2(1000, 1000); // 500 x 500 grid 
 
     public SpatialHashGrids grid;
+    public SpatialHashGridsOptimized optimizedGrid;
 
     private void Awake()
     {
         grid = new SpatialHashGrids(bounds, dimension);
-    }
-
-    private void Start()
-    {
-    }
-
-    private void Update()
-    {
-        
+        optimizedGrid = new SpatialHashGridsOptimized(bounds, dimension);
     }
 
     private void OnDrawGizmos()

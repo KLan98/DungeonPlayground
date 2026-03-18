@@ -8,8 +8,9 @@ public class SquareClient : MonoBehaviour
 {
     [SerializeField] private Demo demo;
     private Client client;
-    private HashSet<Client> myNearbyClients = new HashSet<Client>();
+    private List<Client> myNearbyClients = new List<Client>();
     private SpriteRenderer spriteRenderer;
+    [SerializeField] private List<Client> clients = new List<Client>();
 
     private Vector2 Position
     {
@@ -45,16 +46,28 @@ public class SquareClient : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        client = demo.grid.NewClient(Position, Dimensions, Name);
+        client = demo.optimizedGrid.NewClient(Position, Dimensions, Name);
         Debug.Log($"this {gameObject} is located from index {client.Indices[0]} to {client.Indices[1]}");
         Debug.Log($"{this} dimension is {Dimensions}");
+        InvokeRepeating(nameof(FindNearbyClients), 0.1f, 0.3f);
+        InvokeRepeating(nameof(UpdateGrid), 0.15f, 0.4f);
+        InvokeRepeating(nameof(UpdateClientsList), 0.2f, 0.5f);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FindNearbyClients()
     {
-        //myNearbyClients = demo.grid.FindNear(Position, area);
-        //demo.grid.UpdateGrid(client);
+        myNearbyClients = demo.optimizedGrid.FindNear(Position, area);
+    }
+
+    private void UpdateGrid()
+    {
+        demo.optimizedGrid.UpdateGrid(client);
+    }
+
+    private void UpdateClientsList()
+    {
+        clients.Clear();
+        clients.AddRange(myNearbyClients);
     }
 
     private void OnDrawGizmos()
