@@ -7,7 +7,7 @@ public class BSP
 {
     // The percentage of border in which splitting is not possible.
     // Prevents splits too close to room edges (5% on each side).
-    private const float borderZonePercentage = 0.05f;
+    private const float borderZonePercentage = 0.1f;
 
     /// <summary>
     /// Recursively partitions a space into smaller rooms using Binary Space Partitioning.

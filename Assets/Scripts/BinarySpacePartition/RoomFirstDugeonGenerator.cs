@@ -14,23 +14,22 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
     [Header("Room settings")]
     [SerializeField] private Vector3Int size;
     // offset defines how far away from each other should the rooms be 
-    [SerializeField] private int minWidth, minHeight, minOffset, maxOffset;
+    [SerializeField] private int offset;
+    [SerializeField] private int minWidth, minHeight;
+    [SerializeField] private int maxWidth, maxHeight;
     [SerializeField] private List<BoundsInt> roomsList = new List<BoundsInt>();
-
-    [Header("Corridor settings")]
-    [SerializeField] private Vector3Int corridorSize;
-    [SerializeField] private int corridorMinWidth, corridorMinHeight;
-    [SerializeField] private List<BoundsInt> corridorsList = new List<BoundsInt>();
+    [SerializeField] private List<BoundsInt> roomInorderTraversal = new List<BoundsInt>();
 
     private List<Vector2Int> listOfCenters = new List<Vector2Int>();
+    private HashSet<Vector2Int> tilesPosition = new HashSet<Vector2Int>();
+    private HashSet<Vector2Int> corridors = new HashSet<Vector2Int>();
     private Vector3Int startPoint;
-    private BoundsInt room;
-    private int offset;
+    private BoundsInt arena;
 
     private void Awake()
     {
         startPoint = Vector3Int.CeilToInt(ViewSpaceCoverter());
-        room = new BoundsInt(startPoint, size);
+        arena = new BoundsInt(startPoint, size);
     }
 
     // automatically set the bottom left of the screen as startPosition
@@ -45,25 +44,45 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         return Vector3.zero;
     }
 
-    public void DestroyRooms()
+    public void DeleteDungeon()
     {
-        tilemapVisualizer.RemoveFloorTiles(room);
+        tilemapVisualizer.ClearTiles(arena);
+        corridors.Clear();
+        tilesPosition.Clear();
+        roomsList.Clear();
+        listOfCenters.Clear();
+        roomInorderTraversal.Clear();
     }
 
     public void CreateRooms()
     {
-        roomsList = BSP.BinarySpacePartitioning(room, minWidth, minHeight);
-
+        roomsList = BSP.BinarySpacePartitioning(arena, minWidth, minHeight);
+        RandomizeRoomSize(roomsList);
         // hashset for floor without the walls
-        HashSet<Vector2Int> floorTilesPosition = new HashSet<Vector2Int>();
-        floorTilesPosition = GenerateFloor(roomsList);
+        tilesPosition = GenerateFloor(roomsList);
 
+        CreateCorridors();
+    }
+
+    private void CreateCorridors()
+    {
+        //BinaryTreeCreation(roomsList);
+
+        //roomInorderTraversal = BinaryTree.InorderTraversal(BinaryTree.RootNode);
         listOfCenters = GetRoomsCenter(roomsList);
+        corridors = BuildCorridorsBetweenRooms(listOfCenters);
+        
+        tilesPosition.UnionWith(corridors);
+        tilemapVisualizer.DrawFloorTiles(tilesPosition);
+    }
 
-        HashSet<Vector2Int> corridors = BuildCorridorsBetweenRooms(listOfCenters);
-        floorTilesPosition.UnionWith(corridors);
-
-        tilemapVisualizer.DrawFloorTiles(floorTilesPosition);
+    private void BinaryTreeCreation(List<BoundsInt> roomsList)
+    {
+        BinaryTree.Reset(); // clear stale state before rebuilding
+        foreach (var room in roomsList)
+        {
+            BinaryTree.Insert(room);
+        }
     }
 
     // room consists of floor and walls
@@ -73,8 +92,6 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
 
         foreach(var room in roomsList)
         {
-            offset = UnityEngine.Random.Range(minOffset, maxOffset);
-
             for (int col = offset; col < room.size.x - offset; col++)
             {
                 for (int row = offset; row < room.size.y - offset; row++)
@@ -97,120 +114,78 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
     /// </summary>
     /// <param name="listOfCenters">The list of room centers to connect. This list is modified during execution.</param>
     /// <returns>A HashSet of tile positions representing all corridor tiles.</returns>
-    private HashSet<Vector2Int> BuildCorridorsBetweenRooms(List<Vector2Int> listOfCenters)
-    {
-        HashSet<Vector2Int> allCorridorTiles = new HashSet<Vector2Int>();
+    //private HashSet<Vector2Int> BuildCorridorsBetweenRooms(List<Vector2Int> listOfCenters)
+    //{
+    //    HashSet<Vector2Int> allCorridorTiles = new HashSet<Vector2Int>();
         
-        // pick a random center as starting point
-        Vector2Int currentCenter = listOfCenters[UnityEngine.Random.Range(0, listOfCenters.Count)];
-        
-        // currentCenter is not a valid target to find nearest center
-        listOfCenters.Remove(currentCenter);
+    //    // pick center at index 0 as starting point
+    //    Vector2Int currentCenter = listOfCenters[0];
 
-        while (listOfCenters.Count > 0)
-        {
-            Vector2Int nearestCenter = FindNearestCenter(currentCenter, listOfCenters);
-            
-            // nearest center is not a valid target anymore, remove it from list
-            listOfCenters.Remove(nearestCenter);
-            HashSet<Vector2Int> newTilesPosition = CreateCorridor(currentCenter, nearestCenter);
-            
-            // the new currentCenter is the newest
-            currentCenter = nearestCenter;
+    //    for (int i = 0; i < listOfCenters.Count - 1; i++)
+    //    {
+    //        Vector2Int nextCenter = listOfCenters[i + 1];
 
-            // combine the available corridorTilesPosition with newTilesPosition
-            allCorridorTiles.UnionWith(newTilesPosition);
-        }
+    //        HashSet<Vector2Int> newTilesPosition = CreateCorridor(currentCenter, nextCenter);
 
-        return allCorridorTiles;
-    }
+    //        currentCenter = nextCenter;
+
+    //        allCorridorTiles.UnionWith(newTilesPosition);
+    //    }
+
+    //    return allCorridorTiles;
+    //}
 
     /// <summary>
     /// Creates an L-shaped corridor between two room centers by walking tile by tile.
     /// First moves vertically until the destination's Y is reached, 
     /// then moves horizontally until the destination's X is reached.
     /// </summary>
-    /// <param name="currentCenter">The starting position of the corridor.</param>
+    /// <param name="startingPoint">The starting position of the corridor.</param>
     /// <param name="destination">The end position of the corridor.</param>
     /// <returns>A HashSet of tile positions representing the corridor.</returns>
-    private HashSet<Vector2Int> CreateCorridor(Vector2Int currentCenter, Vector2Int destination)
+    private HashSet<Vector2Int> CreateCorridor(Vector2Int startingPoint, Vector2Int destination)
     {
         HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
-        var position = currentCenter;
-        corridor.Add(position);
-        while (position.y != destination.y)
+        corridor.Add(startingPoint);
+        while (startingPoint.y != destination.y)
         {
-            if (destination.y > position.y)
+            if (destination.y > startingPoint.y)
             {
-                position += Vector2Int.up;
+                startingPoint += Vector2Int.up;
             }
 
-            else if (destination.y < position.y)
+            else if (destination.y < startingPoint.y)
             {
-                position += Vector2Int.down;
+                startingPoint += Vector2Int.down;
             }
-            corridor.Add(position);
+            corridor.Add(startingPoint);
         }
 
-        while (position.x != destination.x)
+        while (startingPoint.x != destination.x)
         {
-            if (destination.x > position.x)
+            if (destination.x > startingPoint.x)
             {
-                position += Vector2Int.right;
+                startingPoint += Vector2Int.right;
             }
 
-            else if (destination.x < position.x)
+            else if (destination.x < startingPoint.x)
             {
-                position += Vector2Int.left;
+                startingPoint += Vector2Int.left;
             }
-            corridor.Add(position);
+            corridor.Add(startingPoint);
         }
 
         return corridor;
     }
 
-    //private Vector2Int FindNearestCenter(Vector2Int currentCenter, List<Vector2Int> listOfCenters)
-    //{
-    //    Dictionary<float, Vector2Int> roomsInfo = new Dictionary<float, Vector2Int>();  
-
-    //    // currentCenter should not be included in calculation, since minKey will return 0
-    //    listOfCenters.Remove(currentCenter); 
-
-    //    foreach (var center in listOfCenters)
-    //    {
-    //        float distance = Vector2.Distance(currentCenter, center);
-    //        roomsInfo.Add(distance, center);
-    //    }
-
-    //    float minKey = roomsInfo.Keys.Min();
-        
-    //    Vector2Int nearestCenter = roomsInfo[minKey];  
-
-    //    return nearestCenter;
-    //}
-
-    // linear search O(N) 
-    // find the nearest center from a given center, the listOfCenters contains all possible centers
-    // current center is const in this method
-    private Vector2Int FindNearestCenter(Vector2Int currentCenter, List<Vector2Int> listOfCenters)
+    private void RandomizeRoomSize(List<BoundsInt> roomsList)
     {
-        // assume the nearest center is at index 0
-        Vector2Int nearestCenter = listOfCenters[0];
-
-        // calculate min distance of this nearest center -> this is the value used for comparing
-        float minDistance = Vector2.Distance(currentCenter, nearestCenter);
-
-        foreach (var center in listOfCenters)
+        for (int i = 0; i < roomsList.Count; i++)
         {
-            float distance = Vector2.Distance(currentCenter, center);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                nearestCenter = center;
-            }
+            var room = roomsList[i];    
+            room.size = new Vector3Int(UnityEngine.Random.Range(minWidth, maxWidth), UnityEngine.Random.Range(minHeight, maxHeight), 0);
+            roomsList[i] = room;
         }
-
-        return nearestCenter;
     }
 
     private List<Vector2Int> GetRoomsCenter(List<BoundsInt> roomsList)
@@ -221,7 +196,7 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         {
             foreach (var room in roomsList)
             {
-                Vector2Int center = new Vector2Int(Mathf.RoundToInt(room.center.x), Mathf.RoundToInt(room.center.y));
+                Vector2Int center = new Vector2Int(Mathf.FloorToInt(room.center.x), Mathf.FloorToInt(room.center.y));
                 listOfCenters.Add(center);
             }
         }
@@ -232,5 +207,44 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         }
 
         return listOfCenters;
+    }
+
+    private List<(Vector2Int, Vector2Int)> BuildMST(List<Vector2Int> centers)
+    {
+        var inMST = new HashSet<Vector2Int> { centers[0] };
+        var edges = new List<(Vector2Int, Vector2Int)>();
+
+        while (inMST.Count < centers.Count)
+        {
+            float bestDist = float.MaxValue;
+            Vector2Int bestA = default, bestB = default;
+
+            foreach (var a in inMST)
+            {
+                foreach (var b in centers)
+                {
+                    if (inMST.Contains(b)) continue;
+                    float d = Vector2Int.Distance(a, b);
+                    if (d < bestDist) { bestDist = d; bestA = a; bestB = b; }
+                }
+            }
+
+            inMST.Add(bestB);
+            edges.Add((bestA, bestB));
+        }
+
+        return edges;
+    }
+
+    private HashSet<Vector2Int> BuildCorridorsBetweenRooms(List<Vector2Int> listOfCenters)
+    {
+        HashSet<Vector2Int> allCorridorTiles = new HashSet<Vector2Int>();
+
+        foreach (var (a, b) in BuildMST(listOfCenters))
+        {
+            allCorridorTiles.UnionWith(CreateCorridor(a, b));
+        }
+
+        return allCorridorTiles;
     }
 }     

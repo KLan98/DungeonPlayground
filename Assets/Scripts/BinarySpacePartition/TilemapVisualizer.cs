@@ -28,8 +28,8 @@ public class TilemapVisualizer : MonoBehaviour
         map.SetTile(cellPostion, tile);
     }
 
-    public void RemoveFloorTiles(BoundsInt room)
+    public void ClearTiles(BoundsInt arena)
     {
-        map.DeleteCells(room.position, room.size);
+        map.DeleteCells(arena.position, arena.size);
     }
 }
