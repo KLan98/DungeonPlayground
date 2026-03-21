@@ -268,7 +268,6 @@ GameObject:
   - component: {fileID: 919945529}
   - component: {fileID: 919945530}
   - component: {fileID: 919945531}
-  - component: {fileID: 919945532}
   m_Layer: 0
   m_Name: DungeonGenerator
   m_TagString: Untagged
@@ -344,34 +343,6 @@ MonoBehaviour:
       - m_Target: {fileID: 919945530}
         m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
         m_MethodName: CreateRooms
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
---- !u!114 &919945532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919945528}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 2972e0a28540d10459a6c6e2491123a1, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 919945530}
-        m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
-        m_MethodName: DeleteDungeon
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
