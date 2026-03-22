@@ -11,8 +11,8 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
     [SerializeField] private TilemapVisualizer tilemapVisualizer;
     [SerializeField] private Camera mainCamera;
 
-    [Header("Room settings")]
-    [SerializeField] private Vector3Int size;
+    [Header("Arena settings")]
+    [SerializeField] private Vector3Int arenaSize; // the size of tileMap 
     // offset defines how far away from each other should the rooms be 
     [SerializeField] private int offset;
     [SerializeField] private int minWidth, minHeight;
@@ -22,13 +22,56 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
     private List<Vector2Int> listOfCenters = new List<Vector2Int>();
     private HashSet<Vector2Int> tilesPosition = new HashSet<Vector2Int>();
     private HashSet<Vector2Int> corridors = new HashSet<Vector2Int>();
-    private Vector3Int startPoint;
+    private Vector3Int arenaStartPoint;
     private BoundsInt arena;
 
     private void Awake()
     {
-        startPoint = Vector3Int.CeilToInt(ViewSpaceCoverter());
-        arena = new BoundsInt(startPoint, size);
+        arenaStartPoint = Vector3Int.CeilToInt(ViewSpaceCoverter());
+
+        CheckArenaSettings();
+
+        if (arenaSize != Vector3Int.zero)
+        { 
+            arena = new BoundsInt(arenaStartPoint, arenaSize);
+        }
+    }
+
+    public void DeleteDungeon()
+    {
+        tilemapVisualizer.ClearTiles(arena);
+    }
+
+    public void CreateDungeon()
+    {
+        CheckArenaSettings();
+        CreateRooms();
+        CreateCorridors();
+        tilemapVisualizer.DrawTiles(tilesPosition);
+    }
+
+    private void CreateRooms()
+    {
+        roomsList = BSP.BinarySpacePartitioning(arena, minWidth, minHeight);
+        RandomizeRoomSize(roomsList);
+        tilesPosition = GenerateFloor(roomsList);
+    }
+    
+    private void CreateCorridors()
+    {
+        listOfCenters = GetRoomsCenter(roomsList);
+
+        if (listOfCenters.Count > 1)
+        {
+            corridors = BuildCorridorsBetweenRooms(listOfCenters);
+            tilesPosition.UnionWith(corridors);
+        }
+
+        else if (listOfCenters.Count <= 1)
+        {
+            Debug.LogWarning($"listOfCenters = {listOfCenters.Count}, unable to create corridors");
+            return;
+        }
     }
 
     // automatically set the bottom left of the screen as startPosition
@@ -43,34 +86,10 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         return Vector3.zero;
     }
 
-    public void DeleteDungeon()
-    {
-        tilemapVisualizer.ClearTiles(arena);
-    }
-
-    public void CreateRooms()
-    {
-        roomsList = BSP.BinarySpacePartitioning(arena, minWidth, minHeight);
-        RandomizeRoomSize(roomsList);
-        // hashset for floor without the walls
-        tilesPosition = GenerateFloor(roomsList);
-
-        CreateCorridors();
-    }
-
-    private void CreateCorridors()
-    {
-        listOfCenters = GetRoomsCenter(roomsList);
-        corridors = BuildCorridorsBetweenRooms(listOfCenters);
-        
-        tilesPosition.UnionWith(corridors);
-        tilemapVisualizer.DrawFloorTiles(tilesPosition);
-    }
-
     // room consists of floor and walls
     private HashSet<Vector2Int> GenerateFloor(List<BoundsInt> roomsList)
     {
-        HashSet<Vector2Int> floorTilesPosition = new HashSet<Vector2Int>();
+        HashSet<Vector2Int> roomTiles = new HashSet<Vector2Int>();
 
         foreach(var room in roomsList)
         {
@@ -81,12 +100,12 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
                     // during interation room.min is const
                     // only col and row change
                     Vector2Int nextTilePosition = (Vector2Int)room.min + new Vector2Int(col, row);
-                    floorTilesPosition.Add(nextTilePosition);
+                    roomTiles.Add(nextTilePosition);
                 }
             }
         }
 
-        return floorTilesPosition;
+        return roomTiles;
     }
 
     /// <summary>
@@ -173,5 +192,43 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         }
 
         return allCorridorTiles;
+    }
+
+    private void CheckArenaSettings()
+    {
+        if (arenaSize == Vector3Int.zero || arenaSize.x < minWidth || arenaSize.y < minHeight)
+        {
+            throw new ArgumentOutOfRangeException(nameof(arenaSize), "Arena size not in allowed range");
+        }
+
+        if (offset <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), "Offset not in allowed range");
+        }
+
+        if (minWidth > arenaSize.x || minWidth <= 0)
+        { 
+            throw new ArgumentOutOfRangeException(nameof(minWidth), "minWidth not in allowed range");
+        }
+
+        if (minHeight > arenaSize.y || minHeight <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(minHeight), "minHeight not in allowed range");
+        }
+
+        if (maxWidth > arenaSize.x || maxWidth <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxWidth), "maxWidth not in allowed range");
+        }
+
+        if (maxHeight > arenaSize.y || maxHeight <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxHeight), "maxHeight not in allowed range");
+        }
+
+        if (maxHeight <= minHeight || maxWidth <= minWidth)
+        {
+            throw new ArgumentOutOfRangeException("Inconsistency in width and height settings");
+        }
     }
 }     

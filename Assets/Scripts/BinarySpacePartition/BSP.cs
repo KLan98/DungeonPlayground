@@ -63,7 +63,7 @@ public class BSP
                     }
                 }
 
-                // Only add room to the final list if it could NOT be split further (leaf node)
+                // Only add room to the final list if it could NOT be splitted further (leaf node)
                 if (!splitSucceeded)
                 {
                     roomsList.Add(room);

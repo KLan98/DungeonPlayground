@@ -304,14 +304,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemapVisualizer: {fileID: 164231389}
   mainCamera: {fileID: 52125422}
-  size: {x: 100, y: 80, z: 0}
+  arenaSize: {x: 100, y: 100, z: 0}
   offset: 5
   minWidth: 20
   minHeight: 20
   maxWidth: 26
   maxHeight: 26
   roomsList: []
-  roomInorderTraversal: []
 --- !u!114 &919945531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -342,7 +341,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 919945530}
         m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
-        m_MethodName: CreateRooms
+        m_MethodName: CreateDungeon
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -364,7 +363,7 @@ GameObject:
   - component: {fileID: 1481978916}
   - component: {fileID: 1481978917}
   m_Layer: 0
-  m_Name: Tilemap
+  m_Name: Arena
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
