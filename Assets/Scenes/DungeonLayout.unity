@@ -304,16 +304,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemapVisualizer: {fileID: 164231389}
   mainCamera: {fileID: 52125422}
-  size: {x: 100, y: 80, z: 0}
-  minWidth: 15
-  minHeight: 12
-  minOffset: 2
-  maxOffset: 4
+  arenaSize: {x: 100, y: 100, z: 0}
+  offset: 5
+  minWidth: 20
+  minHeight: 20
+  maxWidth: 26
+  maxHeight: 26
   roomsList: []
-  corridorSize: {x: 0, y: 0, z: 0}
-  corridorMinWidth: 0
-  corridorMinHeight: 0
-  corridorsList: []
 --- !u!114 &919945531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,7 +320,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 919945528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15df8ae9b7796944cb325e1162a23516, type: 3}
+  m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gameEvent: {fileID: 11400000, guid: 64d4aae7f3ab16e4bae1d883de3586db, type: 2}
@@ -332,7 +329,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 919945530}
         m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
-        m_MethodName: DestroyRooms
+        m_MethodName: DeleteDungeon
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -344,7 +341,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 919945530}
         m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
-        m_MethodName: CreateRooms
+        m_MethodName: CreateDungeon
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -366,7 +363,7 @@ GameObject:
   - component: {fileID: 1481978916}
   - component: {fileID: 1481978917}
   m_Layer: 0
-  m_Name: Tilemap
+  m_Name: Arena
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

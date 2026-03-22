@@ -9,12 +9,16 @@ public class TilemapVisualizer : MonoBehaviour
     [SerializeField] private Tilemap map; 
     [SerializeField] private TileBase tileBase;
 
-    public void DrawFloorTiles(IEnumerable<Vector2Int> floorPositions)
+    public void DrawTiles(IEnumerable<Vector2Int> floorPositions)
     {
-        DrawTiles(floorPositions, map, tileBase);
+        DrawMultipleTiles(floorPositions, map, tileBase);
+    }
+    public void ClearTiles(BoundsInt arena)
+    {
+        map.DeleteCells(arena.position, arena.size);
     }
 
-    private void DrawTiles(IEnumerable<Vector2Int> positions, Tilemap map, TileBase tile)
+    private void DrawMultipleTiles(IEnumerable<Vector2Int> positions, Tilemap map, TileBase tile)
     {
         foreach(var position in positions)
         {
@@ -26,10 +30,5 @@ public class TilemapVisualizer : MonoBehaviour
     {
         var cellPostion = map.WorldToCell((Vector3Int)position);
         map.SetTile(cellPostion, tile);
-    }
-
-    public void RemoveFloorTiles(BoundsInt room)
-    {
-        map.DeleteCells(room.position, room.size);
     }
 }

@@ -11,26 +11,67 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
     [SerializeField] private TilemapVisualizer tilemapVisualizer;
     [SerializeField] private Camera mainCamera;
 
-    [Header("Room settings")]
-    [SerializeField] private Vector3Int size;
+    [Header("Arena settings")]
+    [SerializeField] private Vector3Int arenaSize; // the size of tileMap 
     // offset defines how far away from each other should the rooms be 
-    [SerializeField] private int minWidth, minHeight, minOffset, maxOffset;
+    [SerializeField] private int offset;
+    [SerializeField] private int minWidth, minHeight;
+    [SerializeField] private int maxWidth, maxHeight;
     [SerializeField] private List<BoundsInt> roomsList = new List<BoundsInt>();
 
-    [Header("Corridor settings")]
-    [SerializeField] private Vector3Int corridorSize;
-    [SerializeField] private int corridorMinWidth, corridorMinHeight;
-    [SerializeField] private List<BoundsInt> corridorsList = new List<BoundsInt>();
-
     private List<Vector2Int> listOfCenters = new List<Vector2Int>();
-    private Vector3Int startPoint;
-    private BoundsInt room;
-    private int offset;
+    private HashSet<Vector2Int> tilesPosition = new HashSet<Vector2Int>();
+    private HashSet<Vector2Int> corridors = new HashSet<Vector2Int>();
+    private Vector3Int arenaStartPoint;
+    private BoundsInt arena;
 
     private void Awake()
     {
-        startPoint = Vector3Int.CeilToInt(ViewSpaceCoverter());
-        room = new BoundsInt(startPoint, size);
+        arenaStartPoint = Vector3Int.CeilToInt(ViewSpaceCoverter());
+
+        CheckArenaSettings();
+
+        if (arenaSize != Vector3Int.zero)
+        { 
+            arena = new BoundsInt(arenaStartPoint, arenaSize);
+        }
+    }
+
+    public void DeleteDungeon()
+    {
+        tilemapVisualizer.ClearTiles(arena);
+    }
+
+    public void CreateDungeon()
+    {
+        CheckArenaSettings();
+        CreateRooms();
+        CreateCorridors();
+        tilemapVisualizer.DrawTiles(tilesPosition);
+    }
+
+    private void CreateRooms()
+    {
+        roomsList = BSP.BinarySpacePartitioning(arena, minWidth, minHeight);
+        RandomizeRoomSize(roomsList);
+        tilesPosition = GenerateFloor(roomsList);
+    }
+    
+    private void CreateCorridors()
+    {
+        listOfCenters = GetRoomsCenter(roomsList);
+
+        if (listOfCenters.Count > 1)
+        {
+            corridors = BuildCorridorsBetweenRooms(listOfCenters);
+            tilesPosition.UnionWith(corridors);
+        }
+
+        else if (listOfCenters.Count <= 1)
+        {
+            Debug.LogWarning($"listOfCenters = {listOfCenters.Count}, unable to create corridors");
+            return;
+        }
     }
 
     // automatically set the bottom left of the screen as startPosition
@@ -45,36 +86,13 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         return Vector3.zero;
     }
 
-    public void DestroyRooms()
-    {
-        tilemapVisualizer.RemoveFloorTiles(room);
-    }
-
-    public void CreateRooms()
-    {
-        roomsList = BSP.BinarySpacePartitioning(room, minWidth, minHeight);
-
-        // hashset for floor without the walls
-        HashSet<Vector2Int> floorTilesPosition = new HashSet<Vector2Int>();
-        floorTilesPosition = GenerateFloor(roomsList);
-
-        listOfCenters = GetRoomsCenter(roomsList);
-
-        HashSet<Vector2Int> corridors = BuildCorridorsBetweenRooms(listOfCenters);
-        floorTilesPosition.UnionWith(corridors);
-
-        tilemapVisualizer.DrawFloorTiles(floorTilesPosition);
-    }
-
     // room consists of floor and walls
     private HashSet<Vector2Int> GenerateFloor(List<BoundsInt> roomsList)
     {
-        HashSet<Vector2Int> floorTilesPosition = new HashSet<Vector2Int>();
+        HashSet<Vector2Int> roomTiles = new HashSet<Vector2Int>();
 
         foreach(var room in roomsList)
         {
-            offset = UnityEngine.Random.Range(minOffset, maxOffset);
-
             for (int col = offset; col < room.size.x - offset; col++)
             {
                 for (int row = offset; row < room.size.y - offset; row++)
@@ -82,47 +100,12 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
                     // during interation room.min is const
                     // only col and row change
                     Vector2Int nextTilePosition = (Vector2Int)room.min + new Vector2Int(col, row);
-                    floorTilesPosition.Add(nextTilePosition);
+                    roomTiles.Add(nextTilePosition);
                 }
             }
         }
 
-        return floorTilesPosition;
-    }
-
-    /// <summary>
-    /// Builds corridors between all rooms by connecting their centers using a nearest-neighbor approach.
-    /// Starts from a random room center, repeatedly finds the nearest unvisited center,
-    /// and creates a corridor to it until all rooms are connected.
-    /// </summary>
-    /// <param name="listOfCenters">The list of room centers to connect. This list is modified during execution.</param>
-    /// <returns>A HashSet of tile positions representing all corridor tiles.</returns>
-    private HashSet<Vector2Int> BuildCorridorsBetweenRooms(List<Vector2Int> listOfCenters)
-    {
-        HashSet<Vector2Int> allCorridorTiles = new HashSet<Vector2Int>();
-        
-        // pick a random center as starting point
-        Vector2Int currentCenter = listOfCenters[UnityEngine.Random.Range(0, listOfCenters.Count)];
-        
-        // currentCenter is not a valid target to find nearest center
-        listOfCenters.Remove(currentCenter);
-
-        while (listOfCenters.Count > 0)
-        {
-            Vector2Int nearestCenter = FindNearestCenter(currentCenter, listOfCenters);
-            
-            // nearest center is not a valid target anymore, remove it from list
-            listOfCenters.Remove(nearestCenter);
-            HashSet<Vector2Int> newTilesPosition = CreateCorridor(currentCenter, nearestCenter);
-            
-            // the new currentCenter is the newest
-            currentCenter = nearestCenter;
-
-            // combine the available corridorTilesPosition with newTilesPosition
-            allCorridorTiles.UnionWith(newTilesPosition);
-        }
-
-        return allCorridorTiles;
+        return roomTiles;
     }
 
     /// <summary>
@@ -130,87 +113,52 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
     /// First moves vertically until the destination's Y is reached, 
     /// then moves horizontally until the destination's X is reached.
     /// </summary>
-    /// <param name="currentCenter">The starting position of the corridor.</param>
+    /// <param name="startingPoint">The starting position of the corridor.</param>
     /// <param name="destination">The end position of the corridor.</param>
     /// <returns>A HashSet of tile positions representing the corridor.</returns>
-    private HashSet<Vector2Int> CreateCorridor(Vector2Int currentCenter, Vector2Int destination)
+    private HashSet<Vector2Int> CreateCorridor(Vector2Int startingPoint, Vector2Int destination)
     {
         HashSet<Vector2Int> corridor = new HashSet<Vector2Int>();
-        var position = currentCenter;
-        corridor.Add(position);
-        while (position.y != destination.y)
+        corridor.Add(startingPoint);
+        while (startingPoint.y != destination.y)
         {
-            if (destination.y > position.y)
+            if (destination.y > startingPoint.y)
             {
-                position += Vector2Int.up;
+                startingPoint += Vector2Int.up;
             }
 
-            else if (destination.y < position.y)
+            else if (destination.y < startingPoint.y)
             {
-                position += Vector2Int.down;
+                startingPoint += Vector2Int.down;
             }
-            corridor.Add(position);
+            corridor.Add(startingPoint);
         }
 
-        while (position.x != destination.x)
+        while (startingPoint.x != destination.x)
         {
-            if (destination.x > position.x)
+            if (destination.x > startingPoint.x)
             {
-                position += Vector2Int.right;
+                startingPoint += Vector2Int.right;
             }
 
-            else if (destination.x < position.x)
+            else if (destination.x < startingPoint.x)
             {
-                position += Vector2Int.left;
+                startingPoint += Vector2Int.left;
             }
-            corridor.Add(position);
+            corridor.Add(startingPoint);
         }
 
         return corridor;
     }
 
-    //private Vector2Int FindNearestCenter(Vector2Int currentCenter, List<Vector2Int> listOfCenters)
-    //{
-    //    Dictionary<float, Vector2Int> roomsInfo = new Dictionary<float, Vector2Int>();  
-
-    //    // currentCenter should not be included in calculation, since minKey will return 0
-    //    listOfCenters.Remove(currentCenter); 
-
-    //    foreach (var center in listOfCenters)
-    //    {
-    //        float distance = Vector2.Distance(currentCenter, center);
-    //        roomsInfo.Add(distance, center);
-    //    }
-
-    //    float minKey = roomsInfo.Keys.Min();
-        
-    //    Vector2Int nearestCenter = roomsInfo[minKey];  
-
-    //    return nearestCenter;
-    //}
-
-    // linear search O(N) 
-    // find the nearest center from a given center, the listOfCenters contains all possible centers
-    // current center is const in this method
-    private Vector2Int FindNearestCenter(Vector2Int currentCenter, List<Vector2Int> listOfCenters)
+    private void RandomizeRoomSize(List<BoundsInt> roomsList)
     {
-        // assume the nearest center is at index 0
-        Vector2Int nearestCenter = listOfCenters[0];
-
-        // calculate min distance of this nearest center -> this is the value used for comparing
-        float minDistance = Vector2.Distance(currentCenter, nearestCenter);
-
-        foreach (var center in listOfCenters)
+        for (int i = 0; i < roomsList.Count; i++)
         {
-            float distance = Vector2.Distance(currentCenter, center);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                nearestCenter = center;
-            }
+            var room = roomsList[i];    
+            room.size = new Vector3Int(UnityEngine.Random.Range(minWidth, maxWidth), UnityEngine.Random.Range(minHeight, maxHeight), 0);
+            roomsList[i] = room;
         }
-
-        return nearestCenter;
     }
 
     private List<Vector2Int> GetRoomsCenter(List<BoundsInt> roomsList)
@@ -221,7 +169,7 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         {
             foreach (var room in roomsList)
             {
-                Vector2Int center = new Vector2Int(Mathf.RoundToInt(room.center.x), Mathf.RoundToInt(room.center.y));
+                Vector2Int center = new Vector2Int(Mathf.FloorToInt(room.center.x), Mathf.FloorToInt(room.center.y));
                 listOfCenters.Add(center);
             }
         }
@@ -232,5 +180,55 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         }
 
         return listOfCenters;
+    }
+
+    private HashSet<Vector2Int> BuildCorridorsBetweenRooms(List<Vector2Int> listOfCenters)
+    {
+        HashSet<Vector2Int> allCorridorTiles = new HashSet<Vector2Int>();
+
+        foreach (Corridor corridor in PrimAlgorithm.Prim(listOfCenters))
+        {
+            allCorridorTiles.UnionWith(CreateCorridor(corridor.startPoint, corridor.endPoint));
+        }
+
+        return allCorridorTiles;
+    }
+
+    private void CheckArenaSettings()
+    {
+        if (arenaSize == Vector3Int.zero || arenaSize.x < minWidth || arenaSize.y < minHeight)
+        {
+            throw new ArgumentOutOfRangeException(nameof(arenaSize), "Arena size not in allowed range");
+        }
+
+        if (offset <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(offset), "Offset not in allowed range");
+        }
+
+        if (minWidth > arenaSize.x || minWidth <= 0)
+        { 
+            throw new ArgumentOutOfRangeException(nameof(minWidth), "minWidth not in allowed range");
+        }
+
+        if (minHeight > arenaSize.y || minHeight <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(minHeight), "minHeight not in allowed range");
+        }
+
+        if (maxWidth > arenaSize.x || maxWidth <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxWidth), "maxWidth not in allowed range");
+        }
+
+        if (maxHeight > arenaSize.y || maxHeight <= 0)
+        {
+            throw new ArgumentOutOfRangeException(nameof(maxHeight), "maxHeight not in allowed range");
+        }
+
+        if (maxHeight <= minHeight || maxWidth <= minWidth)
+        {
+            throw new ArgumentOutOfRangeException("Inconsistency in width and height settings");
+        }
     }
 }     
