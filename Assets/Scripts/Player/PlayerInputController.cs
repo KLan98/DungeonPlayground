@@ -82,8 +82,6 @@ public class PlayerInputController : MonoBehaviour
             yield return null;
         }
 
-
-
         transform.position = GetCellCenter(playerPosition);
 
         yield return WaitUntilNextMovement(timeBetweenMovement);
