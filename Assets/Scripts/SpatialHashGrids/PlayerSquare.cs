@@ -81,34 +81,34 @@ public class PlayerSquare : MonoBehaviour
         clients.AddRange(myNearbyClients);
     }
 
-    private void FixedUpdate()
-    {
-        moveInput = Vector2.zero;
+    //private void FixedUpdate()
+    //{
+    //    moveInput = Vector2.zero;
 
-        if (inputActions.Movement.Down.IsPressed())
-        {
-            moveInput += Vector2.down;
-        }
+    //    if (inputActions.Movement.Down.IsPressed())
+    //    {
+    //        moveInput += Vector2.down;
+    //    }
 
-        if (inputActions.Movement.Left.IsPressed())
-        {
-            moveInput += Vector2.left;
-        }
+    //    if (inputActions.Movement.Left.IsPressed())
+    //    {
+    //        moveInput += Vector2.left;
+    //    }
 
-        if (inputActions.Movement.Right.IsPressed())
-        {
-            moveInput += Vector2.right;
-        }
+    //    if (inputActions.Movement.Right.IsPressed())
+    //    {
+    //        moveInput += Vector2.right;
+    //    }
 
-        if (inputActions.Movement.Up.IsPressed())
-        {
-            moveInput += Vector2.up;
-        }
+    //    if (inputActions.Movement.Up.IsPressed())
+    //    {
+    //        moveInput += Vector2.up;
+    //    }
 
-        rb.velocity = moveInput.normalized * speed;
+    //    rb.velocity = moveInput.normalized * speed;
 
-        client.Position = position;
-    }
+    //    client.Position = position;
+    //}
 
     private void OnDrawGizmos()
     {

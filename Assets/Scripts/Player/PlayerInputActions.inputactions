@@ -2,13 +2,13 @@
     "name": "PlayerInputActions",
     "maps": [
         {
-            "name": "Movement",
-            "id": "3acdc9a8-49d4-47ef-bd2a-f132efc32751",
+            "name": "PlayerActions",
+            "id": "397169a1-1306-49b0-a643-daf866fbf7b0",
             "actions": [
                 {
                     "name": "Up",
                     "type": "Button",
-                    "id": "bd3513ae-8372-4d95-9646-b2e507d53afd",
+                    "id": "e76aa6e0-ac30-4a54-9305-7dc4b3af5016",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -17,7 +17,7 @@
                 {
                     "name": "Down",
                     "type": "Button",
-                    "id": "6ca29d5b-58aa-4270-b707-e8fae60d63a4",
+                    "id": "4815318d-b77a-484e-a042-397136fce20f",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -26,7 +26,7 @@
                 {
                     "name": "Right",
                     "type": "Button",
-                    "id": "40ef89e9-dfd0-49f1-9e70-e88c62d18d94",
+                    "id": "54119730-a978-4c4c-b289-1ca0d1d95ea4",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -35,7 +35,25 @@
                 {
                     "name": "Left",
                     "type": "Button",
-                    "id": "fdecaeb2-f28a-42a5-9d5a-036705428c6d",
+                    "id": "9a599ce3-a351-45e1-9b91-228a9a4652e1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Confirm",
+                    "type": "Button",
+                    "id": "09d8befd-f832-4aca-a35b-b84b99a52ea0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Cancel",
+                    "type": "Button",
+                    "id": "34bfd009-30d3-423d-81c9-e1a1e49625e1",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -45,7 +63,7 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "b773739e-bf08-46ce-a94b-879f79763d93",
+                    "id": "9a412dbe-57c1-4907-aa01-5926e054c54f",
                     "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
@@ -56,7 +74,7 @@
                 },
                 {
                     "name": "",
-                    "id": "f8ec5cc4-3471-41c9-8593-71d5716bac42",
+                    "id": "8a779778-b769-41dc-bc3c-cbf619414c7b",
                     "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
@@ -67,7 +85,7 @@
                 },
                 {
                     "name": "",
-                    "id": "02d139f6-3bb0-4d97-a42e-e96b44bd5f36",
+                    "id": "35e1dc9c-c770-40b6-924e-6daed262b038",
                     "path": "<Keyboard>/d",
                     "interactions": "",
                     "processors": "",
@@ -78,12 +96,34 @@
                 },
                 {
                     "name": "",
-                    "id": "c29a4170-0541-4558-9e47-3037e9912735",
+                    "id": "4f508e02-3e28-41db-b641-91ca70696712",
                     "path": "<Keyboard>/a",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0130118d-e742-4054-8a70-7e20b41acf1f",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Confirm",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4cf28365-66ca-43c0-946a-a1d7f97d6352",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
