@@ -31,5 +31,4 @@ public class TilemapVisualizer : MonoBehaviour
         var cellPostion = map.WorldToCell((Vector3Int)position);
         map.SetTile(cellPostion, tile);
     }
-
 }

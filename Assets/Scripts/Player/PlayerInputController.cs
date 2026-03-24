@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
+// all of the input that the player can do
 public class PlayerInputController : MonoBehaviour
 {
     private const int tileSize = 1;
@@ -103,5 +103,63 @@ public class PlayerInputController : MonoBehaviour
             xIndex * tileSize + tileSize / 2f,
             yIndex * tileSize + tileSize / 2f
         );
+    }
+
+    private void HotBarInputs()
+    {
+        if (inputActions.PlayerActions.HotBarSlot0.IsPressed())
+        {
+
+        }
+
+        else if (inputActions.PlayerActions.HotBarSlot1.IsPressed())
+        {
+
+        }
+
+        else if (inputActions.PlayerActions.HotBarSlot2.IsPressed())
+        {
+
+        }
+
+        else if (inputActions.PlayerActions.HotBarSlot3.IsPressed())
+        {
+
+        }
+
+        else if (inputActions.PlayerActions.HotBarSlot4.IsPressed())
+        {
+
+        }
+
+        else if (inputActions.PlayerActions.HotBarSlot5.IsPressed())
+        {
+
+        }
+
+        else if (inputActions.PlayerActions.HotBarSlot6.IsPressed())
+        {
+
+        }
+
+        else if (inputActions.PlayerActions.HotBarSlot7.IsPressed())
+        {
+
+        }
+
+        else if (inputActions.PlayerActions.HotBarSlot8.IsPressed())
+        {
+
+        }
+
+        else if (inputActions.PlayerActions.HotBarSlot9.IsPressed())
+        {
+
+        }
+
+        else
+        {
+
+        }
     }
 }

@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class Demo : MonoBehaviour
 {
     readonly private Vector2[] bounds = new Vector2[] { new Vector2(-1000, -1000), new Vector2(1000, 1000) };
-    readonly private Vector2 dimension = new Vector2(1000, 1000); // 500 x 500 grid 
+    readonly private Vector2 dimension = new Vector2(1000, 1000);
 
     public SpatialHashGrids grid;
     public SpatialHashGridsOptimized optimizedGrid;

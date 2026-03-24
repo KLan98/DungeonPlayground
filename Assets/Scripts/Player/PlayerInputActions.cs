@@ -80,6 +80,96 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HotBarSlot0"",
+                    ""type"": ""Button"",
+                    ""id"": ""47b276b9-e18e-4fcf-980a-2471df195389"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HotBarSlot1"",
+                    ""type"": ""Button"",
+                    ""id"": ""36c77688-1276-48d4-9e58-a51bcf594ed8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HotBarSlot2"",
+                    ""type"": ""Button"",
+                    ""id"": ""9cf937dd-2753-4a9f-898d-8d4e125cc224"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HotBarSlot3"",
+                    ""type"": ""Button"",
+                    ""id"": ""58002a7f-3837-4538-b1d1-27a31d973230"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HotBarSlot4"",
+                    ""type"": ""Button"",
+                    ""id"": ""66ba7d3a-69f4-41d6-b9ad-0b7d267a5163"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HotBarSlot5"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d28718f-3fa4-4631-870b-18a6a96c2511"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HotBarSlot6"",
+                    ""type"": ""Button"",
+                    ""id"": ""c39608fb-4cc6-4d8d-8a86-f91cdffab4d8"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HotBarSlot7"",
+                    ""type"": ""Button"",
+                    ""id"": ""c3fd3f97-fc9c-45a1-aa71-118c58a38dd9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HotBarSlot8"",
+                    ""type"": ""Button"",
+                    ""id"": ""67754f7f-d3dc-4dc3-9d52-d2da15815ef2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HotBarSlot9"",
+                    ""type"": ""Button"",
+                    ""id"": ""42d17005-cf8c-43cc-8666-f95c73753302"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -148,6 +238,116 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94bb5e6b-8449-4e38-9cef-ecbfc5691c12"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSlot0"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""813749af-86a6-4e45-a696-c3006a028e7d"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSlot1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e311c32-ec07-47c7-8ed4-3f17ec4b3bf1"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSlot2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec7a683a-0d51-4476-bd9d-4d6297cf74e5"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSlot3"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1e5dbc4a-a58b-40a6-b0dc-6ab93b36e865"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSlot4"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f67c2729-16d0-40ac-865a-e305c73e4ebf"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSlot5"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a8a337cb-ccf2-4741-ac48-1c3211356581"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSlot6"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""32f8dc11-a866-47bd-9f69-e19261819020"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSlot7"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d43e035f-9dc2-4960-b781-30ecfd2b8631"",
+                    ""path"": ""<Keyboard>/9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSlot8"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ecbaa280-3072-4473-b89c-36839e482644"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HotBarSlot9"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -162,6 +362,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_PlayerActions_Left = m_PlayerActions.FindAction("Left", throwIfNotFound: true);
         m_PlayerActions_Confirm = m_PlayerActions.FindAction("Confirm", throwIfNotFound: true);
         m_PlayerActions_Cancel = m_PlayerActions.FindAction("Cancel", throwIfNotFound: true);
+        m_PlayerActions_HotBarSlot0 = m_PlayerActions.FindAction("HotBarSlot0", throwIfNotFound: true);
+        m_PlayerActions_HotBarSlot1 = m_PlayerActions.FindAction("HotBarSlot1", throwIfNotFound: true);
+        m_PlayerActions_HotBarSlot2 = m_PlayerActions.FindAction("HotBarSlot2", throwIfNotFound: true);
+        m_PlayerActions_HotBarSlot3 = m_PlayerActions.FindAction("HotBarSlot3", throwIfNotFound: true);
+        m_PlayerActions_HotBarSlot4 = m_PlayerActions.FindAction("HotBarSlot4", throwIfNotFound: true);
+        m_PlayerActions_HotBarSlot5 = m_PlayerActions.FindAction("HotBarSlot5", throwIfNotFound: true);
+        m_PlayerActions_HotBarSlot6 = m_PlayerActions.FindAction("HotBarSlot6", throwIfNotFound: true);
+        m_PlayerActions_HotBarSlot7 = m_PlayerActions.FindAction("HotBarSlot7", throwIfNotFound: true);
+        m_PlayerActions_HotBarSlot8 = m_PlayerActions.FindAction("HotBarSlot8", throwIfNotFound: true);
+        m_PlayerActions_HotBarSlot9 = m_PlayerActions.FindAction("HotBarSlot9", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -229,6 +439,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActions_Left;
     private readonly InputAction m_PlayerActions_Confirm;
     private readonly InputAction m_PlayerActions_Cancel;
+    private readonly InputAction m_PlayerActions_HotBarSlot0;
+    private readonly InputAction m_PlayerActions_HotBarSlot1;
+    private readonly InputAction m_PlayerActions_HotBarSlot2;
+    private readonly InputAction m_PlayerActions_HotBarSlot3;
+    private readonly InputAction m_PlayerActions_HotBarSlot4;
+    private readonly InputAction m_PlayerActions_HotBarSlot5;
+    private readonly InputAction m_PlayerActions_HotBarSlot6;
+    private readonly InputAction m_PlayerActions_HotBarSlot7;
+    private readonly InputAction m_PlayerActions_HotBarSlot8;
+    private readonly InputAction m_PlayerActions_HotBarSlot9;
     public struct PlayerActionsActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -239,6 +459,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @Left => m_Wrapper.m_PlayerActions_Left;
         public InputAction @Confirm => m_Wrapper.m_PlayerActions_Confirm;
         public InputAction @Cancel => m_Wrapper.m_PlayerActions_Cancel;
+        public InputAction @HotBarSlot0 => m_Wrapper.m_PlayerActions_HotBarSlot0;
+        public InputAction @HotBarSlot1 => m_Wrapper.m_PlayerActions_HotBarSlot1;
+        public InputAction @HotBarSlot2 => m_Wrapper.m_PlayerActions_HotBarSlot2;
+        public InputAction @HotBarSlot3 => m_Wrapper.m_PlayerActions_HotBarSlot3;
+        public InputAction @HotBarSlot4 => m_Wrapper.m_PlayerActions_HotBarSlot4;
+        public InputAction @HotBarSlot5 => m_Wrapper.m_PlayerActions_HotBarSlot5;
+        public InputAction @HotBarSlot6 => m_Wrapper.m_PlayerActions_HotBarSlot6;
+        public InputAction @HotBarSlot7 => m_Wrapper.m_PlayerActions_HotBarSlot7;
+        public InputAction @HotBarSlot8 => m_Wrapper.m_PlayerActions_HotBarSlot8;
+        public InputAction @HotBarSlot9 => m_Wrapper.m_PlayerActions_HotBarSlot9;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -266,6 +496,36 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Cancel.started += instance.OnCancel;
             @Cancel.performed += instance.OnCancel;
             @Cancel.canceled += instance.OnCancel;
+            @HotBarSlot0.started += instance.OnHotBarSlot0;
+            @HotBarSlot0.performed += instance.OnHotBarSlot0;
+            @HotBarSlot0.canceled += instance.OnHotBarSlot0;
+            @HotBarSlot1.started += instance.OnHotBarSlot1;
+            @HotBarSlot1.performed += instance.OnHotBarSlot1;
+            @HotBarSlot1.canceled += instance.OnHotBarSlot1;
+            @HotBarSlot2.started += instance.OnHotBarSlot2;
+            @HotBarSlot2.performed += instance.OnHotBarSlot2;
+            @HotBarSlot2.canceled += instance.OnHotBarSlot2;
+            @HotBarSlot3.started += instance.OnHotBarSlot3;
+            @HotBarSlot3.performed += instance.OnHotBarSlot3;
+            @HotBarSlot3.canceled += instance.OnHotBarSlot3;
+            @HotBarSlot4.started += instance.OnHotBarSlot4;
+            @HotBarSlot4.performed += instance.OnHotBarSlot4;
+            @HotBarSlot4.canceled += instance.OnHotBarSlot4;
+            @HotBarSlot5.started += instance.OnHotBarSlot5;
+            @HotBarSlot5.performed += instance.OnHotBarSlot5;
+            @HotBarSlot5.canceled += instance.OnHotBarSlot5;
+            @HotBarSlot6.started += instance.OnHotBarSlot6;
+            @HotBarSlot6.performed += instance.OnHotBarSlot6;
+            @HotBarSlot6.canceled += instance.OnHotBarSlot6;
+            @HotBarSlot7.started += instance.OnHotBarSlot7;
+            @HotBarSlot7.performed += instance.OnHotBarSlot7;
+            @HotBarSlot7.canceled += instance.OnHotBarSlot7;
+            @HotBarSlot8.started += instance.OnHotBarSlot8;
+            @HotBarSlot8.performed += instance.OnHotBarSlot8;
+            @HotBarSlot8.canceled += instance.OnHotBarSlot8;
+            @HotBarSlot9.started += instance.OnHotBarSlot9;
+            @HotBarSlot9.performed += instance.OnHotBarSlot9;
+            @HotBarSlot9.canceled += instance.OnHotBarSlot9;
         }
 
         private void UnregisterCallbacks(IPlayerActionsActions instance)
@@ -288,6 +548,36 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Cancel.started -= instance.OnCancel;
             @Cancel.performed -= instance.OnCancel;
             @Cancel.canceled -= instance.OnCancel;
+            @HotBarSlot0.started -= instance.OnHotBarSlot0;
+            @HotBarSlot0.performed -= instance.OnHotBarSlot0;
+            @HotBarSlot0.canceled -= instance.OnHotBarSlot0;
+            @HotBarSlot1.started -= instance.OnHotBarSlot1;
+            @HotBarSlot1.performed -= instance.OnHotBarSlot1;
+            @HotBarSlot1.canceled -= instance.OnHotBarSlot1;
+            @HotBarSlot2.started -= instance.OnHotBarSlot2;
+            @HotBarSlot2.performed -= instance.OnHotBarSlot2;
+            @HotBarSlot2.canceled -= instance.OnHotBarSlot2;
+            @HotBarSlot3.started -= instance.OnHotBarSlot3;
+            @HotBarSlot3.performed -= instance.OnHotBarSlot3;
+            @HotBarSlot3.canceled -= instance.OnHotBarSlot3;
+            @HotBarSlot4.started -= instance.OnHotBarSlot4;
+            @HotBarSlot4.performed -= instance.OnHotBarSlot4;
+            @HotBarSlot4.canceled -= instance.OnHotBarSlot4;
+            @HotBarSlot5.started -= instance.OnHotBarSlot5;
+            @HotBarSlot5.performed -= instance.OnHotBarSlot5;
+            @HotBarSlot5.canceled -= instance.OnHotBarSlot5;
+            @HotBarSlot6.started -= instance.OnHotBarSlot6;
+            @HotBarSlot6.performed -= instance.OnHotBarSlot6;
+            @HotBarSlot6.canceled -= instance.OnHotBarSlot6;
+            @HotBarSlot7.started -= instance.OnHotBarSlot7;
+            @HotBarSlot7.performed -= instance.OnHotBarSlot7;
+            @HotBarSlot7.canceled -= instance.OnHotBarSlot7;
+            @HotBarSlot8.started -= instance.OnHotBarSlot8;
+            @HotBarSlot8.performed -= instance.OnHotBarSlot8;
+            @HotBarSlot8.canceled -= instance.OnHotBarSlot8;
+            @HotBarSlot9.started -= instance.OnHotBarSlot9;
+            @HotBarSlot9.performed -= instance.OnHotBarSlot9;
+            @HotBarSlot9.canceled -= instance.OnHotBarSlot9;
         }
 
         public void RemoveCallbacks(IPlayerActionsActions instance)
@@ -313,5 +603,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnLeft(InputAction.CallbackContext context);
         void OnConfirm(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
+        void OnHotBarSlot0(InputAction.CallbackContext context);
+        void OnHotBarSlot1(InputAction.CallbackContext context);
+        void OnHotBarSlot2(InputAction.CallbackContext context);
+        void OnHotBarSlot3(InputAction.CallbackContext context);
+        void OnHotBarSlot4(InputAction.CallbackContext context);
+        void OnHotBarSlot5(InputAction.CallbackContext context);
+        void OnHotBarSlot6(InputAction.CallbackContext context);
+        void OnHotBarSlot7(InputAction.CallbackContext context);
+        void OnHotBarSlot8(InputAction.CallbackContext context);
+        void OnHotBarSlot9(InputAction.CallbackContext context);
     }
 }
