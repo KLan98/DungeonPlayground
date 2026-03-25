@@ -27,7 +27,7 @@ public class SkillCursorInputController : MonoBehaviour, IToggleGameObject
     private Vector2 targetPosition;
     [SerializeField] private SkillCursorState cursorState;
     private bool isMoving = false;
-    private float moveSpeed = 5f;
+    [SerializeField] private float moveSpeed = 5f;
     private float timeBetweenMovement = 0.2f;
 
     private void Awake()

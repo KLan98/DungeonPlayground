@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private DungeonGrid dungeonGrid;
+    [SerializeField] private int myID;
     [SerializeField] List<Client> nearByClients = new List<Client>();
     private Client client;
 
@@ -17,15 +18,25 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 dimension = new Vector2(0.9f, 0.9f);
 
-    public void FindNearbyClients()
+    private void FindNearbyClients()
     {
         nearByClients.Clear();
-        nearByClients.AddRange(dungeonGrid.spatialHashGrid.FindNear(position, dimension));
+        foreach (var c in dungeonGrid.spatialHashGrid.FindNear(position, dimension))
+        {
+            if (c.ClientID != client.ClientID)
+                nearByClients.Add(c);
+        }
     }
 
-    public void UpdateGrid()
+    private void UpdateGrid()
     {
+        UpdateClientInfo();
         dungeonGrid.spatialHashGrid.UpdateGrid(client);
+    }
+
+    private void UpdateClientInfo()
+    {
+        client.Position = position;
     }
 
     // Start is called before the first frame update
@@ -33,6 +44,7 @@ public class PlayerController : MonoBehaviour
     {
         sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
         client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Player");
+        myID = client.ClientID;
     }
 
     private void OnDrawGizmos()
@@ -44,6 +56,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        // polling
         FindNearbyClients();
         UpdateGrid();
     }

@@ -36,4 +36,10 @@ public class Client
         get{ return queryID;}
         set{ queryID = value;}
     }
+    [SerializeField] private int clientID;
+    public int ClientID
+    {
+        get { return clientID;}
+        set { clientID = value;}
+    }
 }

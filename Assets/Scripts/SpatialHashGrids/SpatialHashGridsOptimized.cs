@@ -10,6 +10,7 @@ public class SpatialHashGridsOptimized
     private Vector2 dimensions; // dimensions of grids, in 2D [100, 100]
     private Dictionary<Key, List<Client>> cells; // where the information regarding clients and keys are stored
     private int queryID;
+    private int clientID;
 
     public Dictionary<Key, List<Client>> Cells
     {
@@ -25,6 +26,7 @@ public class SpatialHashGridsOptimized
         this.dimensions = dimensions;
         cells = new Dictionary<Key, List<Client>>();
         this.queryID = 0;
+        this.clientID = 0;
     }
 
     public Client NewClient(Vector2 position, Vector2 dimensions, string name)
@@ -36,7 +38,8 @@ public class SpatialHashGridsOptimized
             Position = position,
             Dimensions = dimensions,
             Indices = null,
-            QueryID = -1 // safe value since it is different from default queryID = 0, QueryID of client will later be assigned
+            QueryID = -1, // safe value since it is different from default queryID = 0, QueryID of client will later be assigned
+            ClientID = clientID++
         };
 
         Insert(client);
@@ -70,6 +73,7 @@ public class SpatialHashGridsOptimized
                 }
 
                 cells[k].Add(client);
+                Debug.Log($"{client.Name} inserted into grid with {client.Position}");
             }
         }
     }
