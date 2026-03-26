@@ -6,5 +6,4 @@ using UnityEngine;
 public class SkillCursorState : ScriptableObject
 {
     public bool allowCursor;
-    public GameObject target;
 }

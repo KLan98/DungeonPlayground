@@ -42,4 +42,10 @@ public class Client
         get { return clientID;}
         set { clientID = value;}
     }
+    [SerializeField] private GameObject gameObject; 
+    public GameObject GameObject
+    {
+        get { return this.gameObject; }
+        set { this.gameObject = value; }
+    }
 }

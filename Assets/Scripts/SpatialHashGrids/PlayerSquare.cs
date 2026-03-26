@@ -58,7 +58,7 @@ public class PlayerSquare : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        client = demo.optimizedGrid.NewClient(position, dimensions, Name);
+        //client = demo.optimizedGrid.NewClient(position, dimensions, Name);
         Debug.Log($"this {gameObject} is located from index {client.Indices[0]} to {client.Indices[1]}");
         InvokeRepeating(nameof(FindNearbyClients), 0.1f, 0.3f);
         InvokeRepeating(nameof(UpdateGrid), 0.15f, 0.4f);

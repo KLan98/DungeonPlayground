@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour
     {
         sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
         client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Player");
+        client.GameObject = this.gameObject;
         myID = client.ClientID;
     }
 

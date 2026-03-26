@@ -46,7 +46,7 @@ public class SquareClient : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        client = demo.optimizedGrid.NewClient(Position, Dimensions, Name);
+        //client = demo.optimizedGrid.NewClient(Position, Dimensions, Name);
         Debug.Log($"this {gameObject} is located from index {client.Indices[0]} to {client.Indices[1]}");
         Debug.Log($"{this} dimension is {Dimensions}");
         InvokeRepeating(nameof(FindNearbyClients), 0.1f, 0.3f);

@@ -73,7 +73,7 @@ public partial class @CursorInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""CancelSkill"",
+                    ""name"": ""Undo"",
                     ""type"": ""Button"",
                     ""id"": ""55c5429d-7037-405e-bcc9-82a3072eecf9"",
                     ""expectedControlType"": ""Button"",
@@ -145,7 +145,7 @@ public partial class @CursorInputActions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""CancelSkill"",
+                    ""action"": ""Undo"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -161,7 +161,7 @@ public partial class @CursorInputActions: IInputActionCollection2, IDisposable
         m_CursorActions_Down = m_CursorActions.FindAction("Down", throwIfNotFound: true);
         m_CursorActions_Right = m_CursorActions.FindAction("Right", throwIfNotFound: true);
         m_CursorActions_Left = m_CursorActions.FindAction("Left", throwIfNotFound: true);
-        m_CursorActions_CancelSkill = m_CursorActions.FindAction("CancelSkill", throwIfNotFound: true);
+        m_CursorActions_Undo = m_CursorActions.FindAction("Undo", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -228,7 +228,7 @@ public partial class @CursorInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_CursorActions_Down;
     private readonly InputAction m_CursorActions_Right;
     private readonly InputAction m_CursorActions_Left;
-    private readonly InputAction m_CursorActions_CancelSkill;
+    private readonly InputAction m_CursorActions_Undo;
     public struct CursorActionsActions
     {
         private @CursorInputActions m_Wrapper;
@@ -238,7 +238,7 @@ public partial class @CursorInputActions: IInputActionCollection2, IDisposable
         public InputAction @Down => m_Wrapper.m_CursorActions_Down;
         public InputAction @Right => m_Wrapper.m_CursorActions_Right;
         public InputAction @Left => m_Wrapper.m_CursorActions_Left;
-        public InputAction @CancelSkill => m_Wrapper.m_CursorActions_CancelSkill;
+        public InputAction @Undo => m_Wrapper.m_CursorActions_Undo;
         public InputActionMap Get() { return m_Wrapper.m_CursorActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -263,9 +263,9 @@ public partial class @CursorInputActions: IInputActionCollection2, IDisposable
             @Left.started += instance.OnLeft;
             @Left.performed += instance.OnLeft;
             @Left.canceled += instance.OnLeft;
-            @CancelSkill.started += instance.OnCancelSkill;
-            @CancelSkill.performed += instance.OnCancelSkill;
-            @CancelSkill.canceled += instance.OnCancelSkill;
+            @Undo.started += instance.OnUndo;
+            @Undo.performed += instance.OnUndo;
+            @Undo.canceled += instance.OnUndo;
         }
 
         private void UnregisterCallbacks(ICursorActionsActions instance)
@@ -285,9 +285,9 @@ public partial class @CursorInputActions: IInputActionCollection2, IDisposable
             @Left.started -= instance.OnLeft;
             @Left.performed -= instance.OnLeft;
             @Left.canceled -= instance.OnLeft;
-            @CancelSkill.started -= instance.OnCancelSkill;
-            @CancelSkill.performed -= instance.OnCancelSkill;
-            @CancelSkill.canceled -= instance.OnCancelSkill;
+            @Undo.started -= instance.OnUndo;
+            @Undo.performed -= instance.OnUndo;
+            @Undo.canceled -= instance.OnUndo;
         }
 
         public void RemoveCallbacks(ICursorActionsActions instance)
@@ -312,6 +312,6 @@ public partial class @CursorInputActions: IInputActionCollection2, IDisposable
         void OnDown(InputAction.CallbackContext context);
         void OnRight(InputAction.CallbackContext context);
         void OnLeft(InputAction.CallbackContext context);
-        void OnCancelSkill(InputAction.CallbackContext context);
+        void OnUndo(InputAction.CallbackContext context);
     }
 }

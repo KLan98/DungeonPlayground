@@ -1,8 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Reflection;
 
-public interface ISkillEffect
-{
-    public void Apply(GameObject target);
-}

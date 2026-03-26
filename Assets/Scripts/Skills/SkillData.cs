@@ -8,6 +8,7 @@ public struct SkillData
 {
     public SkillID skillID;
     public SkillTargetType skillTargetType;
+    public int numberOfTargets; // valid for TARGET_TYPE_MULTIPLE_POINT_AND_CLICK
     public EffectType effectType;
     public DisplayedText displayedText;
     public Timings timings;

@@ -1,21 +1,27 @@
 ﻿using System;
+using UnityEngine;
+using System.Collections.Generic;
 
-public class Skill 
+public abstract class Skill
 {
-	public SkillData data { get; private set; }
-	public int level { get; private set;  } // level is now just a counter, it has no practical meaning
-	private readonly ISkillEffect effect;
+    public SkillData Data { get; private set; }
 
-	public Skill(SkillData data, ISkillEffect effect)
-	{
-		this.data = data;
-		this.effect = effect;
-		level = 1;
-	}
+    public int Level { get; private set; }
+    public SkillRequirements SkillRequirements { get; private set; }    
 
-	public void Upgrade(SkillData upgradeData)
-	{
-		data = upgradeData;
-		level++;
-	}
+    public Skill(SkillData data) 
+    { 
+        this.Data = data; 
+        Level = 1;
+        SkillRequirements = new SkillRequirements(data);
+    }
+
+    public void Upgrade(SkillData upgradedData) 
+    { 
+        Data = upgradedData; 
+        Level++;
+        SkillRequirements = new SkillRequirements(upgradedData);
+    }
+
+    public abstract void CastSkill(SkillContext context);
 }

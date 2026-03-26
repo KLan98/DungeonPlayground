@@ -1,23 +1,21 @@
+using System.Collections.Generic;
 using UnityEngine;
 
-public class TeleportationEffect : ISkillEffect
+// implementation of teleportation effect
+public class Teleportation : Skill
 {
-    private int turnsLeftUntilReuse;
+    public Teleportation(SkillData data) : base(data) { }
 
-    public TeleportationEffect()
+    public override void CastSkill(SkillContext context)
     {
-        turnsLeftUntilReuse = 0;
+        GameObject target = context.Targets[0];
+        Vector2 newPosition = (Vector2)context.NewPosition;
+
+        PerformTeleportation(target, newPosition);
     }
 
-    public void Apply(GameObject target)
+    private void PerformTeleportation(GameObject target, Vector2 newPosition)
     {
-        if (turnsLeftUntilReuse == 0)
-        {
-            //targets[0].transform.position = newPosition;
-        }
-
-        else
-        { 
-        }
+        target.transform.position = newPosition;
     }
 }
