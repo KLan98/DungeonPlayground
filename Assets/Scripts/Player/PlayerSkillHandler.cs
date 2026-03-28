@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles player skill selection and execution.
+/// Initializes the player's SkillLoadout, allows selecting a skill by index,
+/// and coordinates with the SkillCursorController to gather required targets.
+/// Once targets are confirmed, it builds a SkillContext and casts the selected skill.
+/// </summary>
 public class PlayerSkillHandler : MonoBehaviour
 {
     public SkillCursorController skillCursor;
