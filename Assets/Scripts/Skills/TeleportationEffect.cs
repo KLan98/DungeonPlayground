@@ -16,6 +16,14 @@ public class Teleportation : Skill
 
     private void PerformTeleportation(GameObject target, Vector2 newPosition)
     {
-        target.transform.position = newPosition;
+        if (target != null)
+        {
+            target.transform.position = newPosition;
+        }
+
+        else
+        {
+            Debug.LogError("Cached target is empty");
+        }
     }
 }

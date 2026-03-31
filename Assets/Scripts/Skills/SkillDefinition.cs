@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// TODO rename class to SkillCreation
 [CreateAssetMenu(fileName = "New skill def", menuName = "Skill/skillDef")]
 public class SkillDefinition : ScriptableObject
 {
