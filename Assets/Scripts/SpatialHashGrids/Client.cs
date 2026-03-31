@@ -42,7 +42,7 @@ public class Client
         get { return clientID;}
         set { clientID = value;}
     }
-    [SerializeField] private GameObject gameObject; 
+    [SerializeField] private GameObject gameObject; // this can be null, for distinction between immovable environments (floor tiles) and movable game objects
     public GameObject GameObject
     {
         get { return this.gameObject; }
