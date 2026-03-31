@@ -119,6 +119,67 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &31388078
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 31388079}
+  - component: {fileID: 31388080}
+  m_Layer: 0
+  m_Name: Vector2ChannelListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &31388079
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31388078}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1734268079}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &31388080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 31388078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5131839e9896d3e45a4a0063bb601b7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  channelEventPairs:
+  - Channel: {fileID: 11400000, guid: 47286058c869ed243a6148985e2f7c60, type: 2}
+    Event:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1837357918}
+          m_TargetAssemblyTypeName: PlayerSkillHandler, Assembly-CSharp
+          m_MethodName: OnPositionConfirmed
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &33592801
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,6 +552,138 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &784544099
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 784544100}
+  - component: {fileID: 784544101}
+  m_Layer: 0
+  m_Name: SkillCursorEventListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &784544100
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784544099}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1734268079}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &784544101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784544099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: d41dfc7c35c075f4fb26aff621a159be, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373722433}
+        m_TargetAssemblyTypeName: SkillCursorController, Assembly-CSharp
+        m_MethodName: ToggleGameObjectActive
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!1 &894966430
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 894966431}
+  - component: {fileID: 894966432}
+  m_Layer: 0
+  m_Name: DungeonEventListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &894966431
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894966430}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1734268079}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &894966432
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894966430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 64d4aae7f3ab16e4bae1d883de3586db, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 919945530}
+        m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
+        m_MethodName: DeleteDungeon
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 919945530}
+        m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
+        m_MethodName: CreateDungeon
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &913878257
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,7 +830,6 @@ GameObject:
   m_Component:
   - component: {fileID: 919945529}
   - component: {fileID: 919945530}
-  - component: {fileID: 919945531}
   m_Layer: 0
   m_Name: DungeonGenerator
   m_TagString: Untagged
@@ -674,6 +866,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilemapVisualizer: {fileID: 164231389}
   mainCamera: {fileID: 52125422}
+  dungeonGrid: {fileID: 1631141078}
+  grid: {fileID: 1967450705}
   arenaSize: {x: 100, y: 100, z: 0}
   offset: 5
   minWidth: 20
@@ -681,46 +875,83 @@ MonoBehaviour:
   maxWidth: 26
   maxHeight: 26
   roomsList: []
---- !u!114 &919945531
+--- !u!1 &926486704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 926486705}
+  - component: {fileID: 926486706}
+  m_Layer: 0
+  m_Name: GameObjectChannelListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &926486705
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 926486704}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1734268079}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &926486706
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919945528}
+  m_GameObject: {fileID: 926486704}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
+  m_Script: {fileID: 11500000, guid: 646a363c5f9c5ba4ba31bc03cad7d356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 64d4aae7f3ab16e4bae1d883de3586db, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 919945530}
-        m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
-        m_MethodName: DeleteDungeon
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 919945530}
-        m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
-        m_MethodName: CreateDungeon
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  channelEventPairs:
+  - Channel: {fileID: 11400000, guid: 336287da033dae441b85405ff423dc9b, type: 2}
+    Event:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1837357918}
+          m_TargetAssemblyTypeName: PlayerSkillHandler, Assembly-CSharp
+          m_MethodName: OnCacheTarget
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - Channel: {fileID: 11400000, guid: b7f75026e4886ee478d1772f21700f95, type: 2}
+    Event:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1837357918}
+          m_TargetAssemblyTypeName: PlayerSkillHandler, Assembly-CSharp
+          m_MethodName: OnRemoveCachedTarget
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &968151634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1031,12 +1262,77 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa524657b468144c933766c42399d8a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vector2Channel: {fileID: 11400000, guid: 47286058c869ed243a6148985e2f7c60, type: 2}
+  gameObjectChannel: {fileID: 11400000, guid: 336287da033dae441b85405ff423dc9b, type: 2}
+  removeCachedChannel: {fileID: 11400000, guid: b7f75026e4886ee478d1772f21700f95, type: 2}
+  allTargetsConfirmed: {fileID: 11400000, guid: a6eaca300dcfeb44096bcd951ee4e82c, type: 2}
   spriteRenderer: {fileID: 1770796115}
   dungeonGrid: {fileID: 1631141078}
+  cursorState: {fileID: 11400000, guid: 104a87cc6a57f284084f58493e727c8c, type: 2}
+  moveSpeed: 20
+  dimension: {x: 0.9, y: 0.9}
   nearByClients: []
   targets: []
-  moveSpeed: 20
-  cursorState: {fileID: 11400000, guid: 104a87cc6a57f284084f58493e727c8c, type: 2}
+--- !u!1 &1468580322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1468580323}
+  - component: {fileID: 1468580324}
+  m_Layer: 0
+  m_Name: AllTargetsConfirmed
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1468580323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468580322}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1734268079}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1468580324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468580322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: a6eaca300dcfeb44096bcd951ee4e82c, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1837357918}
+        m_TargetAssemblyTypeName: PlayerSkillHandler, Assembly-CSharp
+        m_MethodName: OnTargetsConfirmed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1481978915
 GameObject:
   m_ObjectHideFlags: 0
@@ -1346,9 +1642,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1734268079}
-  - component: {fileID: 1734268080}
   m_Layer: 0
-  m_Name: ChannelListener
+  m_Name: EventListener
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1366,22 +1661,14 @@ Transform:
   m_LocalPosition: {x: -0.31649238, y: -0.4239356, z: -0.02080913}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 926486705}
+  - {fileID: 31388079}
+  - {fileID: 1468580323}
+  - {fileID: 784544100}
+  - {fileID: 894966431}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1734268080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1734268077}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 646a363c5f9c5ba4ba31bc03cad7d356, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  channelEventPairs: []
 --- !u!1 &1770796113
 GameObject:
   m_ObjectHideFlags: 0
@@ -1622,6 +1909,7 @@ MonoBehaviour:
   skillDefinitions:
   - {fileID: 11400000, guid: 4e72c99d438e03745b568c867712d8ba, type: 2}
   - {fileID: 11400000, guid: 45b4e59391358e642ad49038b50a0486, type: 2}
+  cachedTargets: []
 --- !u!1 &1938880542
 GameObject:
   m_ObjectHideFlags: 0
@@ -1631,7 +1919,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1938880544}
-  - component: {fileID: 1938880543}
   m_Layer: 0
   m_Name: SkillCursor
   m_TagString: Untagged
@@ -1639,34 +1926,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1938880543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1938880542}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: d41dfc7c35c075f4fb26aff621a159be, type: 2}
-  response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1373722433}
-        m_TargetAssemblyTypeName: SkillCursorController, Assembly-CSharp
-        m_MethodName: ToggleGameObjectActive
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!4 &1938880544
 Transform:
   m_ObjectHideFlags: 0
