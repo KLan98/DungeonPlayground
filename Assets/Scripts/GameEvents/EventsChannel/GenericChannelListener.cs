@@ -5,29 +5,37 @@ using UnityEngine.Events;
 
 public class GenericChannelListener<T> : MonoBehaviour
 {
-    [SerializeField] private List<ChannelEventPairs<T>> channelEventPairs;
+    // a listener can listen to many event channels, giving it the capability to response to different events
+    [SerializeField] private List<ChannelEventPairs<T>> channelEventPairs = new List<ChannelEventPairs<T>>();
 
-    private void OnEnable()
+    protected void OnEnable()
     {
         foreach (var element in channelEventPairs)
         {
+            // register this event with channel
             element.Channel.AddListener(this);
         }
     }
 
-    private void OnDisable()
+    protected void OnDisable()
     {
         foreach (var element in channelEventPairs)
         {
+            // deregister this event with channel
             element.Channel.RemoveListener(this);
         }
     }
 
-    public void InvokeResponse(T data)
+    public void InvokeResponse(GenericEventChannel<T> channel, T data)
     {
         foreach (var element in channelEventPairs)
         {
-            element.Event.Invoke(data);
+            // if the channel for this element = channel raising the event 
+            if (element.Channel == channel)
+            {
+                // then invoke event with data
+                element.Event.Invoke(data);
+            }
         }
     }
 }
@@ -35,6 +43,6 @@ public class GenericChannelListener<T> : MonoBehaviour
 [System.Serializable]
 public struct ChannelEventPairs<T>
 {
-    public EventChannel<T> Channel;
+    public GenericEventChannel<T> Channel;
     public UnityEvent<T> Event;
 }
