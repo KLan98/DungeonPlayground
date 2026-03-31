@@ -12,18 +12,17 @@ public class PlayerSkillHandler : MonoBehaviour
 {
     public SkillCursorController skillCursor;
     
-    static private Skill pendingSkill;
+    private Skill pendingSkill;
     
     [SerializeField] private List<SkillDefinition> skillDefinitions; // skills player can cast
+    [SerializeField] private List<GameObject> cachedTargets;
 
     private SkillLoadout skillLoadout;
 
     private void Awake()
     {
         skillLoadout = new SkillLoadout(skillDefinitions);
-
-        // implement event system
-        //skillCursor.OnTargetsConfirmed = OnTargetsConfirmed;
+        cachedTargets = new List<GameObject>();
     }
 
     public void SelectSkill(int index)
@@ -35,25 +34,63 @@ public class PlayerSkillHandler : MonoBehaviour
         skillCursor.BeginSelection(pendingSkill.SkillRequirements);
     }
 
-    public static void OnTargetsConfirmed(List<GameObject> targets, Vector2? position)
+    // response of Vector2 event
+    public void OnPositionConfirmed(Vector2 position)
+    {
+        if (cachedTargets != null && cachedTargets.Count > 0)
+        {
+            var context = new SkillContext(cachedTargets, position);
+            pendingSkill.CastSkill(context);
+            pendingSkill = null;
+
+            skillCursor.IsActive = false;
+
+            ResetTargets(); 
+        }
+    }
+
+    // response for skills that do not need position 
+    public void OnTargetsConfirmed()
     {
         // SkillContext is built HERE — it's the handoff point between
         // "what the cursor collected" and "what the skill needs"
-        var context = new SkillContext(targets, position);
-        
-        pendingSkill.CastSkill(context);
+        if (cachedTargets != null && cachedTargets.Count > 0)
+        {
+            var context = new SkillContext(cachedTargets, null);
 
-        pendingSkill = null;
-        //skillCursor.IsActive = false;
+            pendingSkill.CastSkill(context);
+            pendingSkill = null;
+
+            skillCursor.IsActive = false;
+        
+            ResetTargets();
+        }
     }
 
+    // cache target on skill
+    public void OnCacheTarget(GameObject target)
+    {
+        cachedTargets.Add(target);
+    }
+
+    // remove cached target
+    public void OnRemoveCachedTarget(GameObject target)
+    {
+        if (cachedTargets.Contains(target))
+        {
+            cachedTargets.Remove(target);
+        }
+    }
+
+    // LAN_TODO: event channel
     public void SelectTeleport()
     {
         SelectSkill(0);
     }
 
-    public void SelectLightningChain()
+    private void ResetTargets()
     {
-        SelectSkill(1);
+        // clear cached targets
+        cachedTargets.Clear();
     }
 }
