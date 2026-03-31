@@ -4,38 +4,49 @@ using UnityEngine;
 
 public class SkillCursorController : MonoBehaviour, IToggleGameObject
 {
-    [SerializeField] private SpriteRenderer spriteRenderer;
-    
-    [SerializeField] private DungeonGrid dungeonGrid;
-    
-    [SerializeField] List<Client> nearByClients = new List<Client>();
+    [Header("Game events")]
+    [SerializeField] private Vector2Channel vector2Channel;
+    [SerializeField] private GameObjectChannel gameObjectChannel;
+    [SerializeField] private GameObjectChannel removeCachedChannel;
+    [SerializeField] private GameEvent allTargetsConfirmed;
 
+    [Header("Components")]
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private DungeonGrid dungeonGrid;
+    [SerializeField] private SkillCursorState cursorState;
+
+    [Header("Stats")]
+    [SerializeField] private float movingSpeed = 5f;
+    [SerializeField] private Vector2 dimension = new Vector2(0.9f, 0.9f);
+
+    [Header("Debug")]
+    [SerializeField] private List<Client> nearByClients = new List<Client>();
     [SerializeField] private List<GameObject> targets = new List<GameObject>();
 
-    public List<Client> NearByClients
-    {
-        get
-        {
-            return nearByClients;
-        }
-    }
-
-    [SerializeField] private float moveSpeed = 5f;
+    // ----------------------------------------PRIVATE FIELDS------------------------------------------
+    private Vector2 confirmedPosition;
     
-    [SerializeField] private SkillCursorState cursorState;
+    private Vector2 direction;
     
-    private int tileSize = 1;
+    private Vector2 targetPosition;
+    
+    private bool isMoving;
 
-    private bool positionRequired = false;
+    private bool positionRequired;
+    
+    private const float timeBetweenMovement = 0.2f;
+    
+    private int numberOfTargets; // local for required targets of a skill
 
+    private const int tileSize = 1;
+
+    private CursorInputActions cursorInput;
+
+    private Client client;
+    
     private GameObject target;
-    
-    public GameObject Target
-    {
-        get { return target; }
-        private set { target = value; }
-    }
-    
+
+    // ----------------------------------------PRIVATE PROPERTIES------------------------------------------
     private Vector2 cursorPosition
     {
         get
@@ -43,9 +54,12 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
             return transform.position;
         }
     }
+    private Vector2 position
+    {
+        get { return gameObject.transform.position; }
+    }
 
-    private Vector2 confirmedPosition;
-
+    // ----------------------------------------PUBLIC PROPERTIES------------------------------------------
     public bool IsActive
     {
         get
@@ -54,25 +68,13 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         { gameObject.SetActive(value); }
     }
 
-    private CursorInputActions cursorInput;
-    
-    private Vector2 direction;
-    
-    private Vector2 targetPosition;
-    
-    private bool isMoving = false;
-    
-    private float timeBetweenMovement = 0.2f;
-    
-    private int numberOfTargets = 0;
-
-    private Client client;
-    private Vector2 position
+    public List<Client> NearByClients
     {
-        get { return gameObject.transform.position; }
+        get
+        {
+            return nearByClients;
+        }
     }
-
-    private Vector2 dimension = new Vector2(0.9f, 0.9f);
 
     private void Awake()
     {
@@ -84,6 +86,11 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     private void Start()
     {
         client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "SkillCursor");
+    }
+
+    private void OnEnable()
+    {
+        targets.Clear();
     }
 
     private void Update()
@@ -102,6 +109,15 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
                 if (targets.Count < numberOfTargets)
                 {
                     targets.Add(target);
+
+                    // cache target in playerSkillHandler    
+                    gameObjectChannel.RaiseEvent(target);
+                }
+
+                else if (targets.Count == numberOfTargets)
+                {
+                    // call OnTargetsConfirmed
+                    allTargetsConfirmed.Raise();
                 }
             }
 
@@ -114,7 +130,8 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
                     if (targets.Count == 1)
                     {
-                        PlayerSkillHandler.OnTargetsConfirmed(targets, confirmedPosition);
+                        //pass confirmed position to event channel
+                        vector2Channel.RaiseEvent(confirmedPosition);
                     }
                 }
 
@@ -136,7 +153,9 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
             if (targets.Count > 0)
             {
                 // undo the latest target
-                targets.RemoveAt(targets.Count - 1);
+                GameObject removedTarget = targets[targets.Count - 1];
+                targets.Remove(removedTarget);
+                removeCachedChannel.RaiseEvent(removedTarget);
             }
         }
     }
@@ -195,7 +214,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
             transform.position = Vector2.MoveTowards(
                 cursorPosition,
                 targetPosition,
-                moveSpeed * tileSize * Time.deltaTime
+                movingSpeed * tileSize * Time.deltaTime
             );
             yield return null;
         }
