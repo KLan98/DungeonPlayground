@@ -7,9 +7,8 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer sprite;
     [SerializeField] private DungeonGrid dungeonGrid;
-    [SerializeField] private int myID;
     [SerializeField] List<Client> nearByClients = new List<Client>();
-    private Client client;
+    [SerializeField] private Client client;
 
     private Vector2 position
     {
@@ -45,7 +44,6 @@ public class PlayerController : MonoBehaviour
         sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
         client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Player");
         client.GameObject = this.gameObject;
-        myID = client.ClientID;
     }
 
     private void OnDrawGizmos()
@@ -57,7 +55,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // polling
+        // polling, LAN_TODO fix polling
         FindNearbyClients();
         UpdateGrid();
     }

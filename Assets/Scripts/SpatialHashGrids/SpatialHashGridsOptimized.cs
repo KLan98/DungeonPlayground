@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Drawing;
 using Unity.Mathematics;
+using UnityEngine;
 
 public class SpatialHashGridsOptimized
 {
@@ -11,6 +12,7 @@ public class SpatialHashGridsOptimized
     private Dictionary<Key, List<Client>> cells; // where the information regarding clients and keys are stored
     private int queryID;
     private int clientID;
+    private const float CellEpsilon = 0.001f;
 
     public Dictionary<Key, List<Client>> Cells
     {
@@ -53,8 +55,8 @@ public class SpatialHashGridsOptimized
         Vector2 pos = client.Position;
         Vector2 size = client.Dimensions;
 
-        Vector2Int i1 = GetCellIndex(new Vector2(pos.x - size.x / 2, pos.y - size.y / 2)); // bottom left of cells in the grid that contain the client
-        Vector2Int i2 = GetCellIndex(new Vector2(pos.x + size.x / 2, pos.y + size.y / 2)); // top right of cells in the grid that contain the client
+        Vector2Int i1 = GetCellIndex(new Vector2(pos.x - size.x / 2, pos.y - size.y / 2));
+        Vector2Int i2 = GetCellIndex(new Vector2(pos.x + size.x / 2 - CellEpsilon, pos.y + size.y / 2 - CellEpsilon));
 
         // Remember which cells this client occupies
         client.Indices = new Vector2Int[] { i1, i2 };
@@ -81,8 +83,8 @@ public class SpatialHashGridsOptimized
     // position is the where query for nearby clients taking place, area is the search area
     public List<Client> FindNear(Vector2 pos, Vector2 area)
     {
-        Vector2Int i1 = GetCellIndex(new Vector2(pos.x - area.x / 2, pos.y - area.y / 2)); // bottom left of cells in the grid that contain the client
-        Vector2Int i2 = GetCellIndex(new Vector2(pos.x + area.x / 2, pos.y + area.y / 2)); // top right of cells in the grid that contain the client
+        Vector2Int i1 = GetCellIndex(new Vector2(pos.x - area.x / 2, pos.y - area.y / 2));
+        Vector2Int i2 = GetCellIndex(new Vector2(pos.x + area.x / 2 - CellEpsilon, pos.y + area.y / 2 - CellEpsilon));
 
         int currentqueryID = queryID++;
 
@@ -117,17 +119,13 @@ public class SpatialHashGridsOptimized
     // compute the x y index of a cell
     private Vector2Int GetCellIndex(Vector2 position)
     {
-        // (position - min bound) / (max bound - min bound)
-        var x = math.saturate((position.x - this.bounds[0][0]) / (this.bounds[1][0] - this.bounds[0][0]));
-        // So if the grid goes from `0` to `100` and the object is at `25`:
-        // x = (25 - 0) / (100 - 0) = 0.25  →  25 % across the grid
-        var y = math.saturate((position.y - this.bounds[0][1]) / (this.bounds[1][1] - this.bounds[0][1]));
+        Vector2 cellSize = new Vector2(
+            (bounds[1][0] - bounds[0][0]) / dimensions[0],
+            (bounds[1][1] - bounds[0][1]) / dimensions[1]
+        );
 
-        // base-0 so need to -1 
-        // 249.2505 → 249(down)
-        // 249.5 → 250(up)
-        int xIndex = (int)Math.Round(x * (this.dimensions[0] - 1), 0, MidpointRounding.AwayFromZero);
-        int yIndex = (int)Math.Round(y * (this.dimensions[1] - 1), 0, MidpointRounding.AwayFromZero);
+        int xIndex = Mathf.Clamp((int)Math.Floor((position.x - bounds[0][0]) / cellSize.x), 0, (int)dimensions[0] - 1);
+        int yIndex = Mathf.Clamp((int)Math.Floor((position.y - bounds[0][1]) / cellSize.y), 0, (int)dimensions[1] - 1);
 
         return new Vector2Int(xIndex, yIndex);
     }
@@ -137,22 +135,14 @@ public class SpatialHashGridsOptimized
     {
         Vector2 position = client.Position;
         Vector2 dimensions = client.Dimensions;
-        Vector2Int[] index = client.Indices;
-        Vector2Int storedBottomLeft = index[0];
-        Vector2Int storedTopRight = index[1];
 
-        var x1 = position.x - dimensions.x / 2;
-        var y1 = position.y - dimensions.y / 2;
-        Vector2 bottomLeft = new Vector2(x1, y1);
+        Vector2Int i1 = GetCellIndex(new Vector2(position.x - dimensions.x / 2, position.y - dimensions.y / 2));
+        Vector2Int i2 = GetCellIndex(new Vector2(position.x + dimensions.x / 2 - CellEpsilon, position.y + dimensions.y / 2 - CellEpsilon));
 
-        var x2 = position.x + dimensions.x / 2;
-        var y2 = position.y + dimensions.y / 2;
-        Vector2 topRight = new Vector2(x2, y2);
+        Vector2Int storedBottomLeft = client.Indices[0];
+        Vector2Int storedTopRight = client.Indices[1];
 
-        Vector2Int i1 = GetCellIndex(bottomLeft);
-        Vector2Int i2 = GetCellIndex(topRight);
-
-        if (i1.x == storedBottomLeft.x && i1.y == storedBottomLeft.y && i2.x == storedTopRight.x && i2.y == storedTopRight.y)
+        if (i1 == storedBottomLeft && i2 == storedTopRight)
         {
             return;
         }

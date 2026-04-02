@@ -25,15 +25,12 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
     private List<Vector2Int> listOfCenters = new List<Vector2Int>();
     private HashSet<Vector2Int> tilesPosition = new HashSet<Vector2Int>();
     private HashSet<Vector2Int> corridors = new HashSet<Vector2Int>();
+    private Vector2 tileClientDimension = new Vector2(1f, 1f);
     private Vector3Int arenaStartPoint;
     private BoundsInt arena;
     private Client client;
 
     //------------------------------PRIVATE PROPERTIES-----------------------------------------
-    //private Vector2 dimension
-    //{
-    //    get { return new Vector2(arenaSize.x, arenaSize.y); }
-    //}
 
     private void Awake()
     {
@@ -65,7 +62,9 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
             {
                 // tilePosition needs correction to be the center of the cell, that's why the + 0.5f 
                 // cellSize should be 1 not sure why the correct version is 0.5. LAN_TODO: find the root cause
-                client = dungeonGrid.spatialHashGrid.NewClient(new Vector2(tilePosition.x + 0.5f, tilePosition.y + 0.5f), grid.cellSize/2, "Tile" + $"{tilePosition}");
+                //client = dungeonGrid.spatialHashGrid.NewClient(new Vector2(tilePosition.x + 0.5f, tilePosition.y + 0.5f), grid.cellSize/2, "Tile" + $"{tilePosition}");
+                Vector3Int cellPosition = new Vector3Int(tilePosition.x, tilePosition.y, 0);
+                client = dungeonGrid.spatialHashGrid.NewClient(grid.GetCellCenterWorld(cellPosition), tileClientDimension, "Tile" + $"{cellPosition}");
             }
         }
     }
