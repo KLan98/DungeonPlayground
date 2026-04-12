@@ -74,3 +74,13 @@ Spec:
 - .NET SDK 10.0.201
   [Host]     : .NET 10.0.5 (10.0.526.15411), X64 RyuJIT AVX2
   DefaultJob : .NET 10.0.5 (10.0.526.15411), X64 RyuJIT AVX2
+  
+## Behavior tree (WIP)
+Implementation of behavior tree based on article by Chris Simpson
+https://www.gamedeveloper.com/programming/behavior-trees-for-ai-how-they-work
+
+Currently support the following nodes:
+- Repeat until fail
+- Invert
+- Sequence
+- Leaf
