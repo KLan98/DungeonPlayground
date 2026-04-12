@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using PathFinding;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private DungeonGrid dungeonGrid;
     [SerializeField] List<Client> nearByClients = new List<Client>();
     [SerializeField] private Client client;
+    [SerializeField] private TilemapVisualizer tilemapVisualizer;
 
     private Vector2 position
     {
@@ -38,11 +39,32 @@ public class PlayerController : MonoBehaviour
         client.Position = position;
     }
 
+    // update the distance map, LAN_TODO this update can only be triggered whenever the player moved
+    private void UpdateDistanceMap()
+    {
+        BFSPathFinding.ComputeDistanceMap(client.Indices[0], dungeonGrid.spatialHashGrid.Cells);
+        VisualizeDistanceMap(dungeonGrid.spatialHashGrid.Cells, 15);
+    }
+
+    private void VisualizeDistanceMap(Dictionary<Key, List<Client>> cells, int maxDistance)
+    {
+        foreach (var clientList in cells.Values)
+        {
+            foreach (var client in clientList)
+            {
+                if (client.WalkableTile && client.DistanceToPlayer != int.MaxValue)
+                {
+                    tilemapVisualizer.ColorTileByDistance(client.Position, client.DistanceToPlayer, maxDistance);
+                }
+            }
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
-        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Player");
+        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Player", false);
         client.GameObject = this.gameObject;
     }
 
@@ -58,5 +80,6 @@ public class PlayerController : MonoBehaviour
         // polling, LAN_TODO fix polling
         FindNearbyClients();
         UpdateGrid();
+        UpdateDistanceMap();
     }
 }

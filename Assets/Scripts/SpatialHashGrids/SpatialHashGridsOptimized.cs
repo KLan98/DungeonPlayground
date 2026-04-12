@@ -12,7 +12,7 @@ public class SpatialHashGridsOptimized
     private Dictionary<Key, List<Client>> cells; // where the information regarding clients and keys are stored
     private int queryID;
     private int clientID;
-    private const float CellEpsilon = 0.001f;
+    private const float cellEpsilon = 0.001f;
 
     public Dictionary<Key, List<Client>> Cells
     {
@@ -31,7 +31,7 @@ public class SpatialHashGridsOptimized
         this.clientID = 0;
     }
 
-    public Client NewClient(Vector2 position, Vector2 dimensions, string name)
+    public Client NewClient(Vector2 position, Vector2 dimensions, string name, bool walkableTile)
     {
         // object initializer
         Client client = new Client()
@@ -41,7 +41,8 @@ public class SpatialHashGridsOptimized
             Dimensions = dimensions,
             Indices = null,
             QueryID = -1, // safe value since it is different from default queryID = 0, QueryID of client will later be assigned
-            ClientID = clientID++
+            ClientID = clientID++,
+            WalkableTile = walkableTile
         };
 
         Insert(client);
@@ -56,7 +57,7 @@ public class SpatialHashGridsOptimized
         Vector2 size = client.Dimensions;
 
         Vector2Int i1 = GetCellIndex(new Vector2(pos.x - size.x / 2, pos.y - size.y / 2));
-        Vector2Int i2 = GetCellIndex(new Vector2(pos.x + size.x / 2 - CellEpsilon, pos.y + size.y / 2 - CellEpsilon));
+        Vector2Int i2 = GetCellIndex(new Vector2(pos.x + size.x / 2 - cellEpsilon, pos.y + size.y / 2 - cellEpsilon));
 
         // Remember which cells this client occupies
         client.Indices = new Vector2Int[] { i1, i2 };
@@ -68,9 +69,9 @@ public class SpatialHashGridsOptimized
             {
                 Key k = new Key(x, y);
 
+                // if a brand new key then create a list associate with it
                 if (!this.cells.ContainsKey(k))
                 {
-                    // need this since in the first interation the key does not exist
                     cells[k] = new List<Client>();
                 }
 
@@ -84,7 +85,7 @@ public class SpatialHashGridsOptimized
     public List<Client> FindNear(Vector2 pos, Vector2 area)
     {
         Vector2Int i1 = GetCellIndex(new Vector2(pos.x - area.x / 2, pos.y - area.y / 2));
-        Vector2Int i2 = GetCellIndex(new Vector2(pos.x + area.x / 2 - CellEpsilon, pos.y + area.y / 2 - CellEpsilon));
+        Vector2Int i2 = GetCellIndex(new Vector2(pos.x + area.x / 2 - cellEpsilon, pos.y + area.y / 2 - cellEpsilon));
 
         int currentqueryID = queryID++;
 
@@ -137,7 +138,7 @@ public class SpatialHashGridsOptimized
         Vector2 dimensions = client.Dimensions;
 
         Vector2Int i1 = GetCellIndex(new Vector2(position.x - dimensions.x / 2, position.y - dimensions.y / 2));
-        Vector2Int i2 = GetCellIndex(new Vector2(position.x + dimensions.x / 2 - CellEpsilon, position.y + dimensions.y / 2 - CellEpsilon));
+        Vector2Int i2 = GetCellIndex(new Vector2(position.x + dimensions.x / 2 - cellEpsilon, position.y + dimensions.y / 2 - cellEpsilon));
 
         Vector2Int storedBottomLeft = client.Indices[0];
         Vector2Int storedTopRight = client.Indices[1];
@@ -171,16 +172,16 @@ public class SpatialHashGridsOptimized
             }
         }
     }
+}
 
-    public struct Key
+public struct Key
+{
+    private int x;
+    private int y;
+
+    public Key(int x, int y)
     {
-        private int x;
-        private int y;
-
-        public Key(int x, int y)
-        {
-            this.x = x;
-            this.y = y;
-        }
+        this.x = x;
+        this.y = y;
     }
 }

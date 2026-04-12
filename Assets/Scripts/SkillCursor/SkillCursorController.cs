@@ -85,7 +85,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     
     private void Start()
     {
-        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "SkillCursor");
+        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "SkillCursor", false);
     }
 
     private void OnEnable()

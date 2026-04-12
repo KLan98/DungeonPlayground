@@ -48,4 +48,18 @@ public class Client
         get { return this.gameObject; }
         set { this.gameObject = value; }
     }
+
+    //---------------DISTANCE MAP FIELDS & PROPERTIES----------------
+    [SerializeField] private bool walkableTile; // OBSTACLES ARE NOT WALKABLE, PLAYER IS NOT WALKABLE TILE
+    public bool WalkableTile
+    {
+        get { return walkableTile;}
+        set { walkableTile = value;}
+    }
+    [SerializeField] private int distanceToPlayer;
+    public int DistanceToPlayer
+    {
+        get { return distanceToPlayer;}
+        set { distanceToPlayer = value;}
+    }
 }

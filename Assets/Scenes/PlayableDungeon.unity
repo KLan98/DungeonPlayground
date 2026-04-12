@@ -1168,6 +1168,9 @@ MonoBehaviour:
     queryID: 0
     clientID: 0
     gameObject: {fileID: 0}
+    walkableTile: 0
+    distanceToPlayer: 0
+  tilemapVisualizer: {fileID: 0}
 --- !u!4 &968151637
 Transform:
   m_ObjectHideFlags: 0
@@ -2187,6 +2190,9 @@ MonoBehaviour:
     queryID: 0
     clientID: 0
     gameObject: {fileID: 0}
+    walkableTile: 0
+    distanceToPlayer: 0
+  tilemapVisualizer: {fileID: 164231389}
 --- !u!4 &1837357916
 Transform:
   m_ObjectHideFlags: 0
@@ -2534,6 +2540,9 @@ MonoBehaviour:
     queryID: 0
     clientID: 0
     gameObject: {fileID: 0}
+    walkableTile: 0
+    distanceToPlayer: 0
+  tilemapVisualizer: {fileID: 0}
 --- !u!4 &2051467344
 Transform:
   m_ObjectHideFlags: 0

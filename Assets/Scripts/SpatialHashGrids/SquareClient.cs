@@ -46,7 +46,7 @@ public class SquareClient : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        client = dungeonGrid.spatialHashGrid.NewClient(Position, Dimensions, Name);
+        client = dungeonGrid.spatialHashGrid.NewClient(Position, Dimensions, Name, false);
         Debug.Log($"this {gameObject} is located from index {client.Indices[0]} to {client.Indices[1]}");
         Debug.Log($"{this} dimension is {Dimensions}");
         InvokeRepeating(nameof(FindNearbyClients), 0.1f, 0.3f);
