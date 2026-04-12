@@ -84,3 +84,6 @@ Currently support the following nodes:
 - Invert
 - Sequence
 - Leaf
+
+WIP: incorporate BFS as a behavior for leaf node based on article by Red Blob Games
+https://www.redblobgames.com/pathfinding/tower-defense/
