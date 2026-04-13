@@ -2,13 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace PathFinding
 {
     public class BFSPathFinding
     {
-        // compute the distance map based on player's index and all tiles
-        // currently all tilesPosition is const
+        // compute the distance map based on player's index and cells map
         public static void ComputeDistanceMap(Vector2Int playerIndex, Dictionary<Key, List<Client>> cells)
         {
             // set distance of all walkable tiles to infinity
@@ -23,7 +23,7 @@ namespace PathFinding
                 }
             }
 
-            // set distance to player field of player client = 0
+            // set distance to player of player client = 0
             Key playerKey = new Key(playerIndex.x, playerIndex.y);
             foreach (var playerCell in cells[playerKey])
             {
@@ -41,8 +41,16 @@ namespace PathFinding
                 
                 Key currentCellKey = new Key(currentCellIndex.x, currentCellIndex.y);
 
-                // distance of current cell to player
-                int currentDistance = cells[currentCellKey][0].DistanceToPlayer;
+                int currentDistance = 0;
+
+                // distance of current walkable tile to player
+                foreach (var cell in cells[currentCellKey])
+                {
+                    if (cell.WalkableTile)
+                    {
+                        currentDistance = cell.DistanceToPlayer;
+                    }
+                }
 
                 foreach (var neighborIndex in GetNeighbors(currentCellIndex, cells))
                 {
@@ -55,6 +63,55 @@ namespace PathFinding
                         {
                             client.DistanceToPlayer = currentDistance + 1;
                             searchQueue.Enqueue(neighborIndex);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void PathFinding(Client actor, Dictionary<Key, List<Client>> cells)
+        {
+            // assign the distance to player of this actor = distance to player of the tile it is standing in
+            Key actorKey = new Key(actor.Indices[0][0], actor.Indices[0][1]);
+            if (cells.TryGetValue(actorKey, out List<Client> list))
+            {
+                if (list.Count == 2)
+                {
+                    foreach(var client in list)
+                    {
+                        if (client.DistanceToPlayer != int.MaxValue && client.WalkableTile)
+                        {
+                            actor.DistanceToPlayer = client.DistanceToPlayer;
+                        }
+                    }
+                }
+            }
+
+            // BFS
+            // The search queue consists of tile!
+            Queue<Client> searchQueue = new Queue<Client>();
+            searchQueue.Enqueue(actor);
+            
+            while(searchQueue.Count > 0)
+            {
+                Client currentTileCell = searchQueue.Dequeue();
+
+                List<Vector2Int> myNeighbors = GetNeighbors(currentTileCell.Indices[0], cells);
+
+                // iterate through all neighbors
+                foreach(var neighbor in myNeighbors)
+                {
+                    Key k = new Key(neighbor.x, neighbor.y);
+
+                    foreach(var tileCell in cells[k])
+                    {
+                        if (tileCell.WalkableTile && tileCell.DistanceToPlayer != int.MaxValue && tileCell.DistanceToPlayer < actor.DistanceToPlayer)
+                        {
+                            // the client only moves to the tile cell with shortest distance to player
+                            actor.GameObject.transform.position = tileCell.Position;
+                            actor.DistanceToPlayer = tileCell.DistanceToPlayer;
+                            Debug.Log($"{actor.Name} moves to tile with distance {tileCell.DistanceToPlayer} at {tileCell.Position}");
+                            searchQueue.Enqueue(tileCell); 
                         }
                     }
                 }

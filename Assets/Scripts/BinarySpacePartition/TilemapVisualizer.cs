@@ -43,7 +43,7 @@ public class TilemapVisualizer : MonoBehaviour
         map.SetTile(cellPostion, tile);
     }
 
-    public void ColorTileByDistance(Vector2 position, int distance, int maxDistance)
+    public void ColorTileByDistance(Vector2 position, int distance)
     {
         var cellPosition = map.WorldToCell((Vector3)position);
         map.SetTileFlags(cellPosition, TileFlags.None); // required to allow color override

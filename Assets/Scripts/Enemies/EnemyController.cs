@@ -1,15 +1,13 @@
+using PathFinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using PathFinding;
 
-public class PlayerController : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
-    //[SerializeField] private SpriteRenderer sprite;
-    [SerializeField] private DungeonGrid dungeonGrid;
+    [SerializeField] DungeonGrid dungeonGrid;
     [SerializeField] List<Client> nearByClients = new List<Client>();
     [SerializeField] private Client client;
-    [SerializeField] private TilemapVisualizer tilemapVisualizer;
 
     private Vector2 position
     {
@@ -36,25 +34,9 @@ public class PlayerController : MonoBehaviour
         dungeonGrid.spatialHashGrid.UpdateGrid(client);
     }
 
-    public void UpdateDistanceMap()
+    public void PathFinding()
     {
-        BFSPathFinding.ComputeDistanceMap(client.Indices[0], dungeonGrid.spatialHashGrid.Cells);
-        VisualizeDistanceMap(dungeonGrid.spatialHashGrid.Cells);
-    }
-
-    //--------------------------PRIVATE METHODS--------------------------------
-    private void VisualizeDistanceMap(Dictionary<Key, List<Client>> cells)
-    {
-        foreach (var clientList in cells.Values)
-        {
-            foreach (var client in clientList)
-            {
-                if (client.WalkableTile && client.DistanceToPlayer != int.MaxValue)
-                {
-                    tilemapVisualizer.ColorTileByDistance(client.Position, client.DistanceToPlayer);
-                }
-            }
-        }
+        BFSPathFinding.PathFinding(client, dungeonGrid.spatialHashGrid.Cells);
     }
 
     private void UpdateClientInfo()
@@ -66,9 +48,19 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
-        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Player", false);
+        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Actor", false);
         client.GameObject = this.gameObject;
+    }
+
+    // LAN_TODO update distance of non walkable tile that are not player without polling
+    private void Update()
+    {
+        //FindNearbyClients();
+        //UpdateGrid();
+        if (nearByClients.Count > 0)
+        {
+            client.DistanceToPlayer = nearByClients[0].DistanceToPlayer;
+        }
     }
 
     private void OnDrawGizmos()
