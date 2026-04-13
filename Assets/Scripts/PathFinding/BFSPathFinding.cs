@@ -68,7 +68,6 @@ namespace PathFinding
             List<Vector2Int> myNeighbors = new List<Vector2Int>();
 
             // add valid neighbor to list
-            // LAN_TODO what about the tiles adjacent to player's tile
             for (int i = 0; i < candidates.Length; i++)
             {
                 Key k = new Key(candidates[i].x , candidates[i].y);

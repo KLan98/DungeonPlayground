@@ -5,6 +5,7 @@ using UnityEngine;
 // all of the input that the player can do
 public class PlayerInputController : MonoBehaviour
 {
+    [SerializeField] private GameEvent playerMove;
     private const int tileSize = 1;
     private PlayerInputActions inputActions;
     private Vector2 playerPosition
@@ -83,6 +84,8 @@ public class PlayerInputController : MonoBehaviour
         }
 
         transform.position = GetCellCenter(playerPosition);
+
+        playerMove.Raise();
 
         yield return WaitUntilNextMovement(timeBetweenMovement);
 

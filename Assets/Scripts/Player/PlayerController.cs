@@ -18,7 +18,9 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 dimension = new Vector2(0.9f, 0.9f);
 
-    private void FindNearbyClients()
+
+    //--------------------------EVENT RESPONSE--------------------------------
+    public void FindNearbyClients()
     {
         nearByClients.Clear();
         foreach (var c in dungeonGrid.spatialHashGrid.FindNear(position, dimension))
@@ -28,24 +30,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void UpdateGrid()
+    public void UpdateGrid()
     {
         UpdateClientInfo();
         dungeonGrid.spatialHashGrid.UpdateGrid(client);
     }
 
-    private void UpdateClientInfo()
-    {
-        client.Position = position;
-    }
-
-    // update the distance map, LAN_TODO this update can only be triggered whenever the player moved
-    private void UpdateDistanceMap()
+    public void UpdateDistanceMap()
     {
         BFSPathFinding.ComputeDistanceMap(client.Indices[0], dungeonGrid.spatialHashGrid.Cells);
         VisualizeDistanceMap(dungeonGrid.spatialHashGrid.Cells, 15);
     }
 
+    //--------------------------PRIVATE METHODS--------------------------------
     private void VisualizeDistanceMap(Dictionary<Key, List<Client>> cells, int maxDistance)
     {
         foreach (var clientList in cells.Values)
@@ -59,7 +56,12 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
+    private void UpdateClientInfo()
+    {
+        client.Position = position;
+    }
 
+    //--------------------------BUILT-IN METHODS--------------------------------
     // Start is called before the first frame update
     void Start()
     {
@@ -73,13 +75,5 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.yellow;
 
         Gizmos.DrawWireCube(position, dimension);
-    }
-
-    private void Update()
-    {
-        // polling, LAN_TODO fix polling
-        FindNearbyClients();
-        UpdateGrid();
-        UpdateDistanceMap();
     }
 }

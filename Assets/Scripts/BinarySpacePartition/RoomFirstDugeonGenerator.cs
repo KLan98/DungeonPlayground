@@ -66,9 +66,6 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         {
             foreach (var tilePosition in tilesPosition)
             {
-                // tilePosition needs correction to be the center of the cell, that's why the + 0.5f 
-                // cellSize should be 1 not sure why the correct version is 0.5. LAN_TODO: find the root cause
-                //client = dungeonGrid.spatialHashGrid.NewClient(new Vector2(tilePosition.x + 0.5f, tilePosition.y + 0.5f), grid.cellSize/2, "Tile" + $"{tilePosition}");
                 Vector3Int cellPosition = new Vector3Int(tilePosition.x, tilePosition.y, 0);
                 client = dungeonGrid.spatialHashGrid.NewClient(grid.GetCellCenterWorld(cellPosition), tileClientDimension, "Tile" + $"{cellPosition}", true);
             }
