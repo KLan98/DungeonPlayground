@@ -4,7 +4,7 @@ using UnityEngine;
 using BehaviorTree;
 
 // try to construct a behavior tree
-public class TestUsageOfNode : MonoBehaviour
+public class TestUsageOfNode
 {
     private RepeatUntilFail repeatUntilFailNode;
     private Invert invertNode;
@@ -23,10 +23,6 @@ public class TestUsageOfNode : MonoBehaviour
         // LAN_TODO need to add check so that patrol strategy is correctly constructed
         //patrolStrategy = new PatrolStrategy(entity, wayPoints, currentIndex);
 
-        repeatUntilFailNode = new RepeatUntilFail("MyRepeatUntilFail", null);
-        invertNode = new Invert("MyInvert", repeatUntilFailNode);
-        //sequenceNode = new Sequence("MySequence", invertNode);
-        patrolNode = new Leaf("Patrol", invertNode, patrolStrategy);
     }
 
     //private void Update()

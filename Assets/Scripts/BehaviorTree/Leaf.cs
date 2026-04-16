@@ -18,9 +18,4 @@ public class Leaf : BehaviorTreeNode
     {
         return strategy.Process();
     }
-
-    public void Reset()
-    {
-        strategy.Reset();
-    }
 }

@@ -2,14 +2,23 @@ using PathFinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BehaviorTree;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] DungeonGrid dungeonGrid;
-    [SerializeField] List<Client> nearByClients = new List<Client>();
     [SerializeField] private Client client;
+    [SerializeField] DungeonGrid dungeonGrid;
     [SerializeField] private TilemapVisualizer tilemapVisualizer;
-    [SerializeField] private List<Client> myPath = new List<Client>();
+    [SerializeField] private List<Client> nearByClients = new List<Client>();
+    [SerializeField] private ChasePlayer chasePlayerStrategy;
+    private MoveOneStep moveOneStepStrategy;
+
+    private RepeatUntilFail repeatUntilFailNode;
+    private Invert invertNode;
+    private Sequence sequenceNode;
+    private Leaf findPlayerNode;
+    private Leaf moveTowardPlayerNode;
+    private EnemyBehaviorTree tree;
 
     private Vector2 position
     {
@@ -36,14 +45,14 @@ public class EnemyController : MonoBehaviour
         dungeonGrid.spatialHashGrid.UpdateGrid(client);
     }
 
-    public void PathFinding()
-    {
-        BFSPathFinding.PathFinding(client, dungeonGrid.spatialHashGrid.Cells, myPath);
-    }
-
     private void UpdateClientInfo()
     {
         client.Position = position;
+    }
+
+    public void ProcessBehaviorTree()
+    {
+        tree.Process();
     }
 
     //--------------------------BUILT-IN METHODS--------------------------------
@@ -52,6 +61,24 @@ public class EnemyController : MonoBehaviour
     {
         client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Actor", false);
         client.GameObject = this.gameObject;
+
+        //----------------------TREE CONSTRUCTION, ORDER MATTERS-----------------------
+        chasePlayerStrategy = new ChasePlayer(client, dungeonGrid.spatialHashGrid.Cells);
+        moveOneStepStrategy = new MoveOneStep();
+
+        sequenceNode = new Sequence("MySequence", null);
+        repeatUntilFailNode = new RepeatUntilFail("MyRepeatUntilFail", sequenceNode);
+        moveTowardPlayerNode = new Leaf("MoveToPlayer", sequenceNode, moveOneStepStrategy);
+        
+        invertNode = new Invert("MyInvert", repeatUntilFailNode);
+        findPlayerNode = new Leaf("FindPlayer", invertNode, chasePlayerStrategy);
+
+        tree = new EnemyBehaviorTree("Actor behavior tree");
+        tree.AddNode(sequenceNode);
+        tree.AddNode(repeatUntilFailNode);
+        tree.AddNode(moveTowardPlayerNode);
+        tree.AddNode(invertNode);
+        tree.AddNode(findPlayerNode);
     }
 
     private void OnDrawGizmos()

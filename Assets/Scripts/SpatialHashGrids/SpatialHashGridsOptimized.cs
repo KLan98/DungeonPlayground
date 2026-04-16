@@ -76,7 +76,7 @@ public class SpatialHashGridsOptimized
                 }
 
                 cells[k].Add(client);
-                Debug.Log($"{client.Name} inserted into grid with game object position = {client.Position}");
+                //Debug.Log($"{client.Name} inserted into grid with game object position = {client.Position}");
             }
         }
     }

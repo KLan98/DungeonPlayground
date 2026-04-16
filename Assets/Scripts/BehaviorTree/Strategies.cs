@@ -1,3 +1,4 @@
+using PathFinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,39 +9,46 @@ namespace BehaviorTree
     {
         // the process of this strategy
         TreeNodeState Process();
-
-        // reset the internal variable of the strategy
-        void Reset();
     }
 
-    public class PatrolStrategy : IStrategy
+    [System.Serializable]
+    public class ChasePlayer : IStrategy
     {
-        readonly Client actor;
-        readonly List<Transform> patrolPoints = new List<Transform>();
-        private int currentIndex; // index of current patrol point
-        private bool isMoving = false;
+        private Client actor;
+        private Dictionary<Key, List<Client>> cells = new Dictionary<Key, List<Client>>();
+        [SerializeField] private List<Client> myPath = new List<Client>();
 
-        public PatrolStrategy(Client actor, List<Transform> patrolPoints, int currentIndex) 
+        public ChasePlayer(Client actor, Dictionary<Key, List<Client>> cells) 
         {
             this.actor = actor;
-            this.patrolPoints = patrolPoints;
-            this.currentIndex = currentIndex;
+            this.cells = cells;
         }
 
         public TreeNodeState Process()
         {
-            if (currentIndex == patrolPoints.Count - 1)
+            // run pathfinding 
+            // if somehow the destination could not be reached then return failed
+            BFSPathFinding.PathFinding(actor, cells, myPath);
+            if (myPath.Count < 1)
+            {
+                return TreeNodeState.FAILED;
+            }
+
+            else
             {
                 return TreeNodeState.PASSED;
             }
-
-            // LAN_TODO, code the process for this strategy, if Process is in update function then it wouldn't be efficient
-            return TreeNodeState.RUNNING;
         }
+    }
 
-        public void Reset()
+    // LAN_TODO implement move one step strategy
+    // probably need the mypath from chase player strategy, which is in the leaf node 
+    [System.Serializable]
+    public class MoveOneStep : IStrategy
+    {
+        public TreeNodeState Process()
         {
-            currentIndex = 0;
+            return TreeNodeState.PASSED;
         }
     }
 }
