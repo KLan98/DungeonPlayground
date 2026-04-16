@@ -14,14 +14,14 @@ public class TestUsageOfNode : MonoBehaviour
     // strategies
     private IStrategy patrolStrategy;
 
-    [SerializeField] GameObject entity;
+    //[SerializeField] GameObject entity;
     [SerializeField] List<Transform> wayPoints = new List<Transform>();
     [SerializeField] int currentIndex = 0;
 
     private void Awake()
     {
-        // need to add check so that patrol strategy is correctly constructed
-        patrolStrategy = new PatrolStrategy(entity, wayPoints, currentIndex);
+        // LAN_TODO need to add check so that patrol strategy is correctly constructed
+        //patrolStrategy = new PatrolStrategy(entity, wayPoints, currentIndex);
 
         repeatUntilFailNode = new RepeatUntilFail("MyRepeatUntilFail", null);
         invertNode = new Invert("MyInvert", repeatUntilFailNode);

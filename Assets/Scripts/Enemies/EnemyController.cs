@@ -8,6 +8,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] DungeonGrid dungeonGrid;
     [SerializeField] List<Client> nearByClients = new List<Client>();
     [SerializeField] private Client client;
+    [SerializeField] private TilemapVisualizer tilemapVisualizer;
+    [SerializeField] private List<Client> myPath = new List<Client>();
 
     private Vector2 position
     {
@@ -36,7 +38,7 @@ public class EnemyController : MonoBehaviour
 
     public void PathFinding()
     {
-        BFSPathFinding.PathFinding(client, dungeonGrid.spatialHashGrid.Cells);
+        BFSPathFinding.PathFinding(client, dungeonGrid.spatialHashGrid.Cells, myPath);
     }
 
     private void UpdateClientInfo()
@@ -50,17 +52,6 @@ public class EnemyController : MonoBehaviour
     {
         client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Actor", false);
         client.GameObject = this.gameObject;
-    }
-
-    // LAN_TODO update distance of non walkable tile that are not player without polling
-    private void Update()
-    {
-        //FindNearbyClients();
-        //UpdateGrid();
-        if (nearByClients.Count > 0)
-        {
-            client.DistanceToPlayer = nearByClients[0].DistanceToPlayer;
-        }
     }
 
     private void OnDrawGizmos()

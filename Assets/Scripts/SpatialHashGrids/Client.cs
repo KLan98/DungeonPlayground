@@ -49,7 +49,7 @@ public class Client
         set { this.gameObject = value; }
     }
 
-    //---------------DISTANCE MAP FIELDS & PROPERTIES----------------
+    //---------------DJIKSTRA MAP FIELDS & PROPERTIES----------------
     [SerializeField] private bool walkableTile; // OBSTACLES ARE NOT WALKABLE, PLAYER IS NOT WALKABLE TILE
     public bool WalkableTile
     {

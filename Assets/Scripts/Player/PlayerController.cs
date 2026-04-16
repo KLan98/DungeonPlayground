@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] List<Client> nearByClients = new List<Client>();
     [SerializeField] private Client client;
     [SerializeField] private TilemapVisualizer tilemapVisualizer;
+    private bool djikstraMapOn = false;
 
     private Vector2 position
     {
@@ -39,21 +40,46 @@ public class PlayerController : MonoBehaviour
     public void UpdateDistanceMap()
     {
         BFSPathFinding.ComputeDistanceMap(client.Indices[0], dungeonGrid.spatialHashGrid.Cells);
-        VisualizeDistanceMap(dungeonGrid.spatialHashGrid.Cells);
+    }
+
+    public void ToggleDjikstraMap()
+    {
+        ToggleColor(dungeonGrid.spatialHashGrid.Cells);
     }
 
     //--------------------------PRIVATE METHODS--------------------------------
-    private void VisualizeDistanceMap(Dictionary<Key, List<Client>> cells)
+    private void ToggleColor(Dictionary<Key, List<Client>> cells)
     {
-        foreach (var clientList in cells.Values)
+        if (!djikstraMapOn)
         {
-            foreach (var client in clientList)
+            foreach (var clientList in cells.Values)
             {
-                if (client.WalkableTile && client.DistanceToPlayer != int.MaxValue)
+                foreach (var client in clientList)
                 {
-                    tilemapVisualizer.ColorTileByDistance(client.Position, client.DistanceToPlayer);
+                    if (client.WalkableTile && client.DistanceToPlayer != int.MaxValue)
+                    {
+                        tilemapVisualizer.ColorTileByDistance(client.Position, client.DistanceToPlayer);
+                    }
                 }
             }
+
+            djikstraMapOn = true;
+        }
+
+        else
+        {
+            foreach (var clientList in cells.Values)
+            {
+                foreach (var client in clientList)
+                {
+                    if (client.WalkableTile && client.DistanceToPlayer != int.MaxValue)
+                    {
+                        tilemapVisualizer.ResetMapColor(client.Position);
+                    }
+                }
+            }
+
+            djikstraMapOn = false;
         }
     }
 

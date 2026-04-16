@@ -79,4 +79,18 @@ public class TilemapVisualizer : MonoBehaviour
                 break;
         }
     }
+
+    public void VisualizePath(Vector2 position)
+    {
+        var cellPosition = map.WorldToCell((Vector3)position);
+        map.SetTileFlags(cellPosition, TileFlags.None); // required to allow color override
+        map.SetColor(cellPosition, Color.black);
+    }
+
+    public void ResetMapColor(Vector2 position)
+    {
+        var cellPosition = map.WorldToCell((Vector3)position);
+        map.SetTileFlags(cellPosition, TileFlags.None); // required to allow color override
+        map.SetColor(cellPosition, Color.white);
+    }
 }

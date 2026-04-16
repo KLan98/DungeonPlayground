@@ -15,13 +15,14 @@ namespace BehaviorTree
 
     public class PatrolStrategy : IStrategy
     {
-        readonly GameObject entity;
+        readonly Client actor;
         readonly List<Transform> patrolPoints = new List<Transform>();
-        int currentIndex; // index of current patrol point
+        private int currentIndex; // index of current patrol point
+        private bool isMoving = false;
 
-        public PatrolStrategy(GameObject entity, List<Transform> patrolPoints, int currentIndex) 
+        public PatrolStrategy(Client actor, List<Transform> patrolPoints, int currentIndex) 
         {
-            this.entity = entity;
+            this.actor = actor;
             this.patrolPoints = patrolPoints;
             this.currentIndex = currentIndex;
         }
@@ -33,7 +34,7 @@ namespace BehaviorTree
                 return TreeNodeState.PASSED;
             }
 
-            // use breath-first to find the shortest path to target
+            // LAN_TODO, code the process for this strategy, if Process is in update function then it wouldn't be efficient
             return TreeNodeState.RUNNING;
         }
 

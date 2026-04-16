@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace PathFinding
 {
@@ -69,8 +68,11 @@ namespace PathFinding
             }
         }
 
-        public static void PathFinding(Client actor, Dictionary<Key, List<Client>> cells)
+        public static List<Client> PathFinding(Client actor, Dictionary<Key, List<Client>> cells, List<Client> myPath, TilemapVisualizer tilemapVisualizer = null)
         {
+            // clear the output path
+            myPath.Clear();
+
             // assign the distance to player of this actor = distance to player of the tile it is standing in
             Key actorKey = new Key(actor.Indices[0][0], actor.Indices[0][1]);
             if (cells.TryGetValue(actorKey, out List<Client> list))
@@ -108,14 +110,20 @@ namespace PathFinding
                         if (tileCell.WalkableTile && tileCell.DistanceToPlayer != int.MaxValue && tileCell.DistanceToPlayer < actor.DistanceToPlayer)
                         {
                             // the client only moves to the tile cell with shortest distance to player
-                            actor.GameObject.transform.position = tileCell.Position;
                             actor.DistanceToPlayer = tileCell.DistanceToPlayer;
-                            Debug.Log($"{actor.Name} moves to tile with distance {tileCell.DistanceToPlayer} at {tileCell.Position}");
-                            searchQueue.Enqueue(tileCell); 
+
+                            //---------------DEBUG---------------------
+                            //tilemapVisualizer.ColorTileByPosition(tileCell.Position);
+                            //Debug.Log($"{actor.Name} moves to tile with distance {tileCell.DistanceToPlayer} at {tileCell.Position}");
+
+                            myPath.Add(tileCell);
+                            searchQueue.Enqueue(tileCell);
                         }
                     }
                 }
             }
+
+            return myPath;
         }
 
         private static List<Vector2Int> GetNeighbors(Vector2Int element, Dictionary<Key, List<Client>> cells)

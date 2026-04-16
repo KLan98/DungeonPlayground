@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class HotBarOption : MonoBehaviour
+public class DevHotBarOption : MonoBehaviour
 {
     private TMP_Text text;
     [SerializeField] private GameEvent gameEvent;
@@ -11,15 +11,10 @@ public class HotBarOption : MonoBehaviour
     private void Awake()
     {
         text = GetComponentInChildren<TMP_Text>();
-        int index = this.transform.GetSiblingIndex() + 1;
-        if (index == 10)
-        {
-            index = 0;
-        }
-
+        text.textWrappingMode = TextWrappingModes.Normal;
         //Debug.Log(index);
-        text.text = index.ToString(); 
-        text.alignment = TextAlignmentOptions.TopLeft;
+        text.text = gameEvent.name.ToString();
+        text.alignment = TextAlignmentOptions.Center;
     }
 
     public void TriggerGameEvent()
