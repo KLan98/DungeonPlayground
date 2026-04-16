@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public class SquareClient : MonoBehaviour
 {
-    [SerializeField] private Demo demo;
+    [SerializeField] private DungeonGrid dungeonGrid;
     private Client client;
     private List<Client> myNearbyClients = new List<Client>();
     private SpriteRenderer spriteRenderer;
@@ -46,7 +46,7 @@ public class SquareClient : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        client = demo.optimizedGrid.NewClient(Position, Dimensions, Name);
+        client = dungeonGrid.spatialHashGrid.NewClient(Position, Dimensions, Name, false);
         Debug.Log($"this {gameObject} is located from index {client.Indices[0]} to {client.Indices[1]}");
         Debug.Log($"{this} dimension is {Dimensions}");
         InvokeRepeating(nameof(FindNearbyClients), 0.1f, 0.3f);
@@ -56,24 +56,17 @@ public class SquareClient : MonoBehaviour
 
     private void FindNearbyClients()
     {
-        myNearbyClients = demo.optimizedGrid.FindNear(Position, area);
+        myNearbyClients = dungeonGrid.spatialHashGrid.FindNear(Position, area);
     }
 
     private void UpdateGrid()
     {
-        demo.optimizedGrid.UpdateGrid(client);
+        dungeonGrid.spatialHashGrid.UpdateGrid(client);
     }
 
     private void UpdateClientsList()
     {
         clients.Clear();
         clients.AddRange(myNearbyClients);
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-
-        Gizmos.DrawWireCube(Position, area);
     }
 }

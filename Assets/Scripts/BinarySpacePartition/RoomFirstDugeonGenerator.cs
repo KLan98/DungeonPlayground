@@ -1,15 +1,18 @@
+using PathFinding;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class RoomFirstDugeonGenerator : MonoBehaviour
 {
+    [Header("Components")]
     [SerializeField] private TilemapVisualizer tilemapVisualizer;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private DungeonGrid dungeonGrid;
+    [SerializeField] private Grid grid;
 
     [Header("Arena settings")]
     [SerializeField] private Vector3Int arenaSize; // the size of tileMap 
@@ -19,11 +22,21 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
     [SerializeField] private int maxWidth, maxHeight;
     [SerializeField] private List<BoundsInt> roomsList = new List<BoundsInt>();
 
+    //------------------------------PRIVATE FIELDS-----------------------------------------
     private List<Vector2Int> listOfCenters = new List<Vector2Int>();
     private HashSet<Vector2Int> tilesPosition = new HashSet<Vector2Int>();
     private HashSet<Vector2Int> corridors = new HashSet<Vector2Int>();
+    private Vector2 tileClientDimension = new Vector2(1f, 1f);
     private Vector3Int arenaStartPoint;
     private BoundsInt arena;
+    private Client client;
+
+    //------------------------------PUBLIC PROPERTIES-----------------------------------------
+    public HashSet<Vector2Int> TilesPosition
+    {
+        get { return tilesPosition; }
+    }
+
 
     private void Awake()
     {
@@ -48,6 +61,15 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         CreateRooms();
         CreateCorridors();
         tilemapVisualizer.DrawTiles(tilesPosition);
+
+        if (dungeonGrid != null)
+        {
+            foreach (var tilePosition in tilesPosition)
+            {
+                Vector3Int cellPosition = new Vector3Int(tilePosition.x, tilePosition.y, 0);
+                client = dungeonGrid.spatialHashGrid.NewClient(grid.GetCellCenterWorld(cellPosition), tileClientDimension, "Tile" + $"{cellPosition}", true);
+            }
+        }
     }
 
     private void CreateRooms()

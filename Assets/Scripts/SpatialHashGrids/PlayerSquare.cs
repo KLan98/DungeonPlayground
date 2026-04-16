@@ -58,7 +58,7 @@ public class PlayerSquare : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        client = demo.optimizedGrid.NewClient(position, dimensions, Name);
+        //client = demo.optimizedGrid.NewClient(position, dimensions, Name);
         Debug.Log($"this {gameObject} is located from index {client.Indices[0]} to {client.Indices[1]}");
         InvokeRepeating(nameof(FindNearbyClients), 0.1f, 0.3f);
         InvokeRepeating(nameof(UpdateGrid), 0.15f, 0.4f);
@@ -81,34 +81,34 @@ public class PlayerSquare : MonoBehaviour
         clients.AddRange(myNearbyClients);
     }
 
-    private void FixedUpdate()
-    {
-        moveInput = Vector2.zero;
+    //private void FixedUpdate()
+    //{
+    //    moveInput = Vector2.zero;
 
-        if (inputActions.Movement.Down.IsPressed())
-        {
-            moveInput += Vector2.down;
-        }
+    //    if (inputActions.Movement.Down.IsPressed())
+    //    {
+    //        moveInput += Vector2.down;
+    //    }
 
-        if (inputActions.Movement.Left.IsPressed())
-        {
-            moveInput += Vector2.left;
-        }
+    //    if (inputActions.Movement.Left.IsPressed())
+    //    {
+    //        moveInput += Vector2.left;
+    //    }
 
-        if (inputActions.Movement.Right.IsPressed())
-        {
-            moveInput += Vector2.right;
-        }
+    //    if (inputActions.Movement.Right.IsPressed())
+    //    {
+    //        moveInput += Vector2.right;
+    //    }
 
-        if (inputActions.Movement.Up.IsPressed())
-        {
-            moveInput += Vector2.up;
-        }
+    //    if (inputActions.Movement.Up.IsPressed())
+    //    {
+    //        moveInput += Vector2.up;
+    //    }
 
-        rb.velocity = moveInput.normalized * speed;
+    //    rb.velocity = moveInput.normalized * speed;
 
-        client.Position = position;
-    }
+    //    client.Position = position;
+    //}
 
     private void OnDrawGizmos()
     {

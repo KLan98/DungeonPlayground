@@ -36,4 +36,30 @@ public class Client
         get{ return queryID;}
         set{ queryID = value;}
     }
+    [SerializeField] private int clientID;
+    public int ClientID
+    {
+        get { return clientID;}
+        set { clientID = value;}
+    }
+    [SerializeField] private GameObject gameObject; // this can be null, for distinction between immovable environments (floor tiles) and movable game objects
+    public GameObject GameObject
+    {
+        get { return this.gameObject; }
+        set { this.gameObject = value; }
+    }
+
+    //---------------DJIKSTRA MAP FIELDS & PROPERTIES----------------
+    [SerializeField] private bool walkableTile; // OBSTACLES ARE NOT WALKABLE, PLAYER IS NOT WALKABLE TILE
+    public bool WalkableTile
+    {
+        get { return walkableTile;}
+        set { walkableTile = value;}
+    }
+    [SerializeField] private int distanceToPlayer;
+    public int DistanceToPlayer
+    {
+        get { return distanceToPlayer;}
+        set { distanceToPlayer = value;}
+    }
 }
