@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SkillCursorController : MonoBehaviour, IToggleGameObject
 {
     [Header("Game events")]
     [SerializeField] private Vector2Channel vector2Channel;
+    [SerializeField] private Vector2IntChannel vector2IntChannel;
     [SerializeField] private GameObjectChannel gameObjectChannel;
     [SerializeField] private GameObjectChannel removeCachedChannel;
     [SerializeField] private GameEvent allTargetsConfirmed;
@@ -13,7 +15,6 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     [Header("Components")]
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private DungeonGrid dungeonGrid;
-    [SerializeField] private SkillCursorState cursorState;
 
     [Header("Stats")]
     [SerializeField] private float movingSpeed = 5f;
@@ -22,6 +23,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     [Header("Debug")]
     [SerializeField] private List<Client> nearByClients = new List<Client>();
     [SerializeField] private List<GameObject> targets = new List<GameObject>();
+    [SerializeField] private Client client;
 
     // ----------------------------------------PRIVATE FIELDS------------------------------------------
     private Vector2 confirmedPosition;
@@ -32,7 +34,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     
     private bool isMoving;
 
-    private bool positionRequired;
+    private bool destinationRequired;
     
     private const float timeBetweenMovement = 0.2f;
     
@@ -41,8 +43,6 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     private const int tileSize = 1;
 
     private CursorInputActions cursorInput;
-
-    private Client client;
     
     private GameObject target;
 
@@ -76,11 +76,10 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         }
     }
 
+    //------------------------------BUILT-IN METHODS-----------------------------
     private void Awake()
     {
-        direction = Vector2.zero;
         cursorInput = new CursorInputActions();
-        cursorInput.Enable();
     }
     
     private void Start()
@@ -90,9 +89,19 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
     private void OnEnable()
     {
+        direction = Vector2.zero;
+        isMoving = false;
         targets.Clear();
+        cursorInput.Enable();
     }
 
+    private void OnDisable()
+    {
+        cursorInput.Disable();
+    }
+
+    // LAN_TODO, remove the polling here!
+    // find nearby clients and update grid are called whenever there is a cursor move event raised 
     private void Update()
     {
         FindNearbyClients();
@@ -100,33 +109,29 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
         if (cursorInput.CursorActions.Confirm.WasPressedThisFrame())
         {
-            target = GetTarget();
+            ITargetable cursorTarget = GetCursorTarget();
 
-            // if target is game object and not in targets list
-            if (target != null && !targets.Contains(target))
+            // target is game object
+            if (cursorTarget is GameObjectTarget target)
             {
                 // if not enough targets added
                 if (targets.Count < numberOfTargets)
                 {
-                    targets.Add(target);
-
-                    // cache target in playerSkillHandler    
-                    gameObjectChannel.RaiseEvent(target);
-                }
-
-                else if (targets.Count == numberOfTargets)
-                {
-                    // call OnTargetsConfirmed
-                    allTargetsConfirmed.Raise();
+                    if (!targets.Contains(target.GameObject) && target.GameObject != null)
+                    {
+                        targets.Add(target.GameObject);
+                        // cache target in playerSkillHandler    
+                        gameObjectChannel.RaiseEvent(target.GameObject);
+                    }
                 }
             }
 
-            // if target is not game object
-            else if (target == null)
+            // target is grid index
+            else if (cursorTarget is TileTarget tileTarget)
             {
-                if (positionRequired)
+                if (destinationRequired)
                 {
-                    confirmedPosition = cursorPosition;
+                    confirmedPosition = tileTarget.CellPosition;
 
                     if (targets.Count == 1)
                     {
@@ -137,8 +142,17 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
                 else
                 {
-                    Debug.Log("Player is selecting empty tile");
-                    return;
+                    // if target count of the skill SO and targets list = 0 
+                    if (numberOfTargets == 0 && targets.Count == 0)
+                    {
+                        // raise vector2int event
+                        vector2IntChannel.RaiseEvent(tileTarget.CellIndex);
+                    }
+
+                    else
+                    {
+                        Debug.Log("Player selected empty tile");
+                    }
                 }
             }
 
@@ -162,12 +176,6 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
     private void FixedUpdate()
     {
-        // polling
-        if (cursorState.allowCursor == false)
-        {
-            return;
-        }
-
         if (isMoving)
         {
             return;
@@ -205,6 +213,14 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+
+        Gizmos.DrawWireCube(position, dimension);
+    }
+
+    //-------------------------------COROUTINES--------------------------
     private IEnumerator MoveToTarget(Vector2 targetPosition)
     {
         isMoving = true;
@@ -242,40 +258,25 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         );
     }
 
-    private GameObject GetTarget()
+    //-----------------------------PRIVATE METHODS-------------------------------
+    private ITargetable GetCursorTarget()
     {
-        if (nearByClients.Count == 0)
+        if (nearByClients.Count > 0)
         {
-            return null;
+            foreach (var client in nearByClients)
+            {
+                if (client.GameObject != null && !client.WalkableTile)
+                {
+                    return new GameObjectTarget(client.GameObject, client.Indices[0]);
+                }
+
+                return new TileTarget(client.Indices[0], client.Position);
+            }
         }
 
-        GameObject target = nearByClients[0].GameObject; // get the first game object 
-
-        if (target == null)
-        {
-            Debug.Log("Please choose a valid target");
-        }
-
-        else
-        {
-            Debug.Log($"Chosen game object = {target.name}");
-        }
-
-        return target;
-    }
-
-    public void ToggleGameObjectActive()
-    {
-        IsActive = !IsActive;
-
-        target = null;
-    }
-    
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
-
-        Gizmos.DrawWireCube(position, dimension);
+        // else return 
+        Debug.LogWarning("There is no valid target");
+        return null;
     }
 
     private void FindNearbyClients()
@@ -299,21 +300,29 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         client.Position = position;
     }
 
+    //-----------------------------PUBLIC METHODS---------------------------------
     public void BeginSelection(SkillRequirements requirements)
     {
         numberOfTargets = requirements.TargetCount;
-        Debug.Log($"The requirements for this skill {requirements.SkillID} are: target count: {requirements.TargetCount}, need position: {requirements.NeedPosition} and target type:{requirements.SkillTargetType}");
+        Debug.Log($"The requirements for this skill {requirements.SkillID} are: target count: {requirements.TargetCount}, need position: {requirements.NeedDestination} and target type: {requirements.SkillTargetType}");
 
-        if (requirements.NeedPosition)
+        if (requirements.NeedDestination)
         {
-            positionRequired = true;
+            destinationRequired = true;
         }
 
         else
         {
-            positionRequired = false;
+            destinationRequired = false;
         }
 
         IsActive = true;
+    }
+
+    public void ToggleGameObjectActive()
+    {
+        IsActive = !IsActive;
+
+        target = null;
     }
 }

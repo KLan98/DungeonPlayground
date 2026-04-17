@@ -2,36 +2,70 @@
 
 public class SkillRequirements
 {
-	public SkillTargetType SkillTargetType { get; }
+	private SkillTargetType skillTargetType;
+	public SkillTargetType SkillTargetType 
+	{ 
+		get
+		{
+			return skillTargetType;	
+		}
+	}
 
-	public SkillID SkillID { get; }
+	private SkillID skillID;
+	public SkillID SkillID 
+	{ 
+		get
+		{
+			return skillID;
+		}
+	}
 
-	public int TargetCount { get; }
+	private int targetCount;
+	public int TargetCount 
+	{ 
+		get
+		{
+			return targetCount;
+		}
+	}
 
-	public bool NeedPosition { get; }
+	private bool needDestination; // If this skill needs a destination in addition to the target to perform
+	public bool NeedDestination 
+	{ 
+		get
+		{
+			return needDestination;
+		}
+	}
 
 	public SkillRequirements(SkillData data)
 	{
-		SkillTargetType = data.skillTargetType;
-		SkillID = data.skillID;
+		skillTargetType = data.SkillTargetType;
+		skillID = data.SkillID;
 
 		switch (SkillTargetType)
 		{
-			case SkillTargetType.TARGET_TYPE_SINGLE:
-				TargetCount = 1;
+			case SkillTargetType.TARGET_TYPE_SINGLE_ENEMY:
+				targetCount = 1;
 				break;
-			case SkillTargetType.TARGET_TYPE_MULTIPLE_POINT_AND_CLICK:
-				TargetCount = data.numberOfTargets;
+			case SkillTargetType.TARGET_TYPE_MULTIPLE_ENEMIES:
+				targetCount = data.NumberOfTargets;
+				break;
+			case SkillTargetType.TARGET_TYPE_SINGLE_WALKABLE_TILE:
+				targetCount = 0;
 				break;
 		}
 
 		switch (SkillID)
 		{
 			case SkillID.WIND_TELEPORTATION:
-				NeedPosition = true; 
+				needDestination = true; 
 				break;
 			case SkillID.FIRE_FIREBALL:
-				NeedPosition = false;
+				needDestination = false;
+				break;
+			case SkillID.BOMB:
+				needDestination = false;
 				break;
 		}
 	}

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum EffectType
 {
-    EFFECT_TYPE_DEAL_DAMAGE_SINGLE_TURN, 
+    EFFECT_TYPE_DEAL_DAMAGE_SINGLE_TURN, // bomb
     EFFECT_TYPE_BUFF, // de-hex, buff damage, buff health
     EFFECT_TYPE_DEBUFF, // hex, reduce armor, reduce health
     EFFECT_TYPE_SUPPORT, // teleportation, invisibility

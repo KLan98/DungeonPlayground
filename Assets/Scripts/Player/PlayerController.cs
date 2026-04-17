@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] List<Client> nearByClients = new List<Client>();
     [SerializeField] private Client client;
     [SerializeField] private TilemapVisualizer tilemapVisualizer;
-    private bool djikstraMapOn = false;
+    private bool dijkstraMapOn = false;
 
     private Vector2 position
     {
@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
         BFSPathFinding.ComputeDistanceMap(client.Indices[0], dungeonGrid.spatialHashGrid.Cells);
     }
 
-    public void ToggleDjikstraMap()
+    public void ToggleDijkstraMap()
     {
         ToggleColor(dungeonGrid.spatialHashGrid.Cells);
     }
@@ -50,7 +50,7 @@ public class PlayerController : MonoBehaviour
     //--------------------------PRIVATE METHODS--------------------------------
     private void ToggleColor(Dictionary<Key, List<Client>> cells)
     {
-        if (!djikstraMapOn)
+        if (!dijkstraMapOn)
         {
             foreach (var clientList in cells.Values)
             {
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            djikstraMapOn = true;
+            dijkstraMapOn = true;
         }
 
         else
@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            djikstraMapOn = false;
+            dijkstraMapOn = false;
         }
     }
 

@@ -1,3 +1,4 @@
+#nullable enable
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,13 +10,28 @@ using UnityEngine;
 /// </summary>
 public class SkillContext
 {
-    public IReadOnlyList<GameObject> Targets { get; }
-
-    public Vector2? NewPosition { get; }
-
-    public SkillContext(List<GameObject> targets, Vector2? newPosition = null)
+    private readonly List<GameObject>? targets;
+    public IReadOnlyList<GameObject>? Targets
     {
-        Targets = targets;
-        NewPosition = newPosition;
+        get { return targets; }
+    }
+
+    private readonly Vector2Int? castIndex;
+    public Vector2Int? CastIndex
+    {
+        get { return castIndex; }
+    }
+
+    private readonly Vector2? newPosition;
+    public Vector2? NewPosition
+    {
+        get { return newPosition; }
+    }
+
+    public SkillContext(List<GameObject>? targets = null, Vector2Int? castIndex = null, Vector2? newPosition = null)
+    {
+        this.targets = targets;
+        this.castIndex = castIndex;
+        this.newPosition = newPosition;
     }
 }

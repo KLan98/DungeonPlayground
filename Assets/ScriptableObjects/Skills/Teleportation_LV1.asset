@@ -13,19 +13,17 @@ MonoBehaviour:
   m_Name: Teleportation_LV1
   m_EditorClassIdentifier: 
   data:
-    skillID: 0
-    skillTargetType: 0
-    effectType: 3
-    displayedText:
+    SkillID: 0
+    IsChainable: 0
+    SkillTargetType: 0
+    NumberOfTargets: 1
+    EffectType: 3
+    DisplayedText:
       displayName: 
       displayDescription: 
-    timings:
-      skillExecutionTime: 0
-      skillDurationTurns: 1
-      coolDownTurns: 3
-    damage:
+    Damage:
       baseDamage: 0
       damageMultiplier: 0
-    cost:
-      usageCost: 1
-      upgradeCost: 1
+    Cost:
+      usageCost: 0
+      upgradeCost: 0

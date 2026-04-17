@@ -44,6 +44,15 @@ public partial class @DevInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleDevHotBar"",
+                    ""type"": ""Button"",
+                    ""id"": ""b05a6eba-0825-4e20-9a20-95d0fc2709c9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -90,6 +99,50 @@ public partial class @DevInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""OpenDevMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Two Modifiers"",
+                    ""id"": ""ec1b7c02-370a-4f3f-9dd6-a1c17654434c"",
+                    ""path"": ""TwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDevHotBar"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""4f623b67-8193-4faa-9ae3-e5c6a3905c03"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDevHotBar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""b65fdc94-b258-4bd2-b69c-5a75fe4956bb"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDevHotBar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""7400e928-9a31-4339-bca4-3247d4c33acb"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDevHotBar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -100,6 +153,7 @@ public partial class @DevInputActions: IInputActionCollection2, IDisposable
         m_DevActions = asset.FindActionMap("DevActions", throwIfNotFound: true);
         m_DevActions_OpenDevMenu = m_DevActions.FindAction("OpenDevMenu", throwIfNotFound: true);
         m_DevActions_Select = m_DevActions.FindAction("Select", throwIfNotFound: true);
+        m_DevActions_ToggleDevHotBar = m_DevActions.FindAction("ToggleDevHotBar", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,12 +217,14 @@ public partial class @DevInputActions: IInputActionCollection2, IDisposable
     private List<IDevActionsActions> m_DevActionsActionsCallbackInterfaces = new List<IDevActionsActions>();
     private readonly InputAction m_DevActions_OpenDevMenu;
     private readonly InputAction m_DevActions_Select;
+    private readonly InputAction m_DevActions_ToggleDevHotBar;
     public struct DevActionsActions
     {
         private @DevInputActions m_Wrapper;
         public DevActionsActions(@DevInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @OpenDevMenu => m_Wrapper.m_DevActions_OpenDevMenu;
         public InputAction @Select => m_Wrapper.m_DevActions_Select;
+        public InputAction @ToggleDevHotBar => m_Wrapper.m_DevActions_ToggleDevHotBar;
         public InputActionMap Get() { return m_Wrapper.m_DevActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -184,6 +240,9 @@ public partial class @DevInputActions: IInputActionCollection2, IDisposable
             @Select.started += instance.OnSelect;
             @Select.performed += instance.OnSelect;
             @Select.canceled += instance.OnSelect;
+            @ToggleDevHotBar.started += instance.OnToggleDevHotBar;
+            @ToggleDevHotBar.performed += instance.OnToggleDevHotBar;
+            @ToggleDevHotBar.canceled += instance.OnToggleDevHotBar;
         }
 
         private void UnregisterCallbacks(IDevActionsActions instance)
@@ -194,6 +253,9 @@ public partial class @DevInputActions: IInputActionCollection2, IDisposable
             @Select.started -= instance.OnSelect;
             @Select.performed -= instance.OnSelect;
             @Select.canceled -= instance.OnSelect;
+            @ToggleDevHotBar.started -= instance.OnToggleDevHotBar;
+            @ToggleDevHotBar.performed -= instance.OnToggleDevHotBar;
+            @ToggleDevHotBar.canceled -= instance.OnToggleDevHotBar;
         }
 
         public void RemoveCallbacks(IDevActionsActions instance)
@@ -215,5 +277,6 @@ public partial class @DevInputActions: IInputActionCollection2, IDisposable
     {
         void OnOpenDevMenu(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
+        void OnToggleDevHotBar(InputAction.CallbackContext context);
     }
 }

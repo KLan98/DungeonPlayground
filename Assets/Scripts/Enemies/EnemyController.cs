@@ -39,6 +39,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    // LAN_TODO called whenever the enemy position changed, hasn't been used now
     public void UpdateGrid()
     {
         UpdateClientInfo();

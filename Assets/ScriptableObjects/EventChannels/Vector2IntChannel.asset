@@ -9,8 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 402dbc09ab0db09459af39c464907b62, type: 3}
-  m_Name: CursorState
+  m_Script: {fileID: 11500000, guid: 861af0a76e96295489ffd09532bfe039, type: 3}
+  m_Name: Vector2IntChannel
   m_EditorClassIdentifier: 
-  allowCursor: 1
-  target: {fileID: 0}

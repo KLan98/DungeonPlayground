@@ -9,12 +9,14 @@ public class SkillDefinition : ScriptableObject
 
     public Skill CreateSkill()
     {
-        switch (data.skillID)
+        switch (data.SkillID)
         {
             case SkillID.WIND_TELEPORTATION:
                 return new Teleportation(data);
             case SkillID.ELECTRIC_LIGHTNINGCHAIN:
                 return new LightningChain(data);
+            case SkillID.BOMB:
+                return new Bomb(data);
             default:
                 throw new System.NotImplementedException();
         }
