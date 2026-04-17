@@ -77,7 +77,7 @@ Spec:
 
 ## Path fidning using Dijkstra map
 Implemented Dijkstra map through using Breadth-first search. The further a cell is from the player the darker the color becomes. Each cell uses a 4-directional approach. Result:
-<img width="812" height="635" alt="grafik" src="https://github.com/user-attachments/assets/bd95af16-1d3b-4613-95da-b807212c204c" />
+<img width="200" height="200" alt="grafik" src="https://github.com/user-attachments/assets/bd95af16-1d3b-4613-95da-b807212c204c" />
   
 ## Behavior tree (WIP)
 Implementation of behavior tree based on article by Chris Simpson
