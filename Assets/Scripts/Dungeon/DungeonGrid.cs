@@ -39,4 +39,21 @@ public class DungeonGrid : MonoBehaviour
     //        Gizmos.DrawLine(startPoint, endPoint);
     //    }
     //}
+
+    public Client GetClientAtIndex(Vector2Int index)
+    {
+        Key key = new Key(index.x, index.y);
+        if (spatialHashGrid.Cells.TryGetValue(key, out List<Client> clients))
+        {
+            foreach (Client client in clients)
+            {
+                if (!client.WalkableTile)
+                {
+                    return client;
+                }
+            }
+        }
+
+        return null;
+    }
 }

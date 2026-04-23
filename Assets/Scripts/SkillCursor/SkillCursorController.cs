@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SkillCursorController : MonoBehaviour, IToggleGameObject
@@ -11,6 +12,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     [SerializeField] private GameObjectChannel gameObjectChannel;
     [SerializeField] private GameObjectChannel removeCachedChannel;
     [SerializeField] private GameEvent allTargetsConfirmed;
+    [SerializeField] private GameEvent skillCursorMoves;
 
     [Header("Components")]
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -21,30 +23,32 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     [SerializeField] private Vector2 dimension = new Vector2(0.9f, 0.9f);
 
     [Header("Debug")]
-    [SerializeField] private List<Client> nearByClients = new List<Client>();
+    [SerializeField] private static List<Client> nearByClients = new List<Client>();
     [SerializeField] private List<GameObject> targets = new List<GameObject>();
-    [SerializeField] private Client client;
+    [SerializeField] private static Client client;
 
     // ----------------------------------------PRIVATE FIELDS------------------------------------------
     private Vector2 confirmedPosition;
-    
+
     private Vector2 direction;
-    
+
     private Vector2 targetPosition;
-    
+
     private bool isMoving;
 
     private bool destinationRequired;
-    
+
     private const float timeBetweenMovement = 0.2f;
-    
+
     private int numberOfTargets; // local for required targets of a skill
 
     private const int tileSize = 1;
 
     private CursorInputActions cursorInput;
-    
+
     private GameObject target;
+
+    private bool hasImpactRangePreview;
 
     // ----------------------------------------PRIVATE PROPERTIES------------------------------------------
     private Vector2 cursorPosition
@@ -53,10 +57,6 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         {
             return transform.position;
         }
-    }
-    private Vector2 position
-    {
-        get { return gameObject.transform.position; }
     }
 
     // ----------------------------------------PUBLIC PROPERTIES------------------------------------------
@@ -81,10 +81,10 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     {
         cursorInput = new CursorInputActions();
     }
-    
+
     private void Start()
     {
-        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "SkillCursor", false);
+        client = dungeonGrid.spatialHashGrid.NewClient(cursorPosition, dimension, "SkillCursor", false);
     }
 
     private void OnEnable()
@@ -100,13 +100,8 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         cursorInput.Disable();
     }
 
-    // LAN_TODO, remove the polling here!
-    // find nearby clients and update grid are called whenever there is a cursor move event raised 
     private void Update()
     {
-        FindNearbyClients();
-        UpdateGrid();
-
         if (cursorInput.CursorActions.Confirm.WasPressedThisFrame())
         {
             ITargetable cursorTarget = GetCursorTarget();
@@ -217,7 +212,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     {
         Gizmos.color = Color.yellow;
 
-        Gizmos.DrawWireCube(position, dimension);
+        Gizmos.DrawWireCube(cursorPosition, dimension);
     }
 
     //-------------------------------COROUTINES--------------------------
@@ -239,6 +234,8 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
         yield return WaitUntilNextMovement(timeBetweenMovement);
 
+        skillCursorMoves.RaiseGameEvent(skillCursorMoves);
+
         isMoving = false;
     }
 
@@ -259,7 +256,66 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     }
 
     //-----------------------------PRIVATE METHODS-------------------------------
-    private ITargetable GetCursorTarget()
+
+
+    private void RenderImpactPattern()
+    {
+
+    }
+
+    private void FindNearbyClients()
+    {
+        nearByClients.Clear();
+        foreach (var c in dungeonGrid.spatialHashGrid.FindNear(cursorPosition, dimension))
+        {
+            if (c.ClientID != client.ClientID)
+                nearByClients.Add(c);
+        }
+    }
+
+    private void UpdateGrid()
+    {
+        client.Position = cursorPosition;
+        dungeonGrid.spatialHashGrid.UpdateGrid(client);
+    }
+
+    //-----------------------------PUBLIC METHODS---------------------------------
+    public void BeginSelection(SkillRequirements requirements)
+    {
+        numberOfTargets = requirements.TargetCount;
+        Debug.Log($"The requirements for this skill {requirements.SkillID} are: target count: {requirements.TargetCount}, need position: {requirements.NeedDestination} and target type: {requirements.SkillTargetType}");
+
+        if (requirements.NeedDestination)
+        {
+            destinationRequired = true;
+        }
+
+        else
+        {
+            destinationRequired = false;
+        }
+
+        if (requirements.HasImpactPattern)
+        {
+            hasImpactRangePreview = true;
+        }
+
+        else
+        {
+            hasImpactRangePreview = false;
+        }
+
+        IsActive = true;
+    }
+
+    public void ToggleGameObjectActive()
+    {
+        IsActive = !IsActive;
+
+        target = null;
+    }
+
+    public static ITargetable GetCursorTarget()
     {
         if (nearByClients.Count > 0)
         {
@@ -279,50 +335,20 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         return null;
     }
 
-    private void FindNearbyClients()
+    public static Vector2 GetCursorPosition()
     {
-        nearByClients.Clear();
-        foreach (var c in dungeonGrid.spatialHashGrid.FindNear(position, dimension))
-        {
-            if (c.ClientID != client.ClientID)
-                nearByClients.Add(c);
-        }
+        return client.Position;
     }
 
-    private void UpdateGrid()
+    public static Vector2Int GetCursorIndex()
     {
-        UpdateClientInfo();
-        dungeonGrid.spatialHashGrid.UpdateGrid(client);
+        return client.Indices[0];
     }
 
-    private void UpdateClientInfo()
+    //------------------------------EVENT RESPONSES------------------------------------------
+    public void UpdateClientInfo()
     {
-        client.Position = position;
-    }
-
-    //-----------------------------PUBLIC METHODS---------------------------------
-    public void BeginSelection(SkillRequirements requirements)
-    {
-        numberOfTargets = requirements.TargetCount;
-        Debug.Log($"The requirements for this skill {requirements.SkillID} are: target count: {requirements.TargetCount}, need position: {requirements.NeedDestination} and target type: {requirements.SkillTargetType}");
-
-        if (requirements.NeedDestination)
-        {
-            destinationRequired = true;
-        }
-
-        else
-        {
-            destinationRequired = false;
-        }
-
-        IsActive = true;
-    }
-
-    public void ToggleGameObjectActive()
-    {
-        IsActive = !IsActive;
-
-        target = null;
+        FindNearbyClients();
+        UpdateGrid();
     }
 }

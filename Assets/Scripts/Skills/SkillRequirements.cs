@@ -29,6 +29,15 @@ public class SkillRequirements
 		}
 	}
 
+	private bool hasImpactPattern;
+	public bool HasImpactPattern
+	{
+		get
+		{ 
+			return hasImpactPattern;
+		}
+	}
+
 	private bool needDestination; // If this skill needs a destination in addition to the target to perform
 	public bool NeedDestination 
 	{ 
@@ -60,12 +69,15 @@ public class SkillRequirements
 		{
 			case SkillID.WIND_TELEPORTATION:
 				needDestination = true; 
+				hasImpactPattern = true;
 				break;
 			case SkillID.FIRE_FIREBALL:
 				needDestination = false;
+				hasImpactPattern = true;	
 				break;
 			case SkillID.BOMB:
 				needDestination = false;
+				hasImpactPattern = true;
 				break;
 		}
 	}

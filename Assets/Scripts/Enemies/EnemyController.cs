@@ -46,6 +46,8 @@ public class EnemyController : MonoBehaviour
         dungeonGrid.spatialHashGrid.UpdateGrid(client);
     }
 
+
+    //-------------------------------PRIVATE METHODS-------------------------------
     private void UpdateClientInfo()
     {
         client.Position = position;

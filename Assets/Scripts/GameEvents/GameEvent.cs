@@ -24,4 +24,12 @@ public class GameEvent : ScriptableObject
     {
         eventListeners.Remove(listener);
     }
+
+    public void RaiseGameEvent(GameEvent gameEvent)
+    {
+        foreach (GameEventListener listener in eventListeners)
+        {
+            listener.OnGameEventRaised(gameEvent);
+        }
+    }
 }

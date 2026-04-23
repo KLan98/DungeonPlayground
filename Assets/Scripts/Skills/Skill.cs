@@ -57,4 +57,10 @@ public abstract class Skill
     }
 
     public abstract void CastSkill(SkillContext context);
+
+    // Override this in any skill that has an area preview
+    public virtual List<Vector2Int> GetImpactPattern(Vector2Int hoveredIndex)
+    {
+        return null;
+    }
 }

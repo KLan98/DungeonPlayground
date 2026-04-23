@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: 1d9b94ef4dc55184eb2419668d372991
+guid: 04d7a0d5e10f7a442a1c5deb5c606f95
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -7477325005513018174
-    second: resize_d_cross_diagonal_0
-  - first:
-      213: -265298096568213832
-    second: resize_d_cross_diagonal_1
-  - first:
-      213: 1197685369278943685
-    second: resize_d_cross_diagonal_2
-  - first:
-      213: -4990973059749402946
-    second: resize_d_cross_diagonal_3
+      213: -8954750855979068016
+    second: pyrokinetic_laser_ray-icon_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -57,10 +48,10 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 1
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -109,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: resize_d_cross_diagonal_0
+      name: pyrokinetic_laser_ray-icon_0
       rect:
         serializedVersion: 2
-        x: 11
-        y: 36
-        width: 17
-        height: 17
+        x: 0
+        y: 0
+        width: 64
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -123,71 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2c4304826843b3890800000000000000
-      internalID: -7477325005513018174
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: resize_d_cross_diagonal_1
-      rect:
-        serializedVersion: 2
-        x: 36
-        y: 36
-        width: 17
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 8bed67a69c8715cf0800000000000000
-      internalID: -265298096568213832
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: resize_d_cross_diagonal_2
-      rect:
-        serializedVersion: 2
-        x: 11
-        y: 11
-        width: 17
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 5c1dd8c6f780f9010800000000000000
-      internalID: 1197685369278943685
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: resize_d_cross_diagonal_3
-      rect:
-        serializedVersion: 2
-        x: 36
-        y: 11
-        width: 17
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: eb6a71a02708cbab0800000000000000
-      internalID: -4990973059749402946
+      spriteID: 0951e317a855ab380800000000000000
+      internalID: -8954750855979068016
       vertices: []
       indices: 
       edges: []
@@ -203,10 +131,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      resize_d_cross_diagonal_0: -7477325005513018174
-      resize_d_cross_diagonal_1: -265298096568213832
-      resize_d_cross_diagonal_2: 1197685369278943685
-      resize_d_cross_diagonal_3: -4990973059749402946
+      pyrokinetic_laser_ray-icon_0: -8954750855979068016
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

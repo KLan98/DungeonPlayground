@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Bomb : Skill
 {
-    private List<Vector2Int> impactRange;
+    private List<Vector2Int> impactPattern;
 
     public Bomb(SkillData data) : base(data)
     {
-        impactRange = new List<Vector2Int>();
+        impactPattern = new List<Vector2Int>();
     }
 
     public override void CastSkill(SkillContext context)
@@ -17,8 +17,12 @@ public class Bomb : Skill
         Vector2Int castIndex = (Vector2Int)context.CastIndex;
 
         PerformPlaceBomb(castIndex);
-        ComputeImpactRange(castIndex, impactRange);    
-        if (impactRange.Count > 0)
+
+        // recompute the impact range since the cast index might changed
+        impactPattern.Clear();
+        ImpactPattern(castIndex, impactPattern);
+        
+        if (impactPattern.Count > 0)
         {
             BombTriggerExplode();
         }
@@ -34,13 +38,17 @@ public class Bomb : Skill
         // trigger animation
     }
 
+    // wait until bomb animation is finished then explode 
     private void BombTriggerExplode()
     {
-        Debug.Log("Bomb exploded");
+        foreach (var item in impactPattern)
+        {
+            Debug.Log("Bomb exploded at " + item);
+        }
     }
 
-    // BALANCE_ISSUE should the impact range be hardcoded?
-    private void ComputeImpactRange(Vector2Int destinationIndex, List<Vector2Int> impactRange)
+    // impact pattern for bomb is a diamond, this is only the definition
+    private void ImpactPattern(Vector2Int cursorIndex, List<Vector2Int> impactRange)
     {
         for (int x = -2; x <= 2; x++)
         {
@@ -51,9 +59,15 @@ public class Bomb : Skill
 
                 if (isInDiamondRing)
                 {
-                    impactRange.Add(destinationIndex + new Vector2Int(x, y));
+                    impactRange.Add(cursorIndex + new Vector2Int(x, y));
                 }
             }
         }
+    }
+
+    public override List<Vector2Int> GetImpactPattern(Vector2Int cursorIndex)
+    {
+        ImpactPattern(cursorIndex, impactPattern);
+        return impactPattern;
     }
 }

@@ -70,7 +70,7 @@ public class SpatialHashGridsOptimized
                 Key k = new Key(x, y);
 
                 // if a brand new key then create a list associate with it
-                if (!this.cells.ContainsKey(k))
+                if (!cells.ContainsKey(k))
                 {
                     cells[k] = new List<Client>();
                 }

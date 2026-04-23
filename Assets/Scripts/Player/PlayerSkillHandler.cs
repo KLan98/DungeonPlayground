@@ -10,17 +10,21 @@ using UnityEngine;
 /// </summary>
 public class PlayerSkillHandler : MonoBehaviour
 {
-    public SkillCursorController skillCursor;
-    
-    private Skill pendingSkill;
+    [SerializeField] private SkillCursorController skillCursor;
+
+    [SerializeField] private DungeonGrid dungeonGrid;
     
     [SerializeField] private List<SkillDefinition> skillDefinitions; // skills player can cast
 
     [SerializeField] private List<GameObject> cachedTargets;
 
-    [SerializeField] private Vector2Int cachedIndex;
-
     private SkillLoadout skillLoadout;
+
+    private Skill pendingSkill;
+
+    private MySkill activeSkill;
+
+    [SerializeField] private GameManager gameManager;
 
     //---------------------BUILT-IN METHODS------------------------------
 
@@ -57,7 +61,7 @@ public class PlayerSkillHandler : MonoBehaviour
         // "what the cursor collected" and "what the skill needs"
         if (cachedTargets != null && cachedTargets.Count > 0)
         {
-            var context = new SkillContext(cachedTargets, null);
+            var context = new SkillContext(cachedTargets);
 
             pendingSkill.CastSkill(context);
             pendingSkill = null;
@@ -90,15 +94,12 @@ public class PlayerSkillHandler : MonoBehaviour
     /// <param name="destinationIndex"></param>
     public void OnDestinationIndexConfirmed(Vector2Int destinationIndex)
     {
-        if (cachedIndex.x != int.MaxValue && cachedIndex.y != int.MaxValue)
-        {
-            var context = new SkillContext(null, cachedIndex);
+        var context = new SkillContext(null, destinationIndex);
 
-            pendingSkill.CastSkill(context);
-            pendingSkill = null;
+        pendingSkill.CastSkill(context);
+        pendingSkill = null;
 
-            ResetCachedIndices();
-        }
+        skillCursor.IsActive = false;
     }
 
     //--------------------------PRIVATE METHODS------------------------
@@ -116,11 +117,6 @@ public class PlayerSkillHandler : MonoBehaviour
         // clear cached targets
         cachedTargets.Clear();
     }
-
-    private void ResetCachedIndices()
-    {
-        cachedIndex = new Vector2Int(int.MaxValue, int.MaxValue);
-    }
     
     //-----------------------ON-CLICK RESPONSE------------------------------
     // LAN_TODO: event channel, the current implementation is hard-coded
@@ -132,5 +128,21 @@ public class PlayerSkillHandler : MonoBehaviour
     public void SelectBomb()
     {
         SelectSkill(1);
+    }
+
+    public void CastSkill(MySkill activeSkill)
+    {
+        if(!activeSkill.OnSkillPhaseStart())
+        {
+            return;
+        }
+
+        activeSkill.OnSkillStart();
+    }
+
+    public void CastBomb()
+    {
+        activeSkill = gameManager.Bomb;
+        activeSkill.OnSkillStart();
     }
 }
