@@ -41,6 +41,24 @@ public class MySkill
         }
     }
 
+    protected SkillTargetType skillTargetType;
+    public SkillTargetType SkillTargetType
+    {
+        get
+        {
+            return skillTargetType;
+        }
+    }
+
+    protected DynamicStats blastRadius;
+    public DynamicStats BlastRadius
+    {
+        get
+        {
+            return blastRadius;
+        }
+    }
+
     //---------------------------------SKILL EVENTS---------------------------------
 
     /// <summary>
@@ -48,7 +66,7 @@ public class MySkill
     /// </summary>
     public virtual void OnUpgrade()
     {
-
+        Debug.Log($"OnUpgrade of {this} is called");
     }
 
     /// <summary>
@@ -56,7 +74,7 @@ public class MySkill
     /// </summary>
     public virtual void OnSkillStart()
     {
-
+        Debug.Log($"OnSkillStart of {this} is called");
     }
 
     /// <summary>
@@ -65,7 +83,15 @@ public class MySkill
     /// <returns></returns>
     public virtual bool OnSkillPhaseStart()
     {
+        Debug.Log($"OnSkillPhaseStart of {this} is called");
+        return true;
+    }
 
-        return true;   
+    /// <summary>
+    /// When skill phase is cancelled for any reason. No return type, no parameters
+    /// </summary>
+    public virtual void OnSkillPhaseInterrupted()
+    {
+        Debug.Log($"OnSkillPhaseInterrupted of {this} is called");
     }
 }

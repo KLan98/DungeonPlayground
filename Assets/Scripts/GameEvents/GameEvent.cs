@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 [CreateAssetMenu(fileName = "GameEvent", menuName = "SO/NewGameEvent")]
 public class GameEvent : ScriptableObject
 {
-    private List<GameEventListener> eventListeners = new List<GameEventListener>();
+    [SerializeField] private List<GameEventListener> eventListeners = new List<GameEventListener>();
 
     public void Raise()
     {
@@ -23,13 +24,5 @@ public class GameEvent : ScriptableObject
     public void UnregisterListener(GameEventListener listener)
     {
         eventListeners.Remove(listener);
-    }
-
-    public void RaiseGameEvent(GameEvent gameEvent)
-    {
-        foreach (GameEventListener listener in eventListeners)
-        {
-            listener.OnGameEventRaised(gameEvent);
-        }
     }
 }

@@ -6,5 +6,5 @@ public interface IToggleGameObject
 {
     bool IsActive { get; set; }
 
-    void ToggleGameObjectActive();
+    void OnToggleActive();
 }

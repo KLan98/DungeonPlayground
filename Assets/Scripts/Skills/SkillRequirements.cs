@@ -52,18 +52,18 @@ public class SkillRequirements
 		skillTargetType = data.SkillTargetType;
 		skillID = data.SkillID;
 
-		switch (SkillTargetType)
-		{
-			case SkillTargetType.TARGET_TYPE_SINGLE_ENEMY:
-				targetCount = 1;
-				break;
-			case SkillTargetType.TARGET_TYPE_MULTIPLE_ENEMIES:
-				targetCount = data.NumberOfTargets;
-				break;
-			case SkillTargetType.TARGET_TYPE_SINGLE_WALKABLE_TILE:
-				targetCount = 0;
-				break;
-		}
+		//switch (SkillTargetType)
+		//{
+		//	case SkillTargetType.TARGET_TYPE_SINGLE_ENEMY:
+		//		targetCount = 1;
+		//		break;
+		//	case SkillTargetType.TARGET_TYPE_MULTIPLE_ENEMIES:
+		//		targetCount = data.NumberOfTargets;
+		//		break;
+		//	case SkillTargetType.TARGET_TYPE_SINGLE_WALKABLE_TILE:
+		//		targetCount = 0;
+		//		break;
+		//}
 
 		switch (SkillID)
 		{

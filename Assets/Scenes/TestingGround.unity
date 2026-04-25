@@ -604,37 +604,6 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &137971918
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 137971919}
-  m_Layer: 0
-  m_Name: Waypoint3
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &137971919
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 137971918}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.41, y: 1.32, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 892633537}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &164231388
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,37 +1145,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356043196}
   m_CullTransparentMesh: 1
---- !u!1 &454321033
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 454321034}
-  m_Layer: 0
-  m_Name: Waypoint2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &454321034
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 454321033}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.25, y: 2.12, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 892633537}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &492029720
 GameObject:
   m_ObjectHideFlags: 0
@@ -1242,9 +1180,9 @@ RectTransform:
   - {fileID: 1663786121}
   m_Father: {fileID: 1041016027}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &492029723
@@ -1293,7 +1231,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1837357915}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: ToggleDijkstraMap
+        m_MethodName: OnToggleDijkstraMap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1490,37 +1428,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 493870386}
   m_CullTransparentMesh: 1
---- !u!1 &503003391
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 503003392}
-  m_Layer: 0
-  m_Name: Waypoint1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &503003392
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 503003391}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.53, y: 2.34, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 892633537}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &503293041
 GameObject:
   m_ObjectHideFlags: 0
@@ -2149,9 +2056,9 @@ RectTransform:
   - {fileID: 2037120212}
   m_Father: {fileID: 1041016027}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 550, y: -50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &747749911
@@ -2213,7 +2120,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 919945530}
         m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
-        m_MethodName: DeleteDungeon
+        m_MethodName: OnDeleteDungeon
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2225,7 +2132,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 919945530}
         m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
-        m_MethodName: CreateDungeon
+        m_MethodName: OnCreateDungeon
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2333,7 +2240,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  eventAndResponsePairs: []
 --- !u!1 &781398993
 GameObject:
   m_ObjectHideFlags: 0
@@ -2419,6 +2325,9 @@ GameObject:
   m_Component:
   - component: {fileID: 784544100}
   - component: {fileID: 784544101}
+  - component: {fileID: 784544102}
+  - component: {fileID: 784544103}
+  - component: {fileID: 784544104}
   m_Layer: 0
   m_Name: SkillCursorEventListener
   m_TagString: Untagged
@@ -2453,13 +2362,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: d41dfc7c35c075f4fb26aff621a159be, type: 2}
+  gameEvent: {fileID: 11400000, guid: 5239f564887e9e54187edbc82a8813d0, type: 2}
   response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1373722433}
         m_TargetAssemblyTypeName: SkillCursorController, Assembly-CSharp
-        m_MethodName: ToggleGameObjectActive
+        m_MethodName: OnCursorMove
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2469,23 +2378,138 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  eventAndResponsePairs:
-  - gameEvent: {fileID: 11400000, guid: 5239f564887e9e54187edbc82a8813d0, type: 2}
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1373722433}
-          m_TargetAssemblyTypeName: SkillCursorController, Assembly-CSharp
-          m_MethodName: UpdateClientInfo
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+--- !u!114 &784544102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784544099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 1282ffec8872e51448466724bfcd88ff, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1837357918}
+        m_TargetAssemblyTypeName: PlayerSkillHandler, Assembly-CSharp
+        m_MethodName: OnCursorConfirm
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &784544103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784544099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: d41dfc7c35c075f4fb26aff621a159be, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1373722433}
+        m_TargetAssemblyTypeName: SkillCursorController, Assembly-CSharp
+        m_MethodName: OnToggleActive
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &784544104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 784544099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: c4c7097a52cfc094e91b08220b94e82a, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1837357918}
+        m_TargetAssemblyTypeName: PlayerSkillHandler, Assembly-CSharp
+        m_MethodName: OnSkillInterrupted
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!1 &837454827
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 837454828}
+  - component: {fileID: 837454829}
+  m_Layer: 0
+  m_Name: SkillCastEventListener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &837454828
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837454827}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1734268079}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &837454829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 837454827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 0}
+  response:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &861625274
 GameObject:
   m_ObjectHideFlags: 0
@@ -2561,40 +2585,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 861625274}
   m_CullTransparentMesh: 1
---- !u!1 &892633536
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 892633537}
-  m_Layer: 0
-  m_Name: Waypoints
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &892633537
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 892633536}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 503003392}
-  - {fileID: 454321034}
-  - {fileID: 137971919}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &894966430
 GameObject:
   m_ObjectHideFlags: 0
@@ -2611,7 +2601,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &894966431
 Transform:
   m_ObjectHideFlags: 0
@@ -2639,35 +2629,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: 64d4aae7f3ab16e4bae1d883de3586db, type: 2}
+  gameEvent: {fileID: 0}
   response:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 919945530}
-        m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
-        m_MethodName: DeleteDungeon
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 919945530}
-        m_TargetAssemblyTypeName: RoomFirstDugeonGenerator, Assembly-CSharp
-        m_MethodName: CreateDungeon
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  eventAndResponsePairs: []
+      m_Calls: []
 --- !u!1 &913878257
 GameObject:
   m_ObjectHideFlags: 0
@@ -3060,7 +3025,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1041016027
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4179,7 +4144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1373722431
 Transform:
   m_ObjectHideFlags: 0
@@ -4214,11 +4179,12 @@ MonoBehaviour:
   removeCachedChannel: {fileID: 11400000, guid: b7f75026e4886ee478d1772f21700f95, type: 2}
   allTargetsConfirmed: {fileID: 11400000, guid: a6eaca300dcfeb44096bcd951ee4e82c, type: 2}
   skillCursorMoves: {fileID: 11400000, guid: 5239f564887e9e54187edbc82a8813d0, type: 2}
+  cursorConfirmed: {fileID: 11400000, guid: 1282ffec8872e51448466724bfcd88ff, type: 2}
+  interruptSkill: {fileID: 11400000, guid: c4c7097a52cfc094e91b08220b94e82a, type: 2}
   spriteRenderer: {fileID: 1770796115}
   dungeonGrid: {fileID: 1631141078}
   movingSpeed: 5
   dimension: {x: 0.9, y: 0.9}
-  targets: []
 --- !u!1 &1468580322
 GameObject:
   m_ObjectHideFlags: 0
@@ -4235,7 +4201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1468580323
 Transform:
   m_ObjectHideFlags: 0
@@ -4263,23 +4229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb644b9ece009f14b816082848407f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameEvent: {fileID: 11400000, guid: a6eaca300dcfeb44096bcd951ee4e82c, type: 2}
+  gameEvent: {fileID: 0}
   response:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1837357918}
-        m_TargetAssemblyTypeName: PlayerSkillHandler, Assembly-CSharp
-        m_MethodName: OnTargetsConfirmed
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  eventAndResponsePairs: []
+      m_Calls: []
 --- !u!1 &1481978915
 GameObject:
   m_ObjectHideFlags: 0
@@ -4999,6 +4952,7 @@ Transform:
   - {fileID: 1803938094}
   - {fileID: 775898379}
   - {fileID: 1773927488}
+  - {fileID: 837454828}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1747368932
@@ -5273,7 +5227,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1837357915}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: FindNearbyClients
+        m_MethodName: OnPlayerMove
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5283,59 +5237,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1837357915}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: UpdateGrid
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1837357915}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: UpdateDistanceMap
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 968151638}
-        m_TargetAssemblyTypeName: EnemyController, Assembly-CSharp
-        m_MethodName: ProcessBehaviorTree
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  eventAndResponsePairs:
-  - gameEvent: {fileID: 11400000, guid: 4b4634cd279226e45afebde8076b7e5e, type: 2}
-    response:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1837357915}
-          m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-          m_MethodName: ToggleDijkstraMap
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &1822322425
 GameObject:
   m_ObjectHideFlags: 0
@@ -5781,12 +5682,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillCursor: {fileID: 1373722433}
-  dungeonGrid: {fileID: 0}
-  skillDefinitions:
-  - {fileID: 11400000, guid: 4e72c99d438e03745b568c867712d8ba, type: 2}
-  - {fileID: 11400000, guid: ace2bb87e8639ee4b8404f8d3c133fd2, type: 2}
-  - {fileID: 11400000, guid: 45b4e59391358e642ad49038b50a0486, type: 2}
-  cachedTargets: []
   gameManager: {fileID: 1707346888}
 --- !u!1 &1904583965
 GameObject:
@@ -6680,6 +6575,5 @@ SceneRoots:
   - {fileID: 1192262115}
   - {fileID: 1938880544}
   - {fileID: 1734268079}
-  - {fileID: 892633537}
   - {fileID: 952316759}
   - {fileID: 1707346889}

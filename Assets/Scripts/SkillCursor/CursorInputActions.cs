@@ -238,7 +238,7 @@ public partial class @CursorInputActions: IInputActionCollection2, IDisposable
         public InputAction @Down => m_Wrapper.m_CursorActions_Down;
         public InputAction @Right => m_Wrapper.m_CursorActions_Right;
         public InputAction @Left => m_Wrapper.m_CursorActions_Left;
-        public InputAction @Undo => m_Wrapper.m_CursorActions_Undo;
+        public InputAction Interrupt => m_Wrapper.m_CursorActions_Undo;
         public InputActionMap Get() { return m_Wrapper.m_CursorActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -263,9 +263,9 @@ public partial class @CursorInputActions: IInputActionCollection2, IDisposable
             @Left.started += instance.OnLeft;
             @Left.performed += instance.OnLeft;
             @Left.canceled += instance.OnLeft;
-            @Undo.started += instance.OnUndo;
-            @Undo.performed += instance.OnUndo;
-            @Undo.canceled += instance.OnUndo;
+            Interrupt.started += instance.OnUndo;
+            Interrupt.performed += instance.OnUndo;
+            Interrupt.canceled += instance.OnUndo;
         }
 
         private void UnregisterCallbacks(ICursorActionsActions instance)
@@ -285,9 +285,9 @@ public partial class @CursorInputActions: IInputActionCollection2, IDisposable
             @Left.started -= instance.OnLeft;
             @Left.performed -= instance.OnLeft;
             @Left.canceled -= instance.OnLeft;
-            @Undo.started -= instance.OnUndo;
-            @Undo.performed -= instance.OnUndo;
-            @Undo.canceled -= instance.OnUndo;
+            Interrupt.started -= instance.OnUndo;
+            Interrupt.performed -= instance.OnUndo;
+            Interrupt.canceled -= instance.OnUndo;
         }
 
         public void RemoveCallbacks(ICursorActionsActions instance)

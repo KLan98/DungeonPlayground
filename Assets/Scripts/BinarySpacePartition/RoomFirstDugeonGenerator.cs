@@ -50,12 +50,12 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
         }
     }
 
-    public void DeleteDungeon()
+    public void OnDeleteDungeon()
     {
         tilemapVisualizer.ClearTiles(arena);
     }
 
-    public void CreateDungeon()
+    public void OnCreateDungeon()
     {
         CheckArenaSettings();
         CreateRooms();

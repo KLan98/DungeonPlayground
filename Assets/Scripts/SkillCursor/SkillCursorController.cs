@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class SkillCursorController : MonoBehaviour, IToggleGameObject
 {
@@ -13,6 +14,8 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     [SerializeField] private GameObjectChannel removeCachedChannel;
     [SerializeField] private GameEvent allTargetsConfirmed;
     [SerializeField] private GameEvent skillCursorMoves;
+    [SerializeField] private GameEvent cursorConfirmed;
+    [SerializeField] private GameEvent interruptSkill;
 
     [Header("Components")]
     [SerializeField] private SpriteRenderer spriteRenderer;
@@ -24,31 +27,20 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
     [Header("Debug")]
     [SerializeField] private static List<Client> nearByClients = new List<Client>();
-    [SerializeField] private List<GameObject> targets = new List<GameObject>();
     [SerializeField] private static Client client;
 
     // ----------------------------------------PRIVATE FIELDS------------------------------------------
-    private Vector2 confirmedPosition;
-
     private Vector2 direction;
 
     private Vector2 targetPosition;
 
     private bool isMoving;
 
-    private bool destinationRequired;
-
     private const float timeBetweenMovement = 0.2f;
-
-    private int numberOfTargets; // local for required targets of a skill
 
     private const int tileSize = 1;
 
     private CursorInputActions cursorInput;
-
-    private GameObject target;
-
-    private bool hasImpactRangePreview;
 
     // ----------------------------------------PRIVATE PROPERTIES------------------------------------------
     private Vector2 cursorPosition
@@ -76,22 +68,26 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         }
     }
 
+    //-----------------------------------------------PUBLIC FIELDS-------------------------
+    public static SkillCursorController Instance { get; private set; }
+
     //------------------------------BUILT-IN METHODS-----------------------------
     private void Awake()
     {
         cursorInput = new CursorInputActions();
+        Instance = this;
     }
 
     private void Start()
     {
         client = dungeonGrid.spatialHashGrid.NewClient(cursorPosition, dimension, "SkillCursor", false);
+        this.gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
         direction = Vector2.zero;
         isMoving = false;
-        targets.Clear();
         cursorInput.Enable();
     }
 
@@ -104,68 +100,12 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     {
         if (cursorInput.CursorActions.Confirm.WasPressedThisFrame())
         {
-            ITargetable cursorTarget = GetCursorTarget();
-
-            // target is game object
-            if (cursorTarget is GameObjectTarget target)
-            {
-                // if not enough targets added
-                if (targets.Count < numberOfTargets)
-                {
-                    if (!targets.Contains(target.GameObject) && target.GameObject != null)
-                    {
-                        targets.Add(target.GameObject);
-                        // cache target in playerSkillHandler    
-                        gameObjectChannel.RaiseEvent(target.GameObject);
-                    }
-                }
-            }
-
-            // target is grid index
-            else if (cursorTarget is TileTarget tileTarget)
-            {
-                if (destinationRequired)
-                {
-                    confirmedPosition = tileTarget.CellPosition;
-
-                    if (targets.Count == 1)
-                    {
-                        //pass confirmed position to event channel
-                        vector2Channel.RaiseEvent(confirmedPosition);
-                    }
-                }
-
-                else
-                {
-                    // if target count of the skill SO and targets list = 0 
-                    if (numberOfTargets == 0 && targets.Count == 0)
-                    {
-                        // raise vector2int event
-                        vector2IntChannel.RaiseEvent(tileTarget.CellIndex);
-                    }
-
-                    else
-                    {
-                        Debug.Log("Player selected empty tile");
-                    }
-                }
-            }
-
-            else
-            {
-                return;
-            }
+            cursorConfirmed.Raise();
         }
 
-        else if (cursorInput.CursorActions.Undo.WasPressedThisFrame())
+        else if (cursorInput.CursorActions.Interrupt.WasPressedThisFrame())
         {
-            if (targets.Count > 0)
-            {
-                // undo the latest target
-                GameObject removedTarget = targets[targets.Count - 1];
-                targets.Remove(removedTarget);
-                removeCachedChannel.RaiseEvent(removedTarget);
-            }
+            interruptSkill.Raise();
         }
     }
 
@@ -219,7 +159,6 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     private IEnumerator MoveToTarget(Vector2 targetPosition)
     {
         isMoving = true;
-        target = null; // reset target
         while (Vector2.Distance(cursorPosition, targetPosition) > 0.01f)
         {
             transform.position = Vector2.MoveTowards(
@@ -234,7 +173,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
         yield return WaitUntilNextMovement(timeBetweenMovement);
 
-        skillCursorMoves.RaiseGameEvent(skillCursorMoves);
+        skillCursorMoves.Raise();
 
         isMoving = false;
     }
@@ -257,12 +196,6 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
     //-----------------------------PRIVATE METHODS-------------------------------
 
-
-    private void RenderImpactPattern()
-    {
-
-    }
-
     private void FindNearbyClients()
     {
         nearByClients.Clear();
@@ -279,43 +212,26 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         dungeonGrid.spatialHashGrid.UpdateGrid(client);
     }
 
+    private void UpdateBlastRadius()
+    {
+        // move the blast radius whenever the cursor moves
+    }
+
+    /// <summary>
+    /// Create game object blast radius and attach children game objects base on parameter
+    /// </summary>
+    /// <param name="value">
+    /// Number of cells the blast radius has
+    /// </param>
+    private void CreateBlastRadiusTiles(Vector2 position)
+    {
+
+
+
+    }
+
     //-----------------------------PUBLIC METHODS---------------------------------
-    public void BeginSelection(SkillRequirements requirements)
-    {
-        numberOfTargets = requirements.TargetCount;
-        Debug.Log($"The requirements for this skill {requirements.SkillID} are: target count: {requirements.TargetCount}, need position: {requirements.NeedDestination} and target type: {requirements.SkillTargetType}");
-
-        if (requirements.NeedDestination)
-        {
-            destinationRequired = true;
-        }
-
-        else
-        {
-            destinationRequired = false;
-        }
-
-        if (requirements.HasImpactPattern)
-        {
-            hasImpactRangePreview = true;
-        }
-
-        else
-        {
-            hasImpactRangePreview = false;
-        }
-
-        IsActive = true;
-    }
-
-    public void ToggleGameObjectActive()
-    {
-        IsActive = !IsActive;
-
-        target = null;
-    }
-
-    public static ITargetable GetCursorTarget()
+    public ITargetable GetCursorTarget()
     {
         if (nearByClients.Count > 0)
         {
@@ -325,9 +241,10 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
                 {
                     return new GameObjectTarget(client.GameObject, client.Indices[0]);
                 }
-
-                return new TileTarget(client.Indices[0], client.Position);
             }
+
+            // if no game object target found then return tile target with cursor's parameters
+            return new TileTarget(client.Indices[0], client.Position);
         }
 
         // else return 
@@ -335,20 +252,62 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         return null;
     }
 
-    public static Vector2 GetCursorPosition()
+    public Vector2 GetCursorPosition()
     {
         return client.Position;
     }
 
-    public static Vector2Int GetCursorIndex()
+    public Vector2Int GetCursorIndex()
     {
         return client.Indices[0];
     }
 
+    public void SpawnBlastRadiusTiles (int blastRadius)
+    {
+        Vector2 cursorPosition = GetCursorPosition();
+        Vector2Int cursorIndex = GetCursorIndex();
+
+        GameObject origin = new GameObject("BlastRadius");
+        Material material = Resources.Load<Material>("Materials/BlastRadius");
+
+        for (int x = -blastRadius; x <= blastRadius; x++)
+        {
+            for (int y = -blastRadius; y <= blastRadius; y++)
+            {
+                int manhattanDistance = Mathf.Abs(x) + Mathf.Abs(y);
+
+                if (manhattanDistance > 0 && manhattanDistance <= blastRadius)
+                {
+                    Vector2Int tileIndex = new Vector2Int(x, y);
+                    Vector2 tilePosition = cursorPosition + tileIndex;
+
+                    GameObject tile = new GameObject("Tile");
+                    tile.AddComponent<MeshRenderer>().material = material;
+                    tile.AddComponent<MeshFilter>();
+                    tile.AddComponent<VertexMesh>();
+                    tile.transform.SetParent(origin.transform);
+                    tile.transform.position = tilePosition;
+                }
+            }
+        }
+
+    }
+
     //------------------------------EVENT RESPONSES------------------------------------------
-    public void UpdateClientInfo()
+    public void OnCursorMove()
     {
         FindNearbyClients();
+        foreach (var client in nearByClients)
+        {
+            Debug.Log($"Nearby client {client.Name}");
+        }
+        Debug.Log("-----------------------");
         UpdateGrid();
+        UpdateBlastRadius();
+    }
+
+    public void OnToggleActive()
+    {
+        IsActive = !IsActive;
     }
 }

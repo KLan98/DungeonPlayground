@@ -88,4 +88,5 @@ public enum StatName
     DAMAGE,
     COST,
     HEALTH,
+    BLAST_RADIUS,
 }

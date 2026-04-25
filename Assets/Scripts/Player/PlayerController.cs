@@ -21,30 +21,16 @@ public class PlayerController : MonoBehaviour
 
 
     //--------------------------EVENT RESPONSE--------------------------------
-    public void FindNearbyClients()
-    {
-        nearByClients.Clear();
-        foreach (var c in dungeonGrid.spatialHashGrid.FindNear(position, dimension))
-        {
-            if (c.ClientID != client.ClientID)
-                nearByClients.Add(c);
-        }
-    }
-
-    public void UpdateGrid()
-    {
-        UpdateClientInfo();
-        dungeonGrid.spatialHashGrid.UpdateGrid(client);
-    }
-
-    public void UpdateDistanceMap()
-    {
-        BFSPathFinding.ComputeDistanceMap(client.Indices[0], dungeonGrid.spatialHashGrid.Cells);
-    }
-
-    public void ToggleDijkstraMap()
+    public void OnToggleDijkstraMap()
     {
         ToggleColor(dungeonGrid.spatialHashGrid.Cells);
+    }
+
+    public void OnPlayerMove()
+    {
+        FindNearbyClients();
+        UpdateGrid();
+        UpdateDistanceMap();
     }
 
     //--------------------------PRIVATE METHODS--------------------------------
@@ -86,6 +72,27 @@ public class PlayerController : MonoBehaviour
     private void UpdateClientInfo()
     {
         client.Position = position;
+    }
+
+    private void FindNearbyClients()
+    {
+        nearByClients.Clear();
+        foreach (var c in dungeonGrid.spatialHashGrid.FindNear(position, dimension))
+        {
+            if (c.ClientID != client.ClientID)
+                nearByClients.Add(c);
+        }
+    }
+
+    private void UpdateGrid()
+    {
+        UpdateClientInfo();
+        dungeonGrid.spatialHashGrid.UpdateGrid(client);
+    }
+
+    private void UpdateDistanceMap()
+    {
+        BFSPathFinding.ComputeDistanceMap(client.Indices[0], dungeonGrid.spatialHashGrid.Cells);
     }
 
     //--------------------------BUILT-IN METHODS--------------------------------

@@ -19,6 +19,6 @@ public class DevHotBarOption : MonoBehaviour
 
     public void TriggerGameEvent()
     {
-        gameEvent.Raise();
+        //gameEvent.Raise();
     }
 }

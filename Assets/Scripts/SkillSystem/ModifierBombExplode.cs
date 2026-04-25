@@ -3,10 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Modifier for bomb explode
+/// </summary>
 public class ModifierBombExplode : MonoBehaviour
 {
     private float delay;
-    private int maxRange;
+    private int blastRadius;
     private int damage;
     private Vector2Int index;
     private DungeonGrid grid;
@@ -14,7 +17,7 @@ public class ModifierBombExplode : MonoBehaviour
     public void OnCreated(ThinkerParams thinkerParams, DungeonGrid grid)
     {
         this.delay = thinkerParams.Delay;
-        this.maxRange = thinkerParams.MaxRange;
+        this.blastRadius = thinkerParams.BlastRadius;
         this.damage = thinkerParams.Damage;
         this.index = thinkerParams.Index;
         this.grid = grid;
@@ -25,19 +28,19 @@ public class ModifierBombExplode : MonoBehaviour
     public void OnIntervalThink()
     {
         // find hit enemies 
-        List<Client> enemies = FindEnemiesInRadius(index, maxRange);
+        List<Client> hitTargets = FindTargetInBlastRadius(index, blastRadius);
 
         // make each enemy takes damage
-        foreach (Client enemy in enemies)
+        foreach (Client target in hitTargets)
         {
             // can add elemental resistance
-            if (enemy != null && !enemy.WalkableTile)
+            if (target != null && !target.WalkableTile)
             {
                 // construct damage table
                 //DamageTable damageTable = {}
                 DamageTable damageTable = new DamageTable();
-                MyAPI.ApplyDamage(damageTable);
-                Debug.Log($"{enemy} hit with bomb at {enemy.Position}");
+                MyAPI.ApplyDamage(damageTable); // damage applied once
+                Debug.Log($"{target.Name} hit with bomb at {target.Position}");
             }
         }
 
@@ -46,46 +49,31 @@ public class ModifierBombExplode : MonoBehaviour
         // sfx
     }
 
-    private List<Client> FindEnemiesInRadius(Vector2Int cursorIndex, int maxRadius)
+    private List<Client> FindTargetInBlastRadius(Vector2Int cursorIndex, int maxRadius)
     {
-        List<Client> enemies = new List<Client>();
+        List<Client> hitTargets = new List<Client>();
         for (int x = -maxRadius; x <= maxRadius; x++)
         {
             for (int y = -maxRadius; y <= maxRadius; y++)
             {
                 int manhattanDistance = Mathf.Abs(x) + Mathf.Abs(y);
 
+                // only considered as hit target whenever
+                // stopping player to cast this skill at his position
                 if (manhattanDistance > 0 && manhattanDistance <= maxRadius)
                 {
-                    Vector2Int index =new Vector2Int(x + cursorIndex.x, y + cursorIndex.y);
+                    Vector2Int index = new Vector2Int(x + cursorIndex.x, y + cursorIndex.y);
                     
-                    Client client = grid.GetClientAtIndex(index);
+                    Client client = DungeonGrid.Instance.GetClientAtIndex(index);
 
                     if (client != null)
                     {
-                        enemies.Add(client);    
+                        hitTargets.Add(client);    
                     }
                 }
             }
         }
 
-        return enemies;
-    }
-
-    private void ImpactPattern(Vector2Int cursorIndex, List<Vector2Int> impactPattern, int maxRadius)
-    {
-        for (int x = -maxRadius; x <= maxRadius; x++)
-        {
-            for (int y = -maxRadius; y <= maxRadius; y++)
-            {
-                int manhattanDistance = Mathf.Abs(x) + Mathf.Abs(y);
-                bool isInDiamondRing = manhattanDistance == 1 || manhattanDistance == 2 || manhattanDistance == maxRadius;
-
-                if (isInDiamondRing)
-                {
-                    impactPattern.Add(cursorIndex + new Vector2Int(x, y));
-                }
-            }
-        }
+        return hitTargets;
     }
 }

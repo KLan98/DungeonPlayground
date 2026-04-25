@@ -5,13 +5,15 @@ using UnityEngine;
 public class DungeonGrid : MonoBehaviour
 {
     readonly private Vector2[] bounds = new Vector2[] { new Vector2(-100, -100), new Vector2(100, 100) };
-    readonly private Vector2 dimension = new Vector2(200, 200);  
+    readonly private Vector2 dimension = new Vector2(200, 200);
 
+    public static DungeonGrid Instance { get; private set; }
     public SpatialHashGridsOptimized spatialHashGrid;
 
     private void Awake()
     {
         spatialHashGrid = new SpatialHashGridsOptimized(bounds, dimension);
+        Instance = this;
     }
 
     //private void OnDrawGizmos()
