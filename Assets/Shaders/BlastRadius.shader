@@ -2,6 +2,7 @@ Shader "Unlit/BlastRadius"
 {
     Properties
     {
+        _Opacity ("Opacity", Range(0,1)) = 1
         _Red("Red", Color) = (1, 0, 0, 1)
         _TimeScale("Speed", Float) = 1.0
     }
@@ -20,6 +21,7 @@ Shader "Unlit/BlastRadius"
 
             fixed4 _Red;
             float _TimeScale;
+            float _Opacity;
 
             struct appdata
             {
@@ -42,9 +44,11 @@ Shader "Unlit/BlastRadius"
             {
                 // Create a sine wave that oscillates between 0 and 1
                 float t = sin(_Time.y * _TimeScale) * 0.5 + 0.5;
+                // fixed4 col = _Red * t * _Opacity;
+                // fixed4 empty;
+                fixed4 red = (1, 0, 0, _Opacity);
 
-                // Multiply color by the sine value (blinking effect)
-                return _Red * t;
+                return red;
             }
             ENDCG
         }

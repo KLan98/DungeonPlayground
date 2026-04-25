@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
 public class SkillCursorController : MonoBehaviour, IToggleGameObject
@@ -89,6 +90,9 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         direction = Vector2.zero;
         isMoving = false;
         cursorInput.Enable();
+
+        // snap the position into index
+        transform.position = MyAPI.GetCellCenter(cursorPosition);
     }
 
     private void OnDisable()
@@ -143,7 +147,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
         if (direction != Vector2.zero)
         {
-            targetPosition = GetCellCenter(cursorPosition) + direction * tileSize;
+            targetPosition = MyAPI.GetCellCenter(cursorPosition) + direction;
             StartCoroutine(MoveToTarget(targetPosition));
         }
     }
@@ -169,7 +173,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
             yield return null;
         }
 
-        transform.position = GetCellCenter(cursorPosition);
+        transform.position = MyAPI.GetCellCenter(cursorPosition);
 
         yield return WaitUntilNextMovement(timeBetweenMovement);
 
@@ -181,17 +185,6 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     private IEnumerator WaitUntilNextMovement(float time)
     {
         yield return new WaitForSeconds(time);
-    }
-
-    // take in a worldPosition and convert to cell
-    private Vector2 GetCellCenter(Vector2 worldPosition)
-    {
-        int xIndex = Mathf.FloorToInt(worldPosition.x / tileSize);
-        int yIndex = Mathf.FloorToInt(worldPosition.y / tileSize);
-        return new Vector2(
-            xIndex * tileSize + tileSize / 2f,
-            yIndex * tileSize + tileSize / 2f
-        );
     }
 
     //-----------------------------PRIVATE METHODS-------------------------------
@@ -210,24 +203,6 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     {
         client.Position = cursorPosition;
         dungeonGrid.spatialHashGrid.UpdateGrid(client);
-    }
-
-    private void UpdateBlastRadius()
-    {
-        // move the blast radius whenever the cursor moves
-    }
-
-    /// <summary>
-    /// Create game object blast radius and attach children game objects base on parameter
-    /// </summary>
-    /// <param name="value">
-    /// Number of cells the blast radius has
-    /// </param>
-    private void CreateBlastRadiusTiles(Vector2 position)
-    {
-
-
-
     }
 
     //-----------------------------PUBLIC METHODS---------------------------------
@@ -264,10 +239,11 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
     public void SpawnBlastRadiusTiles (int blastRadius)
     {
-        Vector2 cursorPosition = GetCursorPosition();
         Vector2Int cursorIndex = GetCursorIndex();
 
         GameObject origin = new GameObject("BlastRadius");
+        origin.transform.SetParent(this.transform);
+        origin.transform.position = new Vector3(transform.position.x, transform.position.y, -0.1f);
         Material material = Resources.Load<Material>("Materials/BlastRadius");
 
         for (int x = -blastRadius; x <= blastRadius; x++)
@@ -279,18 +255,15 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
                 if (manhattanDistance > 0 && manhattanDistance <= blastRadius)
                 {
                     Vector2Int tileIndex = new Vector2Int(x, y);
-                    Vector2 tilePosition = cursorPosition + tileIndex;
-
                     GameObject tile = new GameObject("Tile");
                     tile.AddComponent<MeshRenderer>().material = material;
                     tile.AddComponent<MeshFilter>();
                     tile.AddComponent<VertexMesh>();
                     tile.transform.SetParent(origin.transform);
-                    tile.transform.position = tilePosition;
+                    tile.transform.position = new Vector3(origin.transform.position.x + tileIndex.x - 0.5f, origin.transform.position.y + tileIndex.y - 0.5f, origin.transform.position.z); 
                 }
             }
         }
-
     }
 
     //------------------------------EVENT RESPONSES------------------------------------------
@@ -303,7 +276,6 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         }
         Debug.Log("-----------------------");
         UpdateGrid();
-        UpdateBlastRadius();
     }
 
     public void OnToggleActive()

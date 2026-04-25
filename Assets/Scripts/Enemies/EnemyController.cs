@@ -46,6 +46,12 @@ public class EnemyController : MonoBehaviour
         dungeonGrid.spatialHashGrid.UpdateGrid(client);
     }
 
+    public void OnEnemyMove()
+    {
+        FindNearbyClients();
+        UpdateGrid();
+    }
+
 
     //-------------------------------PRIVATE METHODS-------------------------------
     private void UpdateClientInfo()
@@ -82,6 +88,10 @@ public class EnemyController : MonoBehaviour
         tree.AddNode(moveTowardPlayerNode);
         tree.AddNode(invertNode);
         tree.AddNode(findPlayerNode);
+
+        transform.position = MyAPI.GetCellCenter(position);
+
+        OnEnemyMove();
     }
 
     private void OnDrawGizmos()

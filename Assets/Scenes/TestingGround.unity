@@ -2972,7 +2972,7 @@ Transform:
   m_GameObject: {fileID: 968151634}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.748, y: 0.0020000935, z: 0}
+  m_LocalPosition: {x: 5, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4159,7 +4159,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1770796114}
-  m_Father: {fileID: 1938880544}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1373722433
 MonoBehaviour:
@@ -4329,8 +4329,8 @@ TilemapRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 743687309
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
@@ -4899,7 +4899,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 224ffec960041804dbff0e576f5bd3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 1631141078}
 --- !u!4 &1707346889
 Transform:
   m_ObjectHideFlags: 0
@@ -6115,38 +6114,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933005948}
   m_CullTransparentMesh: 1
---- !u!1 &1938880542
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1938880544}
-  m_Layer: 0
-  m_Name: SkillCursor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1938880544
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1938880542}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1373722431}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1967450703
 GameObject:
   m_ObjectHideFlags: 0
@@ -6573,7 +6540,7 @@ SceneRoots:
   - {fileID: 968151637}
   - {fileID: 1320992338}
   - {fileID: 1192262115}
-  - {fileID: 1938880544}
+  - {fileID: 1373722431}
   - {fileID: 1734268079}
   - {fileID: 952316759}
   - {fileID: 1707346889}

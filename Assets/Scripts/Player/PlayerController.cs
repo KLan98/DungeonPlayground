@@ -102,6 +102,9 @@ public class PlayerController : MonoBehaviour
         //sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
         client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Player", false);
         client.GameObject = this.gameObject;
+
+        transform.position = MyAPI.GetCellCenter(position);
+        OnPlayerMove();
     }
 
     private void OnDrawGizmos()

@@ -12,16 +12,14 @@ public class ModifierBombExplode : MonoBehaviour
     private int blastRadius;
     private int damage;
     private Vector2Int index;
-    private DungeonGrid grid;
 
-    public void OnCreated(ThinkerParams thinkerParams, DungeonGrid grid)
+    public void OnCreated(ThinkerParams thinkerParams)
     {
         this.delay = thinkerParams.Delay;
         this.blastRadius = thinkerParams.BlastRadius;
         this.damage = thinkerParams.Damage;
         this.index = thinkerParams.Index;
-        this.grid = grid;
-        Debug.Log($"modifier for bomb explode created with thinkerParams {thinkerParams}, grid {grid} as arguments");
+        Debug.Log($"modifier for bomb explode created with thinkerParams {thinkerParams}");
         Invoke(nameof(OnIntervalThink), delay);
     }
 

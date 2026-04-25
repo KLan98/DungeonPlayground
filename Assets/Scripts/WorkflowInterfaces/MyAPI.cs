@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class MyAPI
 {
+    private const int tileSize = 1;
     /// <summary>
     /// Thinker contains modifiers here is where modifiers for skills are added. A skill need modifiers to have behaviors
     /// </summary>
     /// <param name="skillID"></param>
     /// <param name="origin"></param>
     /// <param name="thinkerParams"></param>
-    /// <param name="grid"></param>
-    public static void CreateThinker(SkillID skillID, Vector2 origin, ThinkerParams thinkerParams, DungeonGrid grid)
+    public static void CreateThinker(SkillID skillID, Vector2 origin, ThinkerParams thinkerParams)
     {
         GameObject thinker = new GameObject(skillID.ToString() + " THINKER");
         thinker.transform.position = origin;
@@ -19,7 +19,7 @@ public class MyAPI
         switch(skillID)
         {
             case SkillID.BOMB:
-                thinker.AddComponent<ModifierBombExplode>().OnCreated(thinkerParams, grid);
+                thinker.AddComponent<ModifierBombExplode>().OnCreated(thinkerParams);
                 break;
             case SkillID.WIND_TELEPORTATION:
                 break;
@@ -29,6 +29,21 @@ public class MyAPI
     public static void ApplyDamage(DamageTable damageTable)
     {
         // LAN_TODO raise apply damage event, pass damage table to channel
+    }
+
+    /// <summary>
+    /// Take in world position and convert to cell
+    /// </summary>
+    /// <param name="worldPosition"></param>
+    /// <returns></returns>
+    public static Vector2 GetCellCenter(Vector2 worldPosition)
+    {
+        int xIndex = Mathf.FloorToInt(worldPosition.x / tileSize);
+        int yIndex = Mathf.FloorToInt(worldPosition.y / tileSize);
+        return new Vector2(
+            xIndex * tileSize + tileSize / 2f,
+            yIndex * tileSize + tileSize / 2f
+        );
     }
 }
 

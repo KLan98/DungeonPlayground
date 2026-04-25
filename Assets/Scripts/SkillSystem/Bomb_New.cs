@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class Bomb_New : MySkill
 {
-    private DungeonGrid grid;
-    public Bomb_New(DungeonGrid grid)
+    public Bomb_New()
     {
         skillID = SkillID.BOMB;
         damage = new DynamicStats(StatName.DAMAGE, 10);
         cost = new DynamicStats(StatName.COST, 1);
         blastRadius = new DynamicStats(StatName.BLAST_RADIUS, 2);
-        this.grid = grid;
         //Icon = SkillAssets.GetIcon(skillID);
     }
 
@@ -32,7 +30,7 @@ public class Bomb_New : MySkill
         // finding nearby enemies dealing damage to enemies
         // the targetfx needs to know about the effect file, as well as the origin for soundfx
         ThinkerParams thinkerParams = new ThinkerParams { Damage = this.damage.Value, Delay = 0.5f, BlastRadius = this.blastRadius.Value, Index = SkillCursorController.Instance.GetCursorIndex()};
-        MyAPI.CreateThinker(skillID, Vector2.one, thinkerParams, grid);
+        MyAPI.CreateThinker(skillID, Vector2.one, thinkerParams);
         Debug.Log($"thinkerParams {thinkerParams.Damage}, {thinkerParams.Delay}, {thinkerParams.Index}, {thinkerParams.BlastRadius}");
     }
 

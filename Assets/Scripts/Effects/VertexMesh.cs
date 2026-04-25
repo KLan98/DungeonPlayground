@@ -16,14 +16,6 @@ public class VertexMesh : MonoBehaviour
             new Vector3(1, 1, 0)
         };
 
-        mesh.colors = new Color[]
-        {
-            Color.red,    // bottom-left
-            Color.blue,   // bottom-right
-            Color.green,  // top-left
-            Color.yellow  // top-right
-        };
-
         mesh.triangles = new int[]
         {
             0,2,1, // clock wise
