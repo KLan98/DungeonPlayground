@@ -38,7 +38,7 @@ public class ModifierBombExplode : MonoBehaviour
                 //DamageTable damageTable = {}
                 DamageTable damageTable = new DamageTable();
                 MyAPI.ApplyDamage(damageTable); // damage applied once
-                Debug.Log($"{target.Name} hit with bomb at {target.Position}");
+                Debug.Log($"{target.Name} hit with bomb at {target.Position}, dealing {damage} damage");
             }
         }
 

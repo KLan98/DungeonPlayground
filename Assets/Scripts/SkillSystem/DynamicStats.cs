@@ -56,17 +56,22 @@ public class DynamicStats
         this.minValue = 0;
     }
 
-    public void SetValue(int newValue)
-    {
-        if (newValue != value)
-        {
-            value = newValue;
-        }
-    }
-
+    //--------------------------------PUBLIC METHODS------------------------------------
+    /// <summary>
+    /// Buff or debuff stat
+    /// </summary>
+    /// <param name="amount"></param>
+    /// amount can be > 0 or < 0
     public void AdjustValue(int amount)
     {
-        SetValue(value + amount);
+        if (amount == 0)
+        {
+            Debug.LogWarning("Parameter cannot be 0");
+        }
+
+        int result = value + amount;
+        Mathf.Clamp(value, minValue, maxValue);
+        SetValue(result);
     }
 
     public void ResetToMax()
@@ -79,8 +84,19 @@ public class DynamicStats
         SetValue(minValue);
     }
 
-    // event system when this stat changes the other code entities/systems should react accordingly
+    //-----------------------------EVENT--------------------------------------------
+    // LAN_TODO event system when this stat changes the other code entities/systems should react accordingly
+    public void OnStatChanged()
+    {
 
+    }
+
+
+    //--------------------------PRIVATE METHODS------------------------------------
+    private void SetValue(int newValue)
+    {
+        value = newValue;
+    }
 }
 
 public enum StatName

@@ -243,7 +243,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
         GameObject origin = new GameObject("BlastRadius");
         origin.transform.SetParent(this.transform);
-        origin.transform.position = new Vector3(transform.position.x, transform.position.y, -0.1f);
+        origin.transform.position = new Vector3(transform.position.x, transform.position.y);
         Material material = Resources.Load<Material>("Materials/BlastRadius");
 
         for (int x = -blastRadius; x <= blastRadius; x++)
