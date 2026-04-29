@@ -59,6 +59,15 @@ public class MySkill
         }
     }
 
+    protected DynamicStats level;
+    public DynamicStats Level
+    {
+        get
+        {
+            return level;
+        }
+    }
+
     //---------------------------------SKILL EVENTS---------------------------------
 
     /// <summary>
@@ -84,14 +93,22 @@ public class MySkill
     public virtual bool OnSkillPhaseStart()
     {
         Debug.Log($"OnSkillPhaseStart of {this} is called");
+
+        // LAN_TODO: add checks for player's resources
+
         return true;
     }
 
     /// <summary>
-    /// When skill phase is cancelled for any reason. No return type, no parameters
+    /// When skill phase is cancelled for any reason, reset all private fields of specific skill to init states. No return type, no parameters
     /// </summary>
     public virtual void OnSkillPhaseInterrupted()
     {
         Debug.Log($"OnSkillPhaseInterrupted of {this} is called");
+
+        if (SkillCursorController.Instance.gameObject.activeInHierarchy)
+        {
+            SkillCursorController.Instance.ToggleActive();
+        }
     }
 }

@@ -11,10 +11,9 @@ using UnityEngine;
 public class PlayerSkillHandler : MonoBehaviour
 {
     [SerializeField] private SkillCursorController skillCursor;
-
-    private MySkill activeSkill;
-
     [SerializeField] private GameManager gameManager;
+    private MySkill activeSkill;
+    private GameObject blastRadius;
 
     //---------------------BUILT-IN METHODS------------------------------
 
@@ -37,24 +36,33 @@ public class PlayerSkillHandler : MonoBehaviour
             activeSkill.OnSkillStart();
         }
     }
+
     public void OnSkillInterrupted()
     {
         if (activeSkill != null)
         {
             activeSkill.OnSkillPhaseInterrupted();
             activeSkill = null;
-            SkillCursorController.Instance.gameObject.SetActive(false);
+
+            if (SkillCursorController.Instance.gameObject.activeInHierarchy)
+            {
+                SkillCursorController.Instance.ToggleActive();
+            }
+
+            if (blastRadius != null)
+            {
+                SkillCursorController.Instance.DestroyBlastRadius(blastRadius);
+                blastRadius = null;
+            }
         }
     }
 
-    //--------------------------PRIVATE METHODS------------------------
-
     //-----------------------ON-CLICK RESPONSE------------------------------
-
-    // LAN_TODO: whenever a skill is selected it calls the cast skill method
-    // this method handles the enabling of cursor 
+    // LAN_NOTE: only place holder for testing cast bomb, will be deprecated
     public void CastBomb()
     {
+        OnSkillInterrupted();
+
         activeSkill = gameManager.Bomb;
 
         if (activeSkill == null || !activeSkill.OnSkillPhaseStart())
@@ -62,9 +70,29 @@ public class PlayerSkillHandler : MonoBehaviour
             return;
         }
 
-        SkillCursorController.Instance.gameObject.SetActive(true);
+        if (!SkillCursorController.Instance.gameObject.activeInHierarchy)
+        {
+            SkillCursorController.Instance.ToggleActive();
+        }
 
         // pass blast radius of active skill to skill cursor controller
-        SkillCursorController.Instance.SpawnBlastRadiusTiles(activeSkill.BlastRadius.Value);
+        blastRadius = SkillCursorController.Instance.SpawnBlastRadiusTiles(activeSkill.BlastRadius.Value);
+    }
+
+    public void CastTeleportation()
+    {
+        OnSkillInterrupted();
+
+        activeSkill = gameManager.Teleportation;
+
+        if (activeSkill == null || !activeSkill.OnSkillPhaseStart())
+        {
+            return;
+        }
+
+        if (!SkillCursorController.Instance.gameObject.activeInHierarchy)
+        {
+            SkillCursorController.Instance.ToggleActive();
+        }
     }
 }

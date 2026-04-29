@@ -12,6 +12,7 @@ public class ModifierBombExplode : MonoBehaviour
     private int blastRadius;
     private int damage;
     private Vector2Int index;
+    private int level;
 
     public void OnCreated(ThinkerParams thinkerParams)
     {
@@ -19,12 +20,19 @@ public class ModifierBombExplode : MonoBehaviour
         this.blastRadius = thinkerParams.BlastRadius;
         this.damage = thinkerParams.Damage;
         this.index = thinkerParams.Index;
+        this.level = thinkerParams.Level;
         Debug.Log($"modifier for bomb explode created with thinkerParams {thinkerParams}");
         Invoke(nameof(OnIntervalThink), delay);
     }
 
     public void OnIntervalThink()
     {
+        if (blastRadius == 0)
+        {
+            Debug.Log("This modifier requires greater than 0 blast radius");
+            return;
+        }
+
         // find hit enemies 
         List<Client> hitTargets = FindTargetInBlastRadius(index, blastRadius);
 
@@ -43,6 +51,8 @@ public class ModifierBombExplode : MonoBehaviour
         }
 
         // vfx
+        GameObject effectInstance =  EffectsManager.CreateEffect(Resources.Load<GameObject>("Prefabs/Effects/Explosion_LV" + level.ToString()), EffectAttach.ATTACH_WORLD, null);
+        EffectsManager.SetEffectControl(effectInstance, this.transform.position);
 
         // sfx
     }

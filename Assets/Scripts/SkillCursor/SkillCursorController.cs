@@ -43,15 +43,6 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
     private CursorInputActions cursorInput;
 
-    // ----------------------------------------PRIVATE PROPERTIES------------------------------------------
-    private Vector2 cursorPosition
-    {
-        get
-        {
-            return transform.position;
-        }
-    }
-
     // ----------------------------------------PUBLIC PROPERTIES------------------------------------------
     public bool IsActive
     {
@@ -81,7 +72,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
     private void Start()
     {
-        client = dungeonGrid.spatialHashGrid.NewClient(cursorPosition, dimension, "SkillCursor", false);
+        client = dungeonGrid.spatialHashGrid.NewClient(GetCursorPosition(), dimension, "SkillCursor", false);
         this.gameObject.SetActive(false);
     }
 
@@ -92,7 +83,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         cursorInput.Enable();
 
         // snap the position into index
-        transform.position = MyAPI.GetCellCenter(cursorPosition);
+        transform.position = MyAPI.GetCellCenter(GetCursorPosition());
     }
 
     private void OnDisable()
@@ -147,7 +138,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
         if (direction != Vector2.zero)
         {
-            targetPosition = MyAPI.GetCellCenter(cursorPosition) + direction;
+            targetPosition = MyAPI.GetCellCenter(GetCursorPosition()) + direction;
             StartCoroutine(MoveToTarget(targetPosition));
         }
     }
@@ -156,24 +147,24 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     {
         Gizmos.color = Color.yellow;
 
-        Gizmos.DrawWireCube(cursorPosition, dimension);
+        Gizmos.DrawWireCube(GetCursorPosition(), dimension);
     }
 
     //-------------------------------COROUTINES--------------------------
     private IEnumerator MoveToTarget(Vector2 targetPosition)
     {
         isMoving = true;
-        while (Vector2.Distance(cursorPosition, targetPosition) > 0.01f)
+        while (Vector2.Distance(GetCursorPosition(), targetPosition) > 0.01f)
         {
             transform.position = Vector2.MoveTowards(
-                cursorPosition,
+                GetCursorPosition(),
                 targetPosition,
                 movingSpeed * tileSize * Time.deltaTime
             );
             yield return null;
         }
 
-        transform.position = MyAPI.GetCellCenter(cursorPosition);
+        transform.position = MyAPI.GetCellCenter(GetCursorPosition());
 
         yield return WaitUntilNextMovement(timeBetweenMovement);
 
@@ -192,7 +183,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     private void FindNearbyClients()
     {
         nearByClients.Clear();
-        foreach (var c in dungeonGrid.spatialHashGrid.FindNear(cursorPosition, dimension))
+        foreach (var c in dungeonGrid.spatialHashGrid.FindNear(GetCursorPosition(), dimension))
         {
             if (c.ClientID != client.ClientID)
                 nearByClients.Add(c);
@@ -201,7 +192,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
     private void UpdateGrid()
     {
-        client.Position = cursorPosition;
+        client.Position = GetCursorPosition();
         dungeonGrid.spatialHashGrid.UpdateGrid(client);
     }
 
@@ -229,7 +220,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
     public Vector2 GetCursorPosition()
     {
-        return client.Position;
+        return transform.position;
     }
 
     public Vector2Int GetCursorIndex()
@@ -237,7 +228,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         return client.Indices[0];
     }
 
-    public void SpawnBlastRadiusTiles (int blastRadius)
+    public GameObject SpawnBlastRadiusTiles (int blastRadius)
     {
         Vector2Int cursorIndex = GetCursorIndex();
 
@@ -252,7 +243,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
             {
                 int manhattanDistance = Mathf.Abs(x) + Mathf.Abs(y);
 
-                if (manhattanDistance > 0 && manhattanDistance <= blastRadius)
+                if (manhattanDistance >= 0 && manhattanDistance <= blastRadius)
                 {
                     Vector2Int tileIndex = new Vector2Int(x, y);
                     GameObject tile = new GameObject("Tile");
@@ -264,6 +255,18 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
                 }
             }
         }
+
+        return origin;
+    }
+    
+    public void ToggleActive()
+    {
+        IsActive = !IsActive;
+    }
+
+    public void DestroyBlastRadius(GameObject blastRadius)
+    {
+        Destroy(blastRadius);
     }
 
     //------------------------------EVENT RESPONSES------------------------------------------
@@ -276,10 +279,5 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         }
         Debug.Log("-----------------------");
         UpdateGrid();
-    }
-
-    public void OnToggleActive()
-    {
-        IsActive = !IsActive;
     }
 }

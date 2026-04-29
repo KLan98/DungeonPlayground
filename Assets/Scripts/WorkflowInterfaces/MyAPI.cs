@@ -6,7 +6,7 @@ public class MyAPI
 {
     private const int tileSize = 1;
     /// <summary>
-    /// Thinker contains modifiers here is where modifiers for skills are added. A skill need modifiers to have behaviors
+    /// Thinker contains modifiers here is where modifiers for skills are added. A skill need modifiers to have behaviors. Thinker is created OnSkillStart
     /// </summary>
     /// <param name="skillID"></param>
     /// <param name="origin"></param>
@@ -15,8 +15,8 @@ public class MyAPI
     {
         GameObject thinker = new GameObject(skillID.ToString() + " THINKER");
         thinker.transform.position = origin;
-    
-        switch(skillID)
+
+        switch (skillID)
         {
             case SkillID.BOMB:
                 thinker.AddComponent<ModifierBombExplode>().OnCreated(thinkerParams);
@@ -66,6 +66,7 @@ public struct ThinkerParams
     public int BlastRadius;
     public float Delay;
     public Vector2Int Index;
+    public int Level;
 }
 
 public struct DamageTable
