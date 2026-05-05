@@ -6,15 +6,9 @@ using UnityEngine;
 /// <summary>
 /// Modifier for bomb explode
 /// </summary>
-public class ModifierBombExplode : MonoBehaviour
+public class ModifierBombExplode : Modifiers
 {
-    private float delay;
-    private int blastRadius;
-    private int damage;
-    private Vector2Int index;
-    private int level;
-
-    public void OnCreated(ThinkerParams thinkerParams)
+    public override void OnCreated(ThinkerParams thinkerParams)
     {
         this.delay = thinkerParams.Delay;
         this.blastRadius = thinkerParams.BlastRadius;
@@ -22,10 +16,10 @@ public class ModifierBombExplode : MonoBehaviour
         this.index = thinkerParams.Index;
         this.level = thinkerParams.Level;
         Debug.Log($"modifier for bomb explode created with thinkerParams {thinkerParams}");
-        Invoke(nameof(OnIntervalThink), delay);
+        Invoke(nameof(OnThinkOnce), delay);
     }
 
-    public void OnIntervalThink()
+    protected override void OnThinkOnce()
     {
         if (blastRadius == 0)
         {
@@ -34,7 +28,7 @@ public class ModifierBombExplode : MonoBehaviour
         }
 
         // find hit enemies 
-        List<Client> hitTargets = FindTargetInBlastRadius(index, blastRadius);
+        List<Client> hitTargets = FindTargetsInBlastRadius(index, blastRadius);
 
         // make each enemy takes damage
         foreach (Client target in hitTargets)
@@ -51,13 +45,13 @@ public class ModifierBombExplode : MonoBehaviour
         }
 
         // vfx
-        GameObject effectInstance =  EffectsManager.CreateEffect(Resources.Load<GameObject>("Prefabs/Effects/Explosion_LV" + level.ToString()), EffectAttach.ATTACH_WORLD, null);
+        GameObject effectInstance = EffectsManager.CreateEffect(Resources.Load<GameObject>("Prefabs/Effects/Explosion_LV" + level.ToString()), EffectAttach.ATTACH_WORLD, null);
         EffectsManager.SetEffectControl(effectInstance, this.transform.position);
 
         // sfx
     }
 
-    private List<Client> FindTargetInBlastRadius(Vector2Int cursorIndex, int maxRadius)
+    protected override List<Client> FindTargetsInBlastRadius(Vector2Int cursorIndex, int maxRadius)
     {
         List<Client> hitTargets = new List<Client>();
         for (int x = -maxRadius; x <= maxRadius; x++)

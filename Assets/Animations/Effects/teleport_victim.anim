@@ -24,17 +24,19 @@ AnimationClip:
       value: {fileID: -9109679576363151874, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
     - time: 0.1
       value: {fileID: 6874293261119131606, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
-    - time: 0.16666667
+    - time: 0.2
       value: {fileID: 3475970444626420675, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
-    - time: 0.23333333
+    - time: 0.28333333
       value: {fileID: -8753283788699527778, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
-    - time: 0.3
-      value: {fileID: -1693946357877086985, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
     - time: 0.36666667
+      value: {fileID: -1693946357877086985, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
+    - time: 0.46666667
       value: {fileID: 5697982188757238426, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
-    - time: 0.43333334
+    - time: 0.56666666
       value: {fileID: 3320728301058369393, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
-    - time: 0.5
+    - time: 0.6666667
+      value: {fileID: 306708660192380987, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
+    - time: 0.75
       value: {fileID: 306708660192380987, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
     attribute: m_Sprite
     path: 
@@ -66,17 +68,18 @@ AnimationClip:
     - {fileID: 5697982188757238426, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
     - {fileID: 3320728301058369393, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
     - {fileID: 306708660192380987, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
+    - {fileID: 306708660192380987, guid: bdac494b21fe2d44e9c46bfe0520ea27, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.51666665
+    m_StopTime: 0.76666665
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
     m_HasAdditiveReferencePose: 0
-    m_LoopTime: 0
+    m_LoopTime: 1
     m_LoopBlend: 0
     m_LoopBlendOrientation: 0
     m_LoopBlendPositionY: 0

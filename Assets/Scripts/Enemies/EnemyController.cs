@@ -7,7 +7,7 @@ using BehaviorTree;
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private Client client;
-    [SerializeField] DungeonGrid dungeonGrid;
+    [SerializeField] private DungeonGrid dungeonGrid;
     [SerializeField] private TilemapVisualizer tilemapVisualizer;
     [SerializeField] private List<Client> nearByClients = new List<Client>();
     [SerializeField] private ChasePlayer chasePlayerStrategy;
@@ -70,6 +70,8 @@ public class EnemyController : MonoBehaviour
     {
         client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Actor", false);
         client.GameObject = this.gameObject;
+
+        GameManager.GetInstance().GetEntitiesDatabase().AddAliveEntity(client);
 
         //----------------------TREE CONSTRUCTION, ORDER MATTERS-----------------------
         chasePlayerStrategy = new ChasePlayer(client, dungeonGrid.spatialHashGrid.Cells);

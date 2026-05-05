@@ -21,8 +21,9 @@ public class MyAPI
             case SkillID.BOMB:
                 thinker.AddComponent<ModifierBombExplode>().OnCreated(thinkerParams);
                 break;
-            case SkillID.WIND_TELEPORTATION:
-                break;
+            //case SkillID.TELEPORTATION:
+            //   thinker.AddComponent<M_TeleportationTargetToDestination>().OnCreated(thinkerParams);
+            //    break;
         }
     }
 
@@ -62,11 +63,11 @@ public class MyAPI
 /// </summary>
 public struct ThinkerParams
 {
-    public int Damage;
-    public int BlastRadius;
+    public byte Damage;
+    public byte BlastRadius;
     public float Delay;
     public Vector2Int Index;
-    public int Level;
+    public byte Level;
 }
 
 public struct DamageTable
@@ -74,6 +75,6 @@ public struct DamageTable
     // public Client Victim;
     public Vector2Int Direction;
     public Vector2 Position;
-    public int Damage;
+    public byte Damage;
     // public DamageElement ...
 }

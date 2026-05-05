@@ -4,26 +4,6 @@ using UnityEngine;
 
 public class Bomb : MySkill
 {
-    public Bomb()
-    {
-        skillID = SkillID.BOMB;
-        damage = new DynamicStats(StatName.DAMAGE, 10);
-        cost = new DynamicStats(StatName.COST, 1);
-        level = new DynamicStats(StatName.LEVEL, 2);
-
-        // only valid for first time instantiate
-        switch (level.Value)
-        {
-            case 1:
-                blastRadius = new DynamicStats(StatName.BLAST_RADIUS, 1);
-                break;
-            case 2:
-                blastRadius = new DynamicStats(StatName.BLAST_RADIUS, 2);
-                break;
-        }
-        //Icon = SkillAssets.GetIcon(skillID);
-    }
-
     //---------------------------PUBLIC METHOD-----------------------------------
     public override void OnSkillStart()
     {
@@ -36,12 +16,14 @@ public class Bomb : MySkill
             Debug.Log($"{gameObject.GameObject.name} is not a valid target");
             return;
         }
-        
-        // spawn thinker at position, an invisible, invulnerable unit, that handles
-        // finding nearby enemies dealing damage to enemies
-        // the targetfx needs to know about the effect file, as well as the origin for soundfx
-        ThinkerParams thinkerParams = new ThinkerParams { Damage = damage.Value, Delay = 0.5f, BlastRadius = blastRadius.Value, Index = SkillCursorController.Instance.GetCursorIndex(), Level = level.Value};
-        MyAPI.CreateThinker(skillID, SkillCursorController.Instance.transform.position, thinkerParams);
+
+        // LAN_TODO: where should skill takes their source of truth? Synchronization problem may occurs
+        byte damage = GameManager.GetInstance().GetSkillsDatabase().GetOffensiveSkill(0).Damage;
+        byte blastRadius = GameManager.GetInstance().GetSkillsDatabase().GetCrowdControlSkill(0).BlastRadius;
+
+        // LAN_TODO: currently hardcoding values for thinker param, where is the source of truth regarding the skill's current level stored?
+        ThinkerParams thinkerParams = new ThinkerParams { Damage = damage, Delay = 0.5f, BlastRadius = blastRadius, Index = SkillCursorController.Instance.GetCursorIndex(), Level = 1 };
+        MyAPI.CreateThinker(SkillID.BOMB, SkillCursorController.Instance.transform.position, thinkerParams);
         //Debug.Log($"thinkerParams {thinkerParams.Damage}, {thinkerParams.Delay}, {thinkerParams.Index}, {thinkerParams.BlastRadius}");
 
         if (SkillCursorController.Instance.gameObject.activeInHierarchy)
@@ -63,6 +45,5 @@ public class Bomb : MySkill
 
     public override void OnUpgrade()
     {
-        // fire event for updating level, text, sprite, blast radius, damage...
     }
 }

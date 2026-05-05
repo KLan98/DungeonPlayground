@@ -7,7 +7,7 @@ public static class SkillAssets
     public static readonly Dictionary<SkillID, string> IconPaths = new()
     {
         { SkillID.BOMB,                  "Icons/Items.png"        },
-        { SkillID.WIND_TELEPORTATION,    "Icons/aerotheurge_teleport-icon.png"    },
+        { SkillID.TELEPORTATION,    "Icons/aerotheurge_teleport-icon.png"    },
     };
 
     public static Sprite GetIcon(SkillID skillID)

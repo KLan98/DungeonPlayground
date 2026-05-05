@@ -27,8 +27,8 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     [SerializeField] private Vector2 dimension = new Vector2(0.9f, 0.9f);
 
     [Header("Debug")]
-    [SerializeField] private static List<Client> nearByClients = new List<Client>();
-    [SerializeField] private static Client client;
+    [SerializeField] private List<Client> nearByClients = new List<Client>();
+    [SerializeField] private Client client;
 
     // ----------------------------------------PRIVATE FIELDS------------------------------------------
     private Vector2 direction;
@@ -228,7 +228,7 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
         return client.Indices[0];
     }
 
-    public GameObject SpawnBlastRadiusTiles (int blastRadius)
+    public GameObject SpawnBlastRadiusTiles (byte blastRadius)
     {
         Vector2Int cursorIndex = GetCursorIndex();
 
@@ -273,11 +273,11 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
     public void OnCursorMove()
     {
         FindNearbyClients();
+        UpdateGrid();
         foreach (var client in nearByClients)
         {
             Debug.Log($"Nearby client {client.Name}");
         }
         Debug.Log("-----------------------");
-        UpdateGrid();
     }
 }

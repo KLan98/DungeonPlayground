@@ -1,23 +1,48 @@
+using AYellowpaper.SerializedCollections;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public Bomb Bomb;
-    public Teleportation Teleportation;
+    private static GameManager instance;
 
-    // Start is called before the first frame update
-    void Start()
+    [Header("Debug")]
+    [SerializeField] private EntitiesDatabase entitiesDatabase;
+    [SerializeField] private SkillsDatabase skillsDatabase;
+    [SerializeField] private PlayerSkills playerSkills;
+
+    private void Awake()
     {
-        Bomb = new Bomb();
-        Teleportation = new Teleportation();
-        //Debug.Log($"Instance of {Bomb.SkillID} with damage {Bomb.Damage.Value}, cost {Bomb.Cost.Value} created");
+        entitiesDatabase = new EntitiesDatabase();
+
+        skillsDatabase = new SkillsDatabase(); 
+        playerSkills = new PlayerSkills();
+
+        instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+    }
+
+    public static GameManager GetInstance()
+    {
+        return instance;
+    }
+
+    public SkillsDatabase GetSkillsDatabase()
+    {
+        return skillsDatabase;
+    }
+
+    public EntitiesDatabase GetEntitiesDatabase()
+    {
+        return entitiesDatabase;
+    }
+
+    public PlayerSkills GetPlayerSkills()
+    {
+        return playerSkills;
     }
 }

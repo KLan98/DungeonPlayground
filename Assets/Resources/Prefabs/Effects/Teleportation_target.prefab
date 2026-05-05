@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1528007680547276641}
   - component: {fileID: 990423154875279578}
   m_Layer: 0
-  m_Name: Teleport_victim
+  m_Name: Teleportation_target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -10,8 +10,6 @@ using UnityEngine;
 /// </summary>
 public class PlayerSkillHandler : MonoBehaviour
 {
-    [SerializeField] private SkillCursorController skillCursor;
-    [SerializeField] private GameManager gameManager;
     private MySkill activeSkill;
     private GameObject blastRadius;
 
@@ -24,12 +22,7 @@ public class PlayerSkillHandler : MonoBehaviour
     //----------------------EVENT RESPONSE--------------------------------
     public void OnCursorConfirm()
     {
-        ITargetable target = SkillCursorController.Instance.GetCursorTarget();
-
-        if (target is null)
-        {
-            return;
-        }
+        GameManager.GetInstance().GetEntitiesDatabase().AddTargettedEntity(SkillCursorController.Instance.NearByClients[0]);
 
         if (activeSkill != null)
         {
@@ -61,14 +54,14 @@ public class PlayerSkillHandler : MonoBehaviour
     // LAN_NOTE: only place holder for testing cast bomb, will be deprecated
     public void CastBomb()
     {
-        OnSkillInterrupted();
+        activeSkill = new Bomb();
+        SkillElements element = GameManager.GetInstance().GetSkillsDatabase().GetSkill(0);
 
-        activeSkill = gameManager.Bomb;
+        byte cost = element.Cost; 
+        
+        CrowdControlSkill cc = GameManager.GetInstance().GetSkillsDatabase().GetCrowdControlSkill(0);
 
-        if (activeSkill == null || !activeSkill.OnSkillPhaseStart())
-        {
-            return;
-        }
+        // LAN_TODO, if cost > current turn cost then return null
 
         if (!SkillCursorController.Instance.gameObject.activeInHierarchy)
         {
@@ -76,19 +69,14 @@ public class PlayerSkillHandler : MonoBehaviour
         }
 
         // pass blast radius of active skill to skill cursor controller
-        blastRadius = SkillCursorController.Instance.SpawnBlastRadiusTiles(activeSkill.BlastRadius.Value);
+        GameObject blastRadius = SkillCursorController.Instance.SpawnBlastRadiusTiles(cc.BlastRadius);
     }
 
     public void CastTeleportation()
     {
-        OnSkillInterrupted();
+        activeSkill = new Teleportation();
 
-        activeSkill = gameManager.Teleportation;
-
-        if (activeSkill == null || !activeSkill.OnSkillPhaseStart())
-        {
-            return;
-        }
+        byte cost = GameManager.GetInstance().GetSkillsDatabase().GetSkill(1).Cost;
 
         if (!SkillCursorController.Instance.gameObject.activeInHierarchy)
         {

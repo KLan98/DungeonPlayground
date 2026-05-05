@@ -28,6 +28,7 @@ public class EffectsManager
                     break;
                 }
                 break;
+            
         }
 
         return effectInstance;
@@ -64,6 +65,7 @@ public class EffectsManager
 
         if (owningEntity != null)
         {
+
         }
     }
 }
@@ -75,5 +77,8 @@ public enum EffectAttach
 {
     ATTACH_WORLD, // spawn at world position, not attached to anything
     ATTACH_CUSTOMORIGIN, // spawn at custom origin, custom attached
-
+    //PATTACH_ABSORIGIN 	0 	Spawn on entity origin.
+    //PATTACH_ABSORIGIN_FOLLOW 	1 	Follow the entity origin.
+    ATTACH_CUSTOMORIGIN_FOLLOW, 	
+    ATTACH_POINT,
 }

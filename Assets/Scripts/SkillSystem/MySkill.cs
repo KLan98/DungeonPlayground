@@ -2,72 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class MySkill
 {
-    //------------------------------------STAT DATA------------------------------
-    protected SkillID skillID;
-    public SkillID SkillID
-    {
-        get
-        {
-            return skillID;
-        }
-    }
-
-    protected DynamicStats damage;
-    public DynamicStats Damage
-    {
-        get
-        {
-            return damage;
-        }
-    }
-
-    protected DynamicStats cost;
-    public DynamicStats Cost
-    {
-        get
-        {
-            return cost;
-        }
-    }
-
-    protected Sprite icon;
-    public Sprite Icon
-    {
-        get
-        {
-            return icon;
-        }
-    }
-
-    protected SkillTargetType skillTargetType;
-    public SkillTargetType SkillTargetType
-    {
-        get
-        {
-            return skillTargetType;
-        }
-    }
-
-    protected DynamicStats blastRadius;
-    public DynamicStats BlastRadius
-    {
-        get
-        {
-            return blastRadius;
-        }
-    }
-
-    protected DynamicStats level;
-    public DynamicStats Level
-    {
-        get
-        {
-            return level;
-        }
-    }
-
     //---------------------------------SKILL EVENTS---------------------------------
 
     /// <summary>

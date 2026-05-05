@@ -4469,6 +4469,17 @@ MonoBehaviour:
   dungeonGrid: {fileID: 1631141078}
   movingSpeed: 5
   dimension: {x: 0.9, y: 0.9}
+  nearByClients: []
+  client:
+    name: 
+    position: {x: 0, y: 0}
+    dimensions: {x: 0, y: 0}
+    indices: []
+    queryID: 0
+    clientID: 0
+    gameObject: {fileID: 0}
+    walkableTile: 0
+    distanceToPlayer: 0
 --- !u!1 &1468580322
 GameObject:
   m_ObjectHideFlags: 0
@@ -5183,6 +5194,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 224ffec960041804dbff0e576f5bd3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  entitiesDatabase:
+    aliveEntities: []
+    deadEntities: []
+    targettedEntities: []
+  skillsDatabase:
+    skillElements:
+    - Element: 0
+      Level: 1
+      Cost: 1
+    - Element: 1
+      Level: 1
+      Cost: 1
+    - Element: 2
+      Level: 1
+      Cost: 1
+    - Element: 3
+      Level: 1
+      Cost: 1
+    - Element: 1
+      Level: 2
+      Cost: 0
+    offensiveSkills: []
+    crowdControlSkills:
+    - Key:
+        SkillID: 2
+        Level: 1
+      BlastRadius: 1
+    - Key:
+        SkillID: 7
+        Level: 1
+      BlastRadius: 1
+  playerSkills:
+    CastableSkills: []
 --- !u!4 &1707346889
 Transform:
   m_ObjectHideFlags: 0
@@ -5964,8 +6008,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f615c1bd3097a3247958bce9579904ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillCursor: {fileID: 1373722433}
-  gameManager: {fileID: 1707346888}
 --- !u!1 &1904583965
 GameObject:
   m_ObjectHideFlags: 0
