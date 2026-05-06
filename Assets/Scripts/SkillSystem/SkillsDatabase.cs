@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,27 +7,26 @@ using UnityEngine.InputSystem;
 [System.Serializable]
 public class SkillsDatabase
 {
-    [SerializeField] private SkillElements[] skillElements;
+    [SerializeField] private CostTable[] costTable;
     [SerializeField] private OffensiveSkill[] offensiveSkills;
     [SerializeField] private CrowdControlSkill[] crowdControlSkills;
+    // elemental rela table 
 
     public SkillsDatabase()
     {
-        InitSkillsList();
+        InitSkillsElementList();
         InitOffensiveSkills();
         InitCrowdControlSkills();
     }
 
-    private void InitSkillsList()
+    private void InitSkillsElementList()
     {
-        skillElements = new SkillElements[] {
-            new SkillElements(Element.Fire, 1, 1),
-            new SkillElements(Element.Neutral, 1, 1),
-            new SkillElements(Element.Ice, 1, 1),
-            new SkillElements(Element.Electric, 1, 1),
-            
-            // level 2 skills
-            new SkillElements(Element.Neutral, 2, 0),
+        costTable = new CostTable[] {
+            new CostTable(1, 0),
+            new CostTable(1, 1),
+            new CostTable(2, 0),
+            new CostTable(2, 1),
+            new CostTable(1, 2), // only usable when skills are chained
         };
     }
 
@@ -47,18 +47,34 @@ public class SkillsDatabase
     }
 
     //----------------------------PUBLIC METHODS--------------------
-    public SkillElements GetSkill(byte key)
+    public CostTable GetCostTable(byte key)
     {
-        return skillElements[key];
+        return costTable[key];
     }
 
-    public OffensiveSkill GetOffensiveSkill(byte key)
+    public OffensiveSkill GetOffensiveSkill(PrimaryKey key)
     {
-        return offensiveSkills[key];
+        foreach (var skill in offensiveSkills)
+        {
+            if (skill.PrimaryKey.Equals(key))
+            {
+                return skill;
+            }
+        }
+
+        throw new InvalidOperationException($"{key} not found in {offensiveSkills} collection");
     }
 
-    public CrowdControlSkill GetCrowdControlSkill(byte key)
+    public CrowdControlSkill GetCrowdControlSkill(PrimaryKey key)
     {
-        return crowdControlSkills[key];
+        foreach (var skill in crowdControlSkills)
+        {
+            if (skill.PrimaryKey.Equals(key))
+            {
+                return skill;
+            }
+        }
+
+        throw new InvalidOperationException($"{key} not found in {crowdControlSkills} collection");
     }
 }

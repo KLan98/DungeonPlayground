@@ -5,13 +5,13 @@ using UnityEngine;
 [System.Serializable]
 public struct OffensiveSkill
 {
-    public PrimaryKey Key;
+    public PrimaryKey PrimaryKey;
     public float CritChance;
     public byte Damage;
 
-    public OffensiveSkill(PrimaryKey key, float critChance, byte damage)
+    public OffensiveSkill(PrimaryKey PrimaryKey, float critChance, byte damage)
     {
-        Key = key;
+        this.PrimaryKey = PrimaryKey;
         CritChance = critChance;
         Damage = damage;
     }

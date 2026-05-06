@@ -8,24 +8,23 @@ using UnityEngine;
 /// </summary>
 public class ModifierBombExplode : Modifiers
 {
-    public override void OnCreated(ThinkerParams thinkerParams)
+    private PrimaryKey primaryKey;
+
+    public override void OnCreated(PrimaryKey primaryKey)
     {
-        this.delay = thinkerParams.Delay;
-        this.blastRadius = thinkerParams.BlastRadius;
-        this.damage = thinkerParams.Damage;
-        this.index = thinkerParams.Index;
-        this.level = thinkerParams.Level;
-        Debug.Log($"modifier for bomb explode created with thinkerParams {thinkerParams}");
-        Invoke(nameof(OnThinkOnce), delay);
+        this.primaryKey = primaryKey;
+        Debug.Log($"{this} created");
+        Invoke(nameof(OnThinkOnce), 0.5f);
     }
 
     protected override void OnThinkOnce()
     {
-        if (blastRadius == 0)
-        {
-            Debug.Log("This modifier requires greater than 0 blast radius");
-            return;
-        }
+        byte blastRadius = GameManager.GetInstance().GetSkillsDatabase().GetCrowdControlSkill(primaryKey).BlastRadius;
+        byte damage = GameManager.GetInstance().GetSkillsDatabase().GetOffensiveSkill(primaryKey).Damage;
+        float critChance = GameManager.GetInstance().GetSkillsDatabase().GetOffensiveSkill(primaryKey).CritChance;
+        //Element element = GameManager.GetInstance().GetSkillsDatabase().GetSkillElement(0).Element;
+        Vector2Int index = SkillCursorController.Instance.GetCursorIndex();
+        byte level = primaryKey.Level;
 
         // find hit enemies 
         List<Client> hitTargets = FindTargetsInBlastRadius(index, blastRadius);
@@ -51,18 +50,18 @@ public class ModifierBombExplode : Modifiers
         // sfx
     }
 
-    protected override List<Client> FindTargetsInBlastRadius(Vector2Int cursorIndex, int maxRadius)
+    protected override List<Client> FindTargetsInBlastRadius(Vector2Int cursorIndex, int blastRadius)
     {
         List<Client> hitTargets = new List<Client>();
-        for (int x = -maxRadius; x <= maxRadius; x++)
+        for (int x = -blastRadius; x <= blastRadius; x++)
         {
-            for (int y = -maxRadius; y <= maxRadius; y++)
+            for (int y = -blastRadius; y <= blastRadius; y++)
             {
                 int manhattanDistance = Mathf.Abs(x) + Mathf.Abs(y);
 
                 // only considered as hit target whenever
                 // stopping player to cast this skill at his position
-                if (manhattanDistance > 0 && manhattanDistance <= maxRadius)
+                if (manhattanDistance > 0 && manhattanDistance <= blastRadius)
                 {
                     Vector2Int index = new Vector2Int(x + cursorIndex.x, y + cursorIndex.y);
                     

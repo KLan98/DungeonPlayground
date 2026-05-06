@@ -55,13 +55,13 @@ public class PlayerSkillHandler : MonoBehaviour
     public void CastBomb()
     {
         activeSkill = new Bomb();
-        SkillElements element = GameManager.GetInstance().GetSkillsDatabase().GetSkill(0);
 
-        byte cost = element.Cost; 
+        // create primary key for testing purpose
+        PrimaryKey primaryKey = new PrimaryKey() { SkillID = SkillID.BOMB, Level = 1 };
         
-        CrowdControlSkill cc = GameManager.GetInstance().GetSkillsDatabase().GetCrowdControlSkill(0);
+        byte cost = GameManager.GetInstance().GetSkillsDatabase().GetCostTable(1).Cost;
 
-        // LAN_TODO, if cost > current turn cost then return null
+        CrowdControlSkill cc = GameManager.GetInstance().GetSkillsDatabase().GetCrowdControlSkill(primaryKey);
 
         if (!SkillCursorController.Instance.gameObject.activeInHierarchy)
         {
@@ -76,7 +76,7 @@ public class PlayerSkillHandler : MonoBehaviour
     {
         activeSkill = new Teleportation();
 
-        byte cost = GameManager.GetInstance().GetSkillsDatabase().GetSkill(1).Cost;
+        byte cost = GameManager.GetInstance().GetSkillsDatabase().GetCostTable(1).Cost;
 
         if (!SkillCursorController.Instance.gameObject.activeInHierarchy)
         {

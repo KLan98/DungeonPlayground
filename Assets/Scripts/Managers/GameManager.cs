@@ -15,9 +15,13 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         entitiesDatabase = new EntitiesDatabase();
-
-        skillsDatabase = new SkillsDatabase(); 
+        skillsDatabase = new SkillsDatabase();
         playerSkills = new PlayerSkills();
+
+        if (instance != null && instance != this)
+        {
+            return;
+        }
 
         instance = this;
     }

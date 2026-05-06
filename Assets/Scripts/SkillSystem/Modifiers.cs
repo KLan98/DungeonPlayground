@@ -4,17 +4,11 @@ using UnityEngine;
 
 public class Modifiers : MonoBehaviour
 {
-    protected float delay;
-    protected int blastRadius;
-    protected int damage;
-    protected Vector2Int index;
-    protected int level;
-
     public virtual void OnCreated()
     {
     }
 
-    public virtual void OnCreated(ThinkerParams thinkerParams)
+    public virtual void OnCreated(PrimaryKey primaryKey)
     {
     }
 

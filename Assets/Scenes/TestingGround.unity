@@ -5199,32 +5199,9 @@ MonoBehaviour:
     deadEntities: []
     targettedEntities: []
   skillsDatabase:
-    skillElements:
-    - Element: 0
-      Level: 1
-      Cost: 1
-    - Element: 1
-      Level: 1
-      Cost: 1
-    - Element: 2
-      Level: 1
-      Cost: 1
-    - Element: 3
-      Level: 1
-      Cost: 1
-    - Element: 1
-      Level: 2
-      Cost: 0
+    costTable: []
     offensiveSkills: []
-    crowdControlSkills:
-    - Key:
-        SkillID: 2
-        Level: 1
-      BlastRadius: 1
-    - Key:
-        SkillID: 7
-        Level: 1
-      BlastRadius: 1
+    crowdControlSkills: []
   playerSkills:
     CastableSkills: []
 --- !u!4 &1707346889

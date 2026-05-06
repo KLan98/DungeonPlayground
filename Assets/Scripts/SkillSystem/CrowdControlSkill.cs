@@ -5,12 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public struct CrowdControlSkill
 {
-    public PrimaryKey Key;
+    public PrimaryKey PrimaryKey;
     public byte BlastRadius;
 
-    public CrowdControlSkill(PrimaryKey key, byte blastRadius)
+    public CrowdControlSkill(PrimaryKey primaryKey, byte blastRadius)
     {
-        Key = key;
+        PrimaryKey = primaryKey;
         BlastRadius = blastRadius;
     }
 }

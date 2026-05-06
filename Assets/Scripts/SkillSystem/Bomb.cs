@@ -17,14 +17,9 @@ public class Bomb : MySkill
             return;
         }
 
-        // LAN_TODO: where should skill takes their source of truth? Synchronization problem may occurs
-        byte damage = GameManager.GetInstance().GetSkillsDatabase().GetOffensiveSkill(0).Damage;
-        byte blastRadius = GameManager.GetInstance().GetSkillsDatabase().GetCrowdControlSkill(0).BlastRadius;
+        PrimaryKey key = new PrimaryKey() {SkillID = SkillID.BOMB, Level = 1};
 
-        // LAN_TODO: currently hardcoding values for thinker param, where is the source of truth regarding the skill's current level stored?
-        ThinkerParams thinkerParams = new ThinkerParams { Damage = damage, Delay = 0.5f, BlastRadius = blastRadius, Index = SkillCursorController.Instance.GetCursorIndex(), Level = 1 };
-        MyAPI.CreateThinker(SkillID.BOMB, SkillCursorController.Instance.transform.position, thinkerParams);
-        //Debug.Log($"thinkerParams {thinkerParams.Damage}, {thinkerParams.Delay}, {thinkerParams.Index}, {thinkerParams.BlastRadius}");
+        MyAPI.CreateThinker(key, SkillCursorController.Instance.transform.position);
 
         if (SkillCursorController.Instance.gameObject.activeInHierarchy)
         {

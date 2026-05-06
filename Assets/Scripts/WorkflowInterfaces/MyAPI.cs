@@ -11,19 +11,16 @@ public class MyAPI
     /// <param name="skillID"></param>
     /// <param name="origin"></param>
     /// <param name="thinkerParams"></param>
-    public static void CreateThinker(SkillID skillID, Vector2 origin, ThinkerParams thinkerParams)
+    public static void CreateThinker(PrimaryKey primaryKey, Vector2 origin)
     {
-        GameObject thinker = new GameObject(skillID.ToString() + " THINKER");
+        GameObject thinker = new GameObject(primaryKey.SkillID.ToString() + " THINKER");
         thinker.transform.position = origin;
 
-        switch (skillID)
+        switch (primaryKey.SkillID)
         {
             case SkillID.BOMB:
-                thinker.AddComponent<ModifierBombExplode>().OnCreated(thinkerParams);
+                thinker.AddComponent<ModifierBombExplode>().OnCreated(primaryKey);
                 break;
-            //case SkillID.TELEPORTATION:
-            //   thinker.AddComponent<M_TeleportationTargetToDestination>().OnCreated(thinkerParams);
-            //    break;
         }
     }
 
@@ -48,33 +45,10 @@ public class MyAPI
     }
 }
 
-/// <summary>
-/// Parameters used to configure a thinker instance. All parameters are built-in or primitive types
-///
-/// Damage: The amount of damage the skill will deal when applied.
-///
-/// MaxRange: The maximum Manhattan distance (|x1 - x2| + |y1 - y2|)
-/// that the skill can reach from its origin.
-///
-/// Delay: The time delay (in seconds) before the modifier's
-/// OnIntervalThink method is triggered.
-///
-/// Index: The grid cell index of the cursor
-/// </summary>
-public struct ThinkerParams
-{
-    public byte Damage;
-    public byte BlastRadius;
-    public float Delay;
-    public Vector2Int Index;
-    public byte Level;
-}
-
 public struct DamageTable
 {
-    // public Client Victim;
+    public Client[] Victims;
     public Vector2Int Direction;
     public Vector2 Position;
     public byte Damage;
-    // public DamageElement ...
 }
