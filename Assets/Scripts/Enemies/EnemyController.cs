@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BehaviorTree;
+using Unity.VisualScripting;
 
 public class EnemyController : MonoBehaviour
 {
@@ -20,13 +21,14 @@ public class EnemyController : MonoBehaviour
     private Leaf moveTowardPlayerNode;
     private EnemyBehaviorTree tree;
 
+    private EntityType entityType;
+
     private Vector2 position
     {
         get { return this.gameObject.transform.position; }
     }
 
     private Vector2 dimension = new Vector2(0.9f, 0.9f);
-
 
     //--------------------------EVENT RESPONSE--------------------------------
     public void FindNearbyClients()
@@ -64,14 +66,25 @@ public class EnemyController : MonoBehaviour
         tree.Process();
     }
 
-    //--------------------------BUILT-IN METHODS--------------------------------
+    //--------------------------BUILT-IN METHODS--------------------------------    
+    private void Awake()
+    {
+        entityType = EntityType.BARBARIAN;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Actor", false);
-        client.GameObject = this.gameObject;
 
-        GameManager.GetInstance().GetEntitiesDatabase().AddAliveEntity(client);
+        //EntitiesManager.GetInstance().AddRoomEntity(this.gameObject);
+
+        // ref to statsTable
+        EntitiesManager.GetInstance().AssignStats(entityType, this.gameObject);
+
+        byte entityID = EntitiesManager.GetInstance().GetEntityID(this.gameObject);
+
+        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Actor", false, entityID);
+        client.GameObject = this.gameObject;
 
         //----------------------TREE CONSTRUCTION, ORDER MATTERS-----------------------
         chasePlayerStrategy = new ChasePlayer(client, dungeonGrid.spatialHashGrid.Cells);
@@ -80,7 +93,7 @@ public class EnemyController : MonoBehaviour
         sequenceNode = new Sequence("MySequence", null);
         repeatUntilFailNode = new RepeatUntilFail("MyRepeatUntilFail", sequenceNode);
         moveTowardPlayerNode = new Leaf("MoveToPlayer", sequenceNode, moveOneStepStrategy);
-        
+
         invertNode = new Invert("MyInvert", repeatUntilFailNode);
         findPlayerNode = new Leaf("FindPlayer", invertNode, chasePlayerStrategy);
 

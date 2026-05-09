@@ -22,7 +22,7 @@ public class PlayerSkillHandler : MonoBehaviour
     //----------------------EVENT RESPONSE--------------------------------
     public void OnCursorConfirm()
     {
-        GameManager.GetInstance().GetEntitiesDatabase().AddTargettedEntity(SkillCursorController.Instance.NearByClients[0]);
+        EntitiesManager.GetInstance().AddTargettedEntity(SkillCursorController.Instance.NearByClients[0]);
 
         if (activeSkill != null)
         {

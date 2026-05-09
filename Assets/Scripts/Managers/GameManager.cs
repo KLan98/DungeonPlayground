@@ -8,13 +8,14 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
 
     [Header("Debug")]
-    [SerializeField] private EntitiesDatabase entitiesDatabase;
     [SerializeField] private SkillsDatabase skillsDatabase;
     [SerializeField] private PlayerSkills playerSkills;
 
+    private TurnManager turnManager;
+
     private void Awake()
     {
-        entitiesDatabase = new EntitiesDatabase();
+        //turnManager = new TurnManager();
         skillsDatabase = new SkillsDatabase();
         playerSkills = new PlayerSkills();
 
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        //turnManager.StartCombat();
     }
 
     public static GameManager GetInstance()
@@ -40,13 +42,13 @@ public class GameManager : MonoBehaviour
         return skillsDatabase;
     }
 
-    public EntitiesDatabase GetEntitiesDatabase()
-    {
-        return entitiesDatabase;
-    }
-
     public PlayerSkills GetPlayerSkills()
     {
         return playerSkills;
+    }
+
+    public TurnManager GetTurnManager()
+    {
+        return turnManager;
     }
 }

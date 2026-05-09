@@ -58,4 +58,21 @@ public class DungeonGrid : MonoBehaviour
 
         return null;
     }
+
+    public byte GetEntityIDAtIndex(Vector2Int index)
+    {
+        Key key = new Key(index.x, index.y);
+        if (spatialHashGrid.Cells.TryGetValue(key, out List<Client> clients))
+        {
+            foreach (Client client in clients)
+            {
+                if (client.EntityID != 0)
+                {
+                    return client.EntityID;
+                }
+            }
+        }
+
+        return 0;
+    }
 }

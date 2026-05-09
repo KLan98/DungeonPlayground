@@ -31,7 +31,7 @@ public class SpatialHashGridsOptimized
         this.clientID = 0;
     }
 
-    public Client NewClient(Vector2 position, Vector2 dimensions, string name, bool walkableTile)
+    public Client NewClient(Vector2 position, Vector2 dimensions, string name, bool walkableTile, byte entityID = 0)
     {
         // object initializer
         Client client = new Client()
@@ -42,7 +42,8 @@ public class SpatialHashGridsOptimized
             Indices = null,
             QueryID = -1, // safe value since it is different from default queryID = 0, QueryID of client will later be assigned
             ClientID = clientID++,
-            WalkableTile = walkableTile
+            WalkableTile = walkableTile,
+            EntityID = entityID
         };
 
         Insert(client);

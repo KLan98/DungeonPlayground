@@ -48,6 +48,12 @@ public class Client
         get { return this.gameObject; }
         set { this.gameObject = value; }
     }
+    [SerializeField] private byte entityID; // for entities that have stats
+    public byte EntityID
+    {
+        get { return entityID; }
+        set { entityID = value; }
+    }
 
     //---------------DJIKSTRA MAP FIELDS & PROPERTIES----------------
     [SerializeField] private bool walkableTile; // OBSTACLES ARE NOT WALKABLE, PLAYER IS NOT WALKABLE TILE

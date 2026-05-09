@@ -17,9 +17,9 @@ public class Bomb : MySkill
             return;
         }
 
-        PrimaryKey key = new PrimaryKey() {SkillID = SkillID.BOMB, Level = 1};
+        PrimaryKey primaryKey = new PrimaryKey() {SkillID = SkillID.BOMB, Level = 1};
 
-        MyAPI.CreateThinker(key, SkillCursorController.Instance.transform.position);
+        MyAPI.CreateThinker(primaryKey, SkillCursorController.Instance.transform.position);
 
         if (SkillCursorController.Instance.gameObject.activeInHierarchy)
         {

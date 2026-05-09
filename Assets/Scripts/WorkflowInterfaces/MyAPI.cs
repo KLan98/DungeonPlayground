@@ -24,9 +24,39 @@ public class MyAPI
         }
     }
 
-    public static void ApplyDamage(DamageTable damageTable)
+    public static void ApplyDamage(List<byte> damageTable, byte amount)
     {
-        // LAN_TODO raise apply damage event, pass damage table to channel
+        List<Entity> aliveEntities = EntitiesManager.GetInstance().GetAliveEntities();
+        for (int i = 0; i < damageTable.Count; i++)
+        {
+            for (int j = 0; j < aliveEntities.Count; j++)
+            {
+                if (damageTable[i] == aliveEntities[j].EntityID)
+                {
+                    Entity entity = aliveEntities[j];
+               
+                    entity.EntityStats.HitPoint -= amount;
+
+                    aliveEntities[j] = entity;
+
+                    Debug.Log($"Deal {amount} damage to {entity.GameObject.name} with EntityID = {entity.EntityID}, current HP = {entity.EntityStats.HitPoint}");
+                }
+            }
+        }
+
+        aliveEntities.RemoveAll(IsDead);
+    }
+
+    private static bool IsDead(Entity entity)
+    {
+        if (entity.EntityStats.HitPoint <= 0)
+        {
+            entity.GameObject.SetActive(false);
+            EntitiesManager.GetInstance().AddDeadEntity(entity);
+            return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -43,11 +73,87 @@ public class MyAPI
             yIndex * tileSize + tileSize / 2f
         );
     }
+
+    //public static void QuickSort(List<TestEntity> entities)
+    //{
+    //    if (entities == null || entities.Count <= 1)
+    //        return;
+
+    //    QuickSortRecursive(entities, 0, entities.Count - 1);
+    //}
+
+    //-----------------------PRIVATE METHODS-----------------------------------------
+    //private static void QuickSortRecursive(List<TestEntity> arr, int left, int right)
+    //{
+    //    // Small partition optimization
+    //    while (left < right)
+    //    {
+    //        int pivotIndex = Partition(arr, left, right);
+
+    //        // Recurse into smaller side first
+    //        // reduces max recursion depth
+    //        if (pivotIndex - left < right - pivotIndex)
+    //        {
+    //            QuickSortRecursive(arr, left, pivotIndex - 1);
+    //            left = pivotIndex + 1;
+    //        }
+    //        else
+    //        {
+    //            QuickSortRecursive(arr, pivotIndex + 1, right);
+    //            right = pivotIndex - 1;
+    //        }
+    //    }
+    //}
+
+    //private static int Partition(List<TestEntity> arr, int left, int right)
+    //{
+    //    // Median-of-three pivot selection
+    //    int mid = left + (right - left) / 2;
+
+    //    if (arr[left].speed < arr[mid].speed)
+    //        Swap(arr, left, mid);
+
+    //    if (arr[left].speed < arr[right].speed)
+    //        Swap(arr, left, right);
+
+    //    if (arr[mid].speed < arr[right].speed)
+    //        Swap(arr, mid, right);
+
+    //    // Use median as pivot
+    //    TestEntity pivot = arr[mid];
+    //    Swap(arr, mid, right);
+
+    //    int storeIndex = left;
+
+    //    // Greater-to-lower ordering
+    //    for (int i = left; i < right; i++)
+    //    {
+    //        if (arr[i].speed > pivot.speed)
+    //        {
+    //            Swap(arr, i, storeIndex);
+    //            storeIndex++;
+    //        }
+    //    }
+
+    //    Swap(arr, storeIndex, right);
+
+    //    return storeIndex;
+    //}
+
+    //private static void Swap(List<TestEntity> arr, int a, int b)
+    //{
+    //    if (a == b)
+    //        return;
+
+    //    TestEntity temp = arr[a];
+    //    arr[a] = arr[b];
+    //    arr[b] = temp;
+    //}
 }
 
 public struct DamageTable
 {
-    public Client[] Victims;
+    public GameObject[] Victims;
     public Vector2Int Direction;
     public Vector2 Position;
     public byte Damage;

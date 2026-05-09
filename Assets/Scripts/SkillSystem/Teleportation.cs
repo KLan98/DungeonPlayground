@@ -7,17 +7,17 @@ public class Teleportation : MySkill
     //---------------------------PUBLIC METHOD-----------------------------------
     public override void OnSkillStart()
     {
-        if (GameManager.GetInstance().GetEntitiesDatabase().CountTargettedEntities() > 1)
+        if (EntitiesManager.GetInstance().CountTargettedEntities() > 1)
         {
-            Client target = GameManager.GetInstance().GetEntitiesDatabase   ().GetTargettedEntities()[0];
-            Client destination = GameManager.GetInstance().GetEntitiesDatabase().GetTargettedEntities()[1];
+            Client target = EntitiesManager.GetInstance().GetTargettedEntities()[0];
+            Client destination = EntitiesManager.GetInstance().GetTargettedEntities()[1];
             
             if (target != destination && !target.WalkableTile && destination.WalkableTile)
             {
                 target.GameObject.transform.position = destination.Position;
             }
 
-            GameManager.GetInstance().GetEntitiesDatabase().ClearTargettedEntities();
+            EntitiesManager.GetInstance().ClearTargettedEntities();
         }
     }
 

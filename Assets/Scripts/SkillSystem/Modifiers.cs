@@ -20,7 +20,7 @@ public class Modifiers : MonoBehaviour
     {
     }
 
-    protected virtual List<Client> FindTargetsInBlastRadius(Vector2Int cursorIndex, int maxRadius)
+    protected virtual List<byte> FindHitEntities(Vector2Int cursorIndex, int maxRadius)
     {
         return null;
     }

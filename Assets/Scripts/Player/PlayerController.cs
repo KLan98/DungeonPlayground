@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private TilemapVisualizer tilemapVisualizer;
     private bool dijkstraMapOn = false;
 
+    private EntityType entityType;
+    private Entity entity;
+
     private Vector2 position
     {
         get { return this.gameObject.transform.position; }
@@ -96,12 +99,22 @@ public class PlayerController : MonoBehaviour
     }
 
     //--------------------------BUILT-IN METHODS--------------------------------
+    private void Awake()
+    {
+        entityType = EntityType.PLAYER;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         //sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
         client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Player", false);
         client.GameObject = this.gameObject;
+
+        //EntitiesManager.GetInstance().GetEntitiesDatabase().AddAliveEntity(client);
+
+        //EntitiesManager.GetInstance().AddRoomEntity(this.gameObject);
+        EntitiesManager.GetInstance().AssignStats(entityType, this.gameObject);
 
         transform.position = MyAPI.GetCellCenter(position);
         OnPlayerMove();

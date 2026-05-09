@@ -9,12 +9,15 @@ using UnityEngine;
 public class ModifierBombExplode : Modifiers
 {
     private PrimaryKey primaryKey;
+    private List<byte> damageTable; // contain the ID of entities to deal damage
 
     public override void OnCreated(PrimaryKey primaryKey)
     {
         this.primaryKey = primaryKey;
         Debug.Log($"{this} created");
         Invoke(nameof(OnThinkOnce), 0.5f);
+
+        damageTable = new List<byte>();
     }
 
     protected override void OnThinkOnce()
@@ -26,22 +29,17 @@ public class ModifierBombExplode : Modifiers
         Vector2Int index = SkillCursorController.Instance.GetCursorIndex();
         byte level = primaryKey.Level;
 
-        // find hit enemies 
-        List<Client> hitTargets = FindTargetsInBlastRadius(index, blastRadius);
+        // find hit entities 
+        List<byte> hitEntities = FindHitEntities(index, blastRadius);
 
-        // make each enemy takes damage
-        foreach (Client target in hitTargets)
+        // constuct a damage table
+        foreach (byte entityID in hitEntities)
         {
-            // can add elemental resistance
-            if (target != null && !target.WalkableTile)
-            {
-                // construct damage table
-                //DamageTable damageTable = {}
-                DamageTable damageTable = new DamageTable();
-                MyAPI.ApplyDamage(damageTable); // damage applied once
-                Debug.Log($"{target.Name} hit with bomb at {target.Position}, dealing {damage} damage");
-            }
+            // construct damage table
+            damageTable.Add(entityID);
         }
+
+        MyAPI.ApplyDamage(damageTable, damage); // damage applied once
 
         // vfx
         GameObject effectInstance = EffectsManager.CreateEffect(Resources.Load<GameObject>("Prefabs/Effects/Explosion_LV" + level.ToString()), EffectAttach.ATTACH_WORLD, null);
@@ -50,9 +48,9 @@ public class ModifierBombExplode : Modifiers
         // sfx
     }
 
-    protected override List<Client> FindTargetsInBlastRadius(Vector2Int cursorIndex, int blastRadius)
+    protected override List<byte> FindHitEntities(Vector2Int cursorIndex, int blastRadius)
     {
-        List<Client> hitTargets = new List<Client>();
+        List<byte> hitEntities = new List<byte>();
         for (int x = -blastRadius; x <= blastRadius; x++)
         {
             for (int y = -blastRadius; y <= blastRadius; y++)
@@ -65,16 +63,12 @@ public class ModifierBombExplode : Modifiers
                 {
                     Vector2Int index = new Vector2Int(x + cursorIndex.x, y + cursorIndex.y);
                     
-                    Client client = DungeonGrid.Instance.GetClientAtIndex(index);
-
-                    if (client != null)
-                    {
-                        hitTargets.Add(client);    
-                    }
+                    byte entityID = DungeonGrid.Instance.GetEntityIDAtIndex(index);
+                    hitEntities.Add(entityID);
                 }
             }
         }
 
-        return hitTargets;
+        return hitEntities;
     }
 }

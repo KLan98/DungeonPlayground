@@ -33,7 +33,7 @@ public class SkillsDatabase
     private void InitOffensiveSkills()
     {
         offensiveSkills = new OffensiveSkill[] {
-            new OffensiveSkill(new PrimaryKey(SkillID.BOMB, 1), 5.0f, 5),
+            new OffensiveSkill(new PrimaryKey(SkillID.BOMB, 1), 5.0f, 100),
             new OffensiveSkill(new PrimaryKey(SkillID.ZAP, 1), 10.0f, 5),
         };
     }
