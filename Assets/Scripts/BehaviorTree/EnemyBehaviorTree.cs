@@ -27,8 +27,9 @@ namespace BehaviorTree
         {
             if (behaviorTreeNodes.Count > 0)
             {
-                behaviorTreeNodes[0].Evaluate();
-                Debug.Log($"status = {behaviorTreeNodes[0].Evaluate()}");
+                // process the origin node
+                TreeNodeState status = behaviorTreeNodes[0].Evaluate();
+                Debug.Log($"status of the behavior tree = {status}");
             }
         }
     }
