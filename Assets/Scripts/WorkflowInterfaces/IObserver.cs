@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IPosition 
+public interface IObserver 
 {
-    Vector2 Position { get; }
+    void OnNotify();
 }
