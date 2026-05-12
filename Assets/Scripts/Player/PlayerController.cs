@@ -3,22 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using PathFinding;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ISubject
 {
-    //[SerializeField] private SpriteRenderer sprite;
     [SerializeField] private DungeonGrid dungeonGrid;
-    [SerializeField] List<Client> nearByClients = new List<Client>();
+    [SerializeField] private List<Client> nearByClients = new List<Client>();
     [SerializeField] private Client client;
-    [SerializeField] private TilemapVisualizer tilemapVisualizer;
+    [SerializeField] private EntityType entityType;
+    
     private bool dijkstraMapOn = false;
-
-    private EntityType entityType;
-    private Entity entity;
 
     private Vector2 position
     {
         get { return this.gameObject.transform.position; }
     }
+
+    private IObserver playerMoveObserver;
 
     private Vector2 dimension = new Vector2(0.9f, 0.9f);
 
@@ -34,6 +33,7 @@ public class PlayerController : MonoBehaviour
         FindNearbyClients();
         UpdateGrid();
         UpdateDistanceMap();
+        Notify();
     }
 
     //--------------------------PRIVATE METHODS--------------------------------
@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (client.WalkableTile && client.DistanceToPlayer != int.MaxValue)
                     {
-                        tilemapVisualizer.ColorTileByDistance(client.Position, client.DistanceToPlayer);
+                        TilemapVisualizer.GetInstance().ColorTileByDistance(client.Position, client.DistanceToPlayer);
                     }
                 }
             }
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
                 {
                     if (client.WalkableTile && client.DistanceToPlayer != int.MaxValue)
                     {
-                        tilemapVisualizer.ResetMapColor(client.Position);
+                        TilemapVisualizer.GetInstance().ResetMapColor(client.Position);
                     }
                 }
             }
@@ -99,31 +99,46 @@ public class PlayerController : MonoBehaviour
     }
 
     //--------------------------BUILT-IN METHODS--------------------------------
-    private void Awake()
-    {
-        entityType = EntityType.PLAYER;
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.yellow;
 
-    // Start is called before the first frame update
+    //    Gizmos.DrawWireCube(position, dimension);
+    //}
+
     void Start()
     {
-        //sprite = gameObject.GetComponentInChildren<SpriteRenderer>();
-        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Player", false);
+        EPhysicsManager physicsManager = EPhysicsManager.GetInstance();
+        EntitiesManager entitiesManager = EntitiesManager.GetInstance();
+
+        entitiesManager.AssignStats(entityType, this.gameObject);
+
+        byte entityID = entitiesManager.GetEntityID(this.gameObject);
+
+        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, false, entityID);
         client.GameObject = this.gameObject;
 
-        //EntitiesManager.GetInstance().GetEntitiesDatabase().AddAliveEntity(client);
-
-        //EntitiesManager.GetInstance().AddRoomEntity(this.gameObject);
-        EntitiesManager.GetInstance().AssignStats(entityType, this.gameObject);
-
         transform.position = MyAPI.GetCellCenter(position);
-        OnPlayerMove();
+
+        FindNearbyClients();
+        UpdateGrid();
+
+        AddObserver(physicsManager);
     }
 
-    private void OnDrawGizmos()
+    //-----------------------PUBLIC METHODS---------------------------------------
+    public void AddObserver(IObserver observer)
     {
-        Gizmos.color = Color.yellow;
+        playerMoveObserver = observer;
+    }
 
-        Gizmos.DrawWireCube(position, dimension);
+    public void RemoveObserver(IObserver observer)
+    {
+        
+    }
+
+    public void Notify()
+    {
+        playerMoveObserver.OnNotify();
     }
 }
