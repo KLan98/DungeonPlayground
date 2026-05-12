@@ -7,8 +7,10 @@ public class EntitiesManager : MonoBehaviour
 {
     private EntityStats[] statsTable; // lookup table for stats
     private static EntitiesManager instance;
-    [SerializeField] private List<GameObject> roomEntities; // all entities that are not tiles in a room
     private byte entityID = 1; // entityID cannot be 0, if 0 then it is tile
+
+    [Header("Debug")]
+    [SerializeField] private List<GameObject> roomEntities; // all entities that are not tiles in a room
     [SerializeField] private List<Entity> aliveEntities;
     [SerializeField] private List<Entity> deadEntities;
     [SerializeField] private List<Client> targettedEntities;
@@ -173,6 +175,20 @@ public class EntitiesManager : MonoBehaviour
         return 0;
     }
 
+    public GameObject GetAliveGameObject(byte entityID)
+    {
+        for (int i = 0; i < aliveEntities.Count; i++)
+        {
+            if (entityID == aliveEntities[i].EntityID)
+            {
+                return aliveEntities[i].GameObject;
+            }
+        }
+
+        Debug.LogWarning($"Cannot find the GameObject for this ID {entityID}");
+        return null;
+    }
+
     //-------------------------------DEAD ENTITIES---------------------------
     public List<Entity> GetDeadEntities()
     {
@@ -224,4 +240,13 @@ public class EntitiesManager : MonoBehaviour
     {
         return targettedEntities.Count;
     }
+}
+
+public enum EntityType
+{
+    PLAYER,
+    MINOTAUR,
+    SLIME,
+    BOT,
+    BARBARIAN,
 }
