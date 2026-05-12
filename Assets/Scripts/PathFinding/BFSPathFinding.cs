@@ -68,8 +68,9 @@ namespace PathFinding
             }
         }
 
-        public static List<Client> PathFinding(Client actor, Dictionary<Key, List<Client>> cells, List<Client> myPath, TilemapVisualizer tilemapVisualizer = null)
+        public static List<Client> PathFinding(Client actor, Dictionary<Key, List<Client>> cells, List<Client> myPath)
         {
+            //Debug.Log("BFS path finding called");
             // clear the output path
             myPath.Clear();
 
@@ -113,9 +114,7 @@ namespace PathFinding
                             actor.DistanceToPlayer = tileCell.DistanceToPlayer;
 
                             //---------------DEBUG---------------------
-                            //tilemapVisualizer.ColorTileByPosition(tileCell.Position);
-                            //Debug.Log($"{actor.Name} moves to tile with distance {tileCell.DistanceToPlayer} at {tileCell.Position}");
-
+                            //Debug.Log($"Entity {actor.EntityID} moves to tile with distance {tileCell.DistanceToPlayer} at {tileCell.Position}");
                             myPath.Add(tileCell);
                             searchQueue.Enqueue(tileCell);
                         }
@@ -123,6 +122,7 @@ namespace PathFinding
                 }
             }
 
+            //Debug.Log("Return myPath");
             return myPath;
         }
 
