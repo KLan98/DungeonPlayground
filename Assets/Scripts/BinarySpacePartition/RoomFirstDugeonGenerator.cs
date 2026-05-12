@@ -67,7 +67,7 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
             foreach (var tilePosition in tilesPosition)
             {
                 Vector3Int cellPosition = new Vector3Int(tilePosition.x, tilePosition.y, 0);
-                client = dungeonGrid.spatialHashGrid.NewClient(grid.GetCellCenterWorld(cellPosition), tileClientDimension, "Tile" + $"{cellPosition}", true);
+                client = dungeonGrid.spatialHashGrid.NewClient(grid.GetCellCenterWorld(cellPosition), tileClientDimension, true);
             }
         }
     }

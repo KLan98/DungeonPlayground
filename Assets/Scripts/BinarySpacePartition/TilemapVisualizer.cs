@@ -18,6 +18,22 @@ public class TilemapVisualizer : MonoBehaviour
     private readonly Color32 cyan = new Color32(0, 0xFF, 0xFF, 0xFF);
     private readonly Color32 azure = new Color32(0, 0x7F, 0xFF, 0xFF);
     private readonly Color32 lime = new Color32(0x7F, 0xFF, 0, 0xFF);
+    private static TilemapVisualizer instance;
+
+    private void Awake()
+    {
+        if (instance != null && instance == this)
+        {
+            return;
+        }
+
+        instance = this;
+    }
+
+    public static TilemapVisualizer GetInstance()
+    {
+        return instance;
+    }
 
     public void DrawTiles(IEnumerable<Vector2Int> floorPositions)
     {
