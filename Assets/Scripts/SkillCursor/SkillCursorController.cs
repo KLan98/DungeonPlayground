@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
-public class SkillCursorController : MonoBehaviour, IToggleGameObject
+public class SkillCursorController : MonoBehaviour
 {
     [Header("Game events")]
     [SerializeField] private Vector2Channel vector2Channel;
@@ -72,7 +72,8 @@ public class SkillCursorController : MonoBehaviour, IToggleGameObject
 
     private void Start()
     {
-        client = dungeonGrid.spatialHashGrid.NewClient(GetCursorPosition(), dimension, "SkillCursor", false);
+        client = dungeonGrid.spatialHashGrid.NewClient(GetCursorPosition(), dimension, false);
+        client.GameObject = gameObject;
         this.gameObject.SetActive(false);
     }
 
