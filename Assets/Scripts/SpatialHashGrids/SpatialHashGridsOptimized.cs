@@ -31,12 +31,11 @@ public class SpatialHashGridsOptimized
         this.clientID = 0;
     }
 
-    public Client NewClient(Vector2 position, Vector2 dimensions, string name, bool walkableTile, byte entityID = 0)
+    public Client NewClient(Vector2 position, Vector2 dimensions, bool walkableTile, byte entityID = 0)
     {
         // object initializer
         Client client = new Client()
         {
-            Name = name,
             Position = position,
             Dimensions = dimensions,
             Indices = null,
