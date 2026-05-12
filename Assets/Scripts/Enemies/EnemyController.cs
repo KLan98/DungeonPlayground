@@ -3,25 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BehaviorTree;
-using Unity.VisualScripting;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IObserver
 {
-    [SerializeField] private Client client;
     [SerializeField] private DungeonGrid dungeonGrid;
-    [SerializeField] private TilemapVisualizer tilemapVisualizer;
+    [SerializeField] private EntityType entityType; // choose entity type in inspector
+
+    private Client client;
     [SerializeField] private List<Client> nearByClients = new List<Client>();
-    [SerializeField] private ChasePlayer chasePlayerStrategy;
-    private MoveOneStep moveOneStepStrategy;
-
-    private RepeatUntilFail repeatUntilFailNode;
-    private Invert invertNode;
-    private Sequence sequenceNode;
-    private Leaf findPlayerNode;
-    private Leaf moveTowardPlayerNode;
-    private EnemyBehaviorTree tree;
-
-    private EntityType entityType;
+    private ChasePlayerTree chasePlayerTree;
 
     private Vector2 position
     {
@@ -30,30 +20,6 @@ public class EnemyController : MonoBehaviour
 
     private Vector2 dimension = new Vector2(0.9f, 0.9f);
 
-    //--------------------------EVENT RESPONSE--------------------------------
-    public void FindNearbyClients()
-    {
-        nearByClients.Clear();
-        foreach (var c in dungeonGrid.spatialHashGrid.FindNear(position, dimension))
-        {
-            if (c.ClientID != client.ClientID)
-                nearByClients.Add(c);
-        }
-    }
-
-    // LAN_TODO called whenever the enemy position changed, hasn't been used now
-    public void UpdateGrid()
-    {
-        UpdateClientInfo();
-        dungeonGrid.spatialHashGrid.UpdateGrid(client);
-    }
-
-    public void OnEnemyMove()
-    {
-        FindNearbyClients();
-        UpdateGrid();
-    }
-
 
     //-------------------------------PRIVATE METHODS-------------------------------
     private void UpdateClientInfo()
@@ -61,58 +27,64 @@ public class EnemyController : MonoBehaviour
         client.Position = position;
     }
 
-    public void ProcessBehaviorTree()
+    private void FindNearbyClients()
     {
-        tree.Process();
+        nearByClients.Clear();
+        foreach (var c in dungeonGrid.spatialHashGrid.FindNear(position, dimension))
+        {
+            if (c.ClientID != client.ClientID)
+            {
+                nearByClients.Add(c);
+            }
+        }
+    }
+
+    private void UpdateGrid()
+    {
+        UpdateClientInfo();
+        dungeonGrid.spatialHashGrid.UpdateGrid(client);
     }
 
     //--------------------------BUILT-IN METHODS--------------------------------    
-    private void Awake()
-    {
-        entityType = EntityType.BARBARIAN;
-    }
-
-    // Start is called before the first frame update
     void Start()
     {
-
-        //EntitiesManager.GetInstance().AddRoomEntity(this.gameObject);
+        EntitiesManager entitiesManager = EntitiesManager.GetInstance();
+        EPhysicsManager physicsManager = EPhysicsManager.GetInstance();
 
         // ref to statsTable
-        EntitiesManager.GetInstance().AssignStats(entityType, this.gameObject);
+        entitiesManager.AssignStats(entityType, this.gameObject);
 
-        byte entityID = EntitiesManager.GetInstance().GetEntityID(this.gameObject);
+        // unique and will never be change
+        byte entityID = entitiesManager.GetEntityID(this.gameObject);
 
-        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, "Actor", false, entityID);
+        //EPhysicsManager.GetInstance().AssignPhysics(this.gameObject, entityID);
+
+        physicsManager.AddObserver(this);
+
+        client = dungeonGrid.spatialHashGrid.NewClient(position, dimension, false, entityID);
         client.GameObject = this.gameObject;
 
-        //----------------------TREE CONSTRUCTION, ORDER MATTERS-----------------------
-        chasePlayerStrategy = new ChasePlayer(client, dungeonGrid.spatialHashGrid.Cells);
-        moveOneStepStrategy = new MoveOneStep();
+        // behavior tree construction
+        chasePlayerTree = new ChasePlayerTree(client);
 
-        sequenceNode = new Sequence("MySequence", null);
-        repeatUntilFailNode = new RepeatUntilFail("MyRepeatUntilFail", sequenceNode);
-        moveTowardPlayerNode = new Leaf("MoveToPlayer", sequenceNode, moveOneStepStrategy);
-
-        invertNode = new Invert("MyInvert", repeatUntilFailNode);
-        findPlayerNode = new Leaf("FindPlayer", invertNode, chasePlayerStrategy);
-
-        tree = new EnemyBehaviorTree("Actor behavior tree");
-        tree.AddNode(sequenceNode);
-        tree.AddNode(repeatUntilFailNode);
-        tree.AddNode(moveTowardPlayerNode);
-        tree.AddNode(invertNode);
-        tree.AddNode(findPlayerNode);
-
+        // assign init position
         transform.position = MyAPI.GetCellCenter(position);
-
-        OnEnemyMove();
+        FindNearbyClients();
+        UpdateGrid();
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.yellow;
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.yellow;
 
-        Gizmos.DrawWireCube(position, dimension);
+    //    Gizmos.DrawWireCube(position, dimension);
+    //}
+
+    //---------------------------PUBLIC METHODS------------------------------------------------
+    public void OnNotify()
+    {
+        FindNearbyClients();
+        UpdateGrid();
+        chasePlayerTree.ProcessTree();
     }
 }
