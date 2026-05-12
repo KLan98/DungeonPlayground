@@ -22,15 +22,19 @@ public class Sequence : BehaviorTreeNode
 
         foreach (var childNode in childrenNodes)
         {
+            //Debug.Log($"evaluating {childNode.Name}");
             switch (childNode.Evaluate())
             {
                 case TreeNodeState.RUNNING:
+                    //Debug.Log($"{this} is running");
                     return TreeNodeState.RUNNING;
                 case TreeNodeState.FAILED:
+                    //Debug.Log($"{this} returns failed");
                     return TreeNodeState.FAILED;
             }
         }
 
+        //Debug.Log($"{this} returns passed");
         // if all children passed then return passed
         return TreeNodeState.PASSED;
     }

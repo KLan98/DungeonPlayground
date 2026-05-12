@@ -7,7 +7,7 @@ namespace BehaviorTree
     public class EnemyBehaviorTree
     {
         private string name;
-        private List<BehaviorTreeNode> behaviorTreeNodes = new List<BehaviorTreeNode>();
+        private List<BehaviorTreeNode> behaviorTree = new List<BehaviorTreeNode>();
 
         public EnemyBehaviorTree(string name) 
         {
@@ -17,7 +17,7 @@ namespace BehaviorTree
         // add a node to this tree
         public void AddNode(BehaviorTreeNode node)
         {
-            behaviorTreeNodes.Add(node);
+            behaviorTree.Add(node);
         }
 
         /// <summary>
@@ -25,10 +25,10 @@ namespace BehaviorTree
         /// </summary>
         public void Process()
         {
-            if (behaviorTreeNodes.Count > 0)
+            if (behaviorTree.Count > 0)
             {
                 // process the origin node
-                TreeNodeState status = behaviorTreeNodes[0].Evaluate();
+                TreeNodeState status = behaviorTree[0].Evaluate();
                 Debug.Log($"status of the behavior tree = {status}");
             }
         }

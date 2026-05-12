@@ -11,7 +11,6 @@ namespace BehaviorTree
         TreeNodeState Process();
     }
 
-    [System.Serializable]
     public class ChasePlayer : IStrategy
     {
         private Client actor;
@@ -31,23 +30,48 @@ namespace BehaviorTree
             BFSPathFinding.PathFinding(actor, cells, myPath);
             if (myPath.Count < 1)
             {
+                //Debug.Log($"{this} returns failed");
                 return TreeNodeState.FAILED;
             }
 
             else
             {
+                //Debug.Log($"{this} returns passed");
                 return TreeNodeState.PASSED;
             }
         }
+
+        public Client GetTile()
+        {
+            if (myPath.Count >= 1)
+            {
+                return myPath[0];
+            }
+
+            return null;
+        }
     }
 
-    // LAN_TODO implement move one step strategy
-    // probably need the mypath from chase player strategy, which is in the leaf node 
-    [System.Serializable]
     public class MoveOneStep : IStrategy
     {
+        private ChasePlayer chasePlayerStrategy;
+        private byte entityID;
+
+        public MoveOneStep(ChasePlayer chasePlayerStrategy, byte entityID)
+        {
+            this.chasePlayerStrategy = chasePlayerStrategy;
+            this.entityID = entityID;
+        }
+
         public TreeNodeState Process()
         {
+            int distanceToPlayer = chasePlayerStrategy.GetTile().DistanceToPlayer;
+            Vector2 newPosition = chasePlayerStrategy.GetTile().Position;
+
+            EntitiesManager.GetInstance().GetAliveGameObject(entityID).transform.position = newPosition;
+
+            TilemapVisualizer.GetInstance().ColorTileByDistance(newPosition, distanceToPlayer);
+            //Debug.Log($"{this} returns passed");
             return TreeNodeState.PASSED;
         }
     }

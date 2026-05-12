@@ -17,10 +17,13 @@ public class Invert : BehaviorTreeNode
             switch (childrenNodes[0].Evaluate())
             {
                 case TreeNodeState.PASSED:
+                    //Debug.Log($"{this} returns failed");
                     return TreeNodeState.FAILED;
                 case TreeNodeState.FAILED:
+                    //Debug.Log($"{this} returns passed");
                     return TreeNodeState.PASSED;
                 default:
+                    //Debug.Log($"{this} is running");
                     return TreeNodeState.RUNNING;
             }
         }
