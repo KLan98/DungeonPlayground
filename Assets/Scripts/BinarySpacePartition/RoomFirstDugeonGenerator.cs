@@ -29,14 +29,6 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
     private Vector2 tileClientDimension = new Vector2(1f, 1f);
     private Vector3Int arenaStartPoint;
     private BoundsInt arena;
-    private Client client;
-
-    //------------------------------PUBLIC PROPERTIES-----------------------------------------
-    public HashSet<Vector2Int> TilesPosition
-    {
-        get { return tilesPosition; }
-    }
-
 
     private void Awake()
     {
@@ -67,7 +59,11 @@ public class RoomFirstDugeonGenerator : MonoBehaviour
             foreach (var tilePosition in tilesPosition)
             {
                 Vector3Int cellPosition = new Vector3Int(tilePosition.x, tilePosition.y, 0);
-                client = dungeonGrid.spatialHashGrid.NewClient(grid.GetCellCenterWorld(cellPosition), tileClientDimension, true);
+
+                Client client = dungeonGrid.spatialHashGrid.NewClient(grid.GetCellCenterWorld(cellPosition), tileClientDimension, true);
+
+                // tile as a client for this grid
+                GridClient tileClient = DungeonGrid.Instance.GetSpatialHashGrid().NewGridClient(grid.GetCellCenterWorld(cellPosition), tileClientDimension);
             }
         }
     }
