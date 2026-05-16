@@ -6,13 +6,16 @@ public class DungeonGrid : MonoBehaviour
 {
     readonly private Vector2[] bounds = new Vector2[] { new Vector2(-100, -100), new Vector2(100, 100) };
     readonly private Vector2 dimension = new Vector2(200, 200);
-
+    readonly private Vector2Int[] _bounds = new Vector2Int[] { new Vector2Int(-100, -100), new Vector2Int(100, 100) };
+    readonly private Vector2Int _dimension = new Vector2Int(200, 200);
     public static DungeonGrid Instance { get; private set; }
     public SpatialHashGridsOptimized spatialHashGrid;
+    private SpatialHashGrid _spatialHashGrid;
 
     private void Awake()
     {
         spatialHashGrid = new SpatialHashGridsOptimized(bounds, dimension);
+        _spatialHashGrid = new SpatialHashGrid(_bounds, _dimension);
         Instance = this;
     }
 
@@ -41,6 +44,11 @@ public class DungeonGrid : MonoBehaviour
     //        Gizmos.DrawLine(startPoint, endPoint);
     //    }
     //}
+    
+    public SpatialHashGrid GetSpatialHashGrid()
+    {
+        return _spatialHashGrid;
+    }
 
     public Client GetClientAtIndex(Vector2Int index)
     {
