@@ -574,6 +574,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 1481978916}
   tileBase: {fileID: 11400000, guid: 4731268d45b734cdfba41ba6cdf5720b, type: 2}
+  tilesDatabase:
+    groundTiles: []
+    edgeTiles: []
+    waterTiles: []
 --- !u!4 &164231390
 Transform:
   m_ObjectHideFlags: 0
@@ -3804,6 +3808,7 @@ Transform:
   m_Children:
   - {fileID: 1631141079}
   - {fileID: 919945529}
+  - {fileID: 1546104698}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1227463782
@@ -4497,7 +4502,6 @@ MonoBehaviour:
   dimension: {x: 0.9, y: 0.9}
   nearByClients: []
   client:
-    name: 
     position: {x: 0, y: 0}
     dimensions: {x: 0, y: 0}
     indices: []
@@ -4519,7 +4523,7 @@ GameObject:
   - component: {fileID: 1481978916}
   - component: {fileID: 1481978917}
   m_Layer: 0
-  m_Name: Arena
+  m_Name: ArenaTilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4607,7 +4611,7 @@ TilemapRenderer:
   m_SortingLayer: -1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 1, y: 1, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -4629,6 +4633,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1967450704}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1546104697
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1546104698}
+  - component: {fileID: 1546104699}
+  m_Layer: 0
+  m_Name: NoiseMapGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1546104698
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546104697}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1210914682}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1546104699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546104697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0334c309dc8c069468a253574844dbdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 200
+  height: 200
+  amplitude: 2.77
+  frequency: 0.01
+  persistence: 5.22
+  lacunarity: 2
+  octaves: 3
+  deepWaterThreshold: 0.2
+  shallowWaterThreshold: 0.35
+  sandThreshold: 0.4
+  grassThreshold: 0.48
+  forestThreshold: 0.9
+  deepWaterTile: {fileID: 11400000, guid: 7e99fa4ec2b614495adf5141c8e4d9ea, type: 2}
+  shallowWaterTile: {fileID: 11400000, guid: 9575383f01da845eaac37b6f24ad5b03, type: 2}
+  sandTile: {fileID: 11400000, guid: 8b1ae67604b73463a96d8038c374f767, type: 2}
+  grassTile: {fileID: 11400000, guid: 6a0ee09b4edaf42fe8d38e23c03171b8, type: 2}
+  forestTile: {fileID: 11400000, guid: 9575383f01da845eaac37b6f24ad5b03, type: 2}
+  mountainTile: {fileID: 11400000, guid: 242bafe81eecf43dcb46be2af6a99754, type: 2}
+  tilemap: {fileID: 1481978916}
 --- !u!1 &1553663606
 GameObject:
   m_ObjectHideFlags: 0
@@ -5842,7 +5909,6 @@ MonoBehaviour:
   dungeonGrid: {fileID: 1631141078}
   nearByClients: []
   client:
-    name: 
     position: {x: 0, y: 0}
     dimensions: {x: 0, y: 0}
     indices: []
@@ -6337,7 +6403,7 @@ GameObject:
   - component: {fileID: 1967450704}
   - component: {fileID: 1967450705}
   m_Layer: 0
-  m_Name: Grid
+  m_Name: GridArenaTilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
