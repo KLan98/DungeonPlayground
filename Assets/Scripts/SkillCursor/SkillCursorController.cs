@@ -198,6 +198,7 @@ public class SkillCursorController : MonoBehaviour
     }
 
     //-----------------------------PUBLIC METHODS---------------------------------
+    // LAN_TODO probably remove this since game object target and TileTarget will only complicate things,
     public ITargetable GetCursorTarget()
     {
         if (nearByClients.Count > 0)
@@ -275,10 +276,10 @@ public class SkillCursorController : MonoBehaviour
     {
         FindNearbyClients();
         UpdateGrid();
-        foreach (var client in nearByClients)
-        {
-            Debug.Log($"Nearby client {client.Name}");
-        }
-        Debug.Log("-----------------------");
+        //foreach (var client in nearByClients)
+        //{
+        //    Debug.Log($"Nearby client {client.Name}");
+        //}
+        //Debug.Log("-----------------------");
     }
 }
