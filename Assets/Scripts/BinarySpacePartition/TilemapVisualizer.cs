@@ -8,18 +8,19 @@ public class TilemapVisualizer : MonoBehaviour
 {
     [SerializeField] private Tilemap map;
     [SerializeField] private TileBase tileBase;
+    [SerializeField] private DungeonTilesDatabase tilesDatabase;
+
     private readonly Color32 red = new Color32(0xFF, 0, 0, 0xFF);
     private readonly Color32 orange = new Color32(0xFF, 0x7F, 0, 0xFF);
     private readonly Color32 yellow = new Color32(0xFF, 0xFF, 0, 0xFF);
     private readonly Color32 green = new Color32(0, 0xFF, 0, 0xFF);
     private readonly Color32 blue = new Color32(0, 0, 0xFF, 0xFF);
     private readonly Color32 indigo = new Color32(0x4B, 0, 0x82, 0xFF);
-    private readonly Color32 violet = new Color32(0x94, 0, 0xD3, 0xFF);
     private readonly Color32 cyan = new Color32(0, 0xFF, 0xFF, 0xFF);
     private readonly Color32 azure = new Color32(0, 0x7F, 0xFF, 0xFF);
-    private readonly Color32 lime = new Color32(0x7F, 0xFF, 0, 0xFF);
     private static TilemapVisualizer instance;
 
+    //---------------------------BUILT-IN METHODS-------------------------------------
     private void Awake()
     {
         if (instance != null && instance == this)
@@ -28,23 +29,12 @@ public class TilemapVisualizer : MonoBehaviour
         }
 
         instance = this;
+
+        tilesDatabase = new DungeonTilesDatabase();
+        tilesDatabase.LoadTerrainTiles();
     }
 
-    public static TilemapVisualizer GetInstance()
-    {
-        return instance;
-    }
-
-    public void DrawTiles(IEnumerable<Vector2Int> floorPositions)
-    {
-        DrawMultipleTiles(floorPositions, map, tileBase);
-    }
-
-    public void ClearTiles(BoundsInt arena)
-    {
-        map.DeleteCells(arena.position, arena.size);
-    }
-
+    //---------------------------PRIVATE METHODS-------------------------------------
     private void DrawMultipleTiles(IEnumerable<Vector2Int> positions, Tilemap map, TileBase tile)
     {
         foreach(var position in positions)
@@ -53,10 +43,36 @@ public class TilemapVisualizer : MonoBehaviour
         }
     }
 
-    private void DrawSingleTile(Vector2Int position, Tilemap map, TileBase tile)
+
+    private void DrawRandomTiles(IEnumerable<Vector2Int> positions, Tilemap map, TileBase[] groundTiles)
     {
+        foreach (var position in positions)
+        {
+            
+        }
+    }
+
+    //---------------------------PUBLIC METHODS-------------------------------------
+    public void DrawSingleTile(Vector2Int position, Tilemap map, TileBase tile)
+    {
+        // before setting tilebase into the tilemap the world position needs to be converted into cellposition
         var cellPostion = map.WorldToCell((Vector3Int)position);
         map.SetTile(cellPostion, tile);
+    }
+
+    public static TilemapVisualizer GetInstance()
+    {
+        return instance;
+    }
+
+    public void DrawTiles(IEnumerable<Vector2Int> tilesPosition)
+    {
+        DrawMultipleTiles(tilesPosition, map, tileBase);
+    }
+
+    public void ClearTiles(BoundsInt arena)
+    {
+        map.DeleteCells(arena.position, arena.size);
     }
 
     public void ColorTileByDistance(Vector2 position, int distance)
