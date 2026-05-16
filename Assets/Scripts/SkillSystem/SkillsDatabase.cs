@@ -10,7 +10,6 @@ public class SkillsDatabase
     [SerializeField] private CostTable[] costTable;
     [SerializeField] private OffensiveSkill[] offensiveSkills;
     [SerializeField] private CrowdControlSkill[] crowdControlSkills;
-    // elemental rela table 
 
     public SkillsDatabase()
     {
@@ -57,7 +56,7 @@ public class SkillsDatabase
         foreach (var skill in offensiveSkills)
         {
             if (skill.PrimaryKey.Equals(key))
-            {
+           {
                 return skill;
             }
         }
