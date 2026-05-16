@@ -68,6 +68,41 @@ namespace PathFinding
             }
         }
 
+        //public static void ComputeDijkstraMap(Vector2Int playerIndex, Dictionary<Key, List<GridClient>> gridClients)
+        //{
+        //    // BFS 
+        //    Queue<Vector2Int> searchQueue = new Queue<Vector2Int>();
+        //    searchQueue.Enqueue(playerIndex);
+
+        //    // iterate through all cells of the grid by their index 
+        //    while (searchQueue.Count > 0)
+        //    {
+        //        Vector2Int currentIndex = searchQueue.Dequeue();
+
+        //        Key key = new Key(currentIndex.x, currentIndex.y);
+
+        //        int currentDistance = 0;
+                
+        //        // set the distance for each client
+        //        foreach (var client in gridClients[key])
+        //        {
+        //            currentDistance = client.DistanceToPlayer;
+        //        }
+
+        //        foreach (var neighborIndex in GetTileNeighbors(currentIndex, gridClients))
+        //        {
+        //            Key k = new Key(neighborIndex.x, neighborIndex.y);
+
+        //            foreach (var client in gridClients[k])
+        //            {
+        //                int distanceToPlayer = client.DistanceToPlayer;
+        //                distanceToPlayer = currentDistance + 1;
+        //                client.DistanceToPlayer = distanceToPlayer;
+        //            }
+        //        }
+        //    }
+        //}
+
         public static List<Client> PathFinding(Client actor, Dictionary<Key, List<Client>> cells, List<Client> myPath)
         {
             //Debug.Log("BFS path finding called");
@@ -126,6 +161,64 @@ namespace PathFinding
             return myPath;
         }
 
+        //public static List<TileClient> EntityPathFinding(EntityClient entity, Dictionary<Key, List<TileClient>> tileCells, List<TileClient> myPath)
+        //{
+        //    //Debug.Log("BFS path finding called");
+        //    // clear the output path
+        //    myPath.Clear();
+
+        //    // assign the distance to player of this actor = distance to player of the tile it is standing in
+        //    Key entityKey = new Key(entity.Indices[0][0], entity.Indices[0][1]);
+        //    if (tileCells.TryGetValue(entityKey, out List<Client> list))
+        //    {
+        //        if (list.Count == 2)
+        //        {
+        //            foreach (var client in list)
+        //            {
+        //                if (client.DistanceToPlayer != int.MaxValue && client.WalkableTile)
+        //                {
+        //                    entity.DistanceToPlayer = client.DistanceToPlayer;
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    // BFS
+        //    // The search queue consists of tile!
+        //    Queue<TileClient> searchQueue = new Queue<TileClient>();
+        //    searchQueue.Enqueue(entity);
+
+        //    while (searchQueue.Count > 0)
+        //    {
+        //        Client currentTileCell = searchQueue.Dequeue();
+
+        //        List<Vector2Int> myNeighbors = GetNeighbors(currentTileCell.Indices[0], tileCells);
+
+        //        // iterate through all neighbors
+        //        foreach (var neighbor in myNeighbors)
+        //        {
+        //            Key k = new Key(neighbor.x, neighbor.y);
+
+        //            foreach (var tileCell in tileCells[k])
+        //            {
+        //                if (tileCell.WalkableTile && tileCell.DistanceToPlayer != int.MaxValue && tileCell.DistanceToPlayer < entity.DistanceToPlayer)
+        //                {
+        //                    // the client only moves to the tile cell with shortest distance to player
+        //                    entity.DistanceToPlayer = tileCell.DistanceToPlayer;
+
+        //                    //---------------DEBUG---------------------
+        //                    //Debug.Log($"Entity {actor.EntityID} moves to tile with distance {tileCell.DistanceToPlayer} at {tileCell.Position}");
+        //                    myPath.Add(tileCell);
+        //                    searchQueue.Enqueue(tileCell);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    //Debug.Log("Return myPath");
+        //    return myPath;
+        //}
+
         private static List<Vector2Int> GetNeighbors(Vector2Int element, Dictionary<Key, List<Client>> cells)
         {
             Vector2Int[] candidates = {new Vector2Int(element.x + 1, element.y), new Vector2Int(element.x - 1, element.y), new Vector2Int(element.x, element.y + 1), new Vector2Int(element.x, element.y - 1)};
@@ -137,6 +230,31 @@ namespace PathFinding
             {
                 Key k = new Key(candidates[i].x , candidates[i].y);
                 if (cells.ContainsKey(k))
+                {
+                    myNeighbors.Add(candidates[i]);
+                }
+            }
+
+            return myNeighbors;
+        }
+
+        /// <summary>
+        /// Return the list of indices of neighboring tiles
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="gridClients"></param>
+        /// <returns></returns>
+        private static List<Vector2Int> GetTileNeighbors(Vector2Int element, Dictionary<Key, List<GridClient>> gridClients)
+        {
+            Vector2Int[] candidates = { new Vector2Int(element.x + 1, element.y), new Vector2Int(element.x - 1, element.y), new Vector2Int(element.x, element.y + 1), new Vector2Int(element.x, element.y - 1) };
+
+            List<Vector2Int> myNeighbors = new List<Vector2Int>();
+
+            // add valid neighbor to list
+            for (int i = 0; i < candidates.Length; i++)
+            {
+                Key k = new Key(candidates[i].x, candidates[i].y);
+                if (gridClients.ContainsKey(k))
                 {
                     myNeighbors.Add(candidates[i]);
                 }
